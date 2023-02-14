@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="home.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <title>School Management System</title>
+        
+    </head>
+    <body>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#">Home</a>
+            <a href="#">Attandance</a>
+            <a href="#">Time table</a>
+            <a href="#">Assessments</a>
+            <a href="#">Teacher details</a>
+            <a href="#">Payments</a>
+            <a href="#">Contact</a>
+        </div>
+        <header>
+            <div class="tab1"> 
+                <span style="font-size:20px;cursor:pointer;border:1px solid white;padding:0px 5px;" onclick="openNav()">&#9776;</span>
+                &emsp;
+                <img src="icon.png" alt="logo" widtd="30"/>
+                &emsp;
+                <h2>My School Name</h2>
+            </div>
+            <div>
+                <div style="display:flex;align-items:center;justify-content:space-evenly;box-shadow:0px 0px 5px white;padding:3px;">
+                    <i class="fa fa-user-circle-o"></i>&emsp;
+                    <h5>Student Name</h5>
+                </div>
+            </div>
+        </header>
+        
+        <section>
+            <img src="6101073.jpg" alt="no img" width="100" height="100"/> 
+        </section>
+        <footer>
+            
+        </footer>
+        <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "280px";
+            }
+        
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+    </body>
+</html>
