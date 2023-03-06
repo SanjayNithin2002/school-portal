@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const studentRoutes = require("./api/routes/Students");
+const teacherRoutes = require("./api/routes/Teachers");
+const userRoutes = require("./api/routes/Users");
 
 const app = express();
 
@@ -38,9 +40,11 @@ app.get("/",(req, res)=> {
 });
 
 app.use("/students", studentRoutes);
+app.use("/teachers", teacherRoutes);
+app.use("/users", userRoutes);
 
 
-// handling Not Found errors
+// handling "Not Found" errors
 app.use((req,res,next)=>{
     const error = new Error("Not Found");
     error.status = 404;

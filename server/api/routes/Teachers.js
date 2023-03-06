@@ -23,3 +23,5 @@ router.patch("/:teacherID", (req, res)=>{
 router.delete("/:teacherID", (req, res) =>{
 
 });
+
+module.exports = router;
