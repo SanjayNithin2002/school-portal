@@ -81,14 +81,10 @@ exports.userLogin = (req, res, next) => {
 }
 
 exports.userSendOTP = (req, res, next) => {
-    const otp = otpGenerator.generate(6, {
-        specialChars: false,
-        lowerCaseAlphabets: false,
-        upperCaseAlphabets: false
-    });
+    const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
     const mailOptions = {
         from: 'schoolportal@vit.edu.in',
-        to: 'sanjay.nithin19@gmail.com',
+        to: req.body.email,
         subject: 'Verify your OTP for School Portal',
         text: 'Your OTP for the school portal is ' + otp
     };
