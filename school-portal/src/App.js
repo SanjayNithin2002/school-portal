@@ -8,6 +8,10 @@ function App() {
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
 
+
+<br/><br/>
+
+
       <div class="row">
         <div class="col-sm-4">
           <div class="card">
@@ -20,7 +24,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div>        <a href="#" class="btn btn-primary">Submit</a>
+              </div><br/><a href="#" class="btn btn-primary">Submit</a>
             </div>
           </div>
         </div>
@@ -36,7 +40,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div>        <a href="#" class="btn btn-primary">Submit</a>
+              </div><br/><a href="#" class="btn btn-primary">Submit</a>
             </div>
           </div>
         </div>
@@ -52,7 +56,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div>        <a href="#" class="btn btn-primary">Submit</a>
+              </div><br/><a href="#" class="btn btn-primary">Submit</a>
             </div>
           </div>
         </div>
