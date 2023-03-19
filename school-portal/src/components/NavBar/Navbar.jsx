@@ -1,44 +1,49 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
-import { useLocation,Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
+import Navbar1 from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useLocation, Link } from "react-router-dom";
+import * as Regular from "@fortawesome/free-regular-svg-icons"
+import * as Solid from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+import "./Navbar.css"
 
 const Navbar = () => {
     const location = useLocation();
     return (
-        location.pathname!=="/" &&
-        <nav className="navbar navbar-expand-lg bg-light">
-            <div className="container-fluid">
-                <Link className="navbar-brand" to='/Home'>XYZ school</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Home'>Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Attandance'>Attandance</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/TimeTable'>Time Table</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Assessments'>Assessments</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Teacher'>Teacher details</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Payment'>Payments</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to='/Contact'>Contact</Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        location.pathname !== "/" &&
+        <Navbar1 className="customNavbar" bg="light" expand="lg">
+            <Container fluid>
+                <Navbar1.Brand href="#">SCHOOL NAME</Navbar1.Brand>
+                <Navbar1.Toggle aria-controls="navbarScroll" />
+                <Navbar1.Collapse className="customNavbarCollapse" id="navbarScroll">
+
+                    <Form className="d-flex">
+                        <Form.Control
+                            type="search"
+                            placeholder="Search"
+                            className="me-2"
+                            aria-label="Search"
+                            style={{maxHeight:"46px"}}
+                        />
+                        &ensp;
+                        <Nav className="me-auto my-lg-0" >
+                            <Nav.Link href="#action1"><FontAwesomeIcon style={{ fontSize: "25px" }} icon={Regular.faBell} /></Nav.Link>
+                            &emsp;
+                            <NavDropdown title={<div style={{ display: "inline-flex", justifyContent: "center" }}><FontAwesomeIcon style={{ border: "2px solid gray", padding: "5px", borderRadius: "50%" }} icon={Solid.faUser} /><>&ensp;Kumar</></div>} id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                    </Form>
+                </Navbar1.Collapse>
+            </Container>
+        </Navbar1>
     )
 }
 
