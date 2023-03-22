@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 function Home() {
     return (
-        <div className="Home" style={{width:"80%"}}>
+        <div className="Home" style={{width:"80%",margin:"10px auto"}}>
             <div class="container rounded bg-white">
                 <div class="row">
                     <div class="col-md-4">
