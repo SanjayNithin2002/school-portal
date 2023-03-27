@@ -1,9 +1,13 @@
 import React from "react"
 
 import "../App.css"
+import SideNavBar from "../components/SideNavBar/SideNavBar"
 
 function Error404() {
     return (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <SideNavBar eventKey='2'/>
+            <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -16,7 +20,7 @@ function Error404() {
                         Sorry, an error has occured, Requested page not found!
                     </div>
                     <div class="error-actions">
-                        <a href="./" class="btn btn-primary btn-lg">
+                        <a href="/Home" style={{textDecoration:"none"}} class="btn btn-primary btn-lg">
                             <span class="glyphicon glyphicon-home"></span>
                             Take Me Home
                         </a>
@@ -24,6 +28,8 @@ function Error404() {
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
 )}
