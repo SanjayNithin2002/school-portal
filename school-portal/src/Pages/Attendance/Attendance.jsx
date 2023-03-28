@@ -41,6 +41,7 @@ function Attendance() {
 
     return (
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            
             <SideNavBar eventKey='2'/>
             <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
                 <div class="container rounded bg-white" style={{ padding: "10px" }}>
