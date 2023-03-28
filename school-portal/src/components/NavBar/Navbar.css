@@ -1,0 +1,25 @@
+.customNavbar{
+    display: flex;
+    padding-left:75px;
+    padding-right:25px;
+    justify-content: space-between;
+}
+
+.customNavbarCollapse{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#navbarScrollingDropdown{
+    display:flex;
+    align-items:center;
+}
+
+.d-flex .navbar-nav{
+    flex-direction: initial;
+}
+
+.home{
+    width:80%;
+}
