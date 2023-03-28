@@ -1,4 +1,3 @@
-const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");

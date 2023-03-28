@@ -2,10 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const studentRoutes = require("./api/routes/Students");
-const teacherRoutes = require("./api/routes/Teachers");
 const userRoutes = require("./api/routes/Users");
-
+const attendanceRoutes = require("./api/routes/Attendance");
 const app = express();
 
 // Middleware
@@ -32,17 +30,9 @@ app.use((req,res,next)=>{
 mongoose.connect("mongodb+srv://sanjaynithin2002:" +process.env.MONGODB_PASSWORD +  "@cluster0.kgz6ota.mongodb.net/?retryWrites=true&w=majority")
 
 
-// routes
-app.get("/",(req, res)=> {
-    res.status(202).json({
-        message : "How are you doing?"
-    })
-});
-
-app.use("/students", studentRoutes);
-app.use("/teachers", teacherRoutes);
+//routes
 app.use("/users", userRoutes);
-
+app.use("/attendance", attendanceRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
