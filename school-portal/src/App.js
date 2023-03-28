@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 function App() {
+  const navigate = useNavigate();
+  const handleClick = (type) =>{
+    localStorage.setItem("type",type);
+    navigate('/Home');
+  }
   return (
     <div className="App">
       <br/><br/>
@@ -19,7 +24,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div><br/><Link className="btn btn-primary" to='/Home'>Submit</Link>
+              </div><br/><button className="btn btn-primary" onClick={()=>handleClick('student')}>Submit</button>
             </div>
           </div>
         </div>
@@ -35,7 +40,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div><br/><Link className="btn btn-primary" to='/Home'>Submit</Link>
+              </div><br/><button className="btn btn-primary" onClick={()=>handleClick('teacher')}>Submit</button>
             </div>
           </div>
         </div>
@@ -51,7 +56,7 @@ function App() {
               <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                 <label for="floatingPassword">Password</label>
-              </div><br/><Link className="btn btn-primary" to='/Home'>Submit</Link>
+              </div><br/><button className="btn btn-primary" onClick={()=>handleClick('admin')}>Submit</button>
             </div>
           </div>
         </div>

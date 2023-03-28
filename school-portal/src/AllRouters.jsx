@@ -6,6 +6,8 @@ import Home from "./Pages/Home/Home"
 import Attendance from "./Pages/Attendance/Attendance"
 import Error404 from "./Pages/Error404";
 import ContactUs from "./Pages/ContactUs/ContactUs";
+import Leave from "./Pages/Leave/Leave";
+import Assessments from "./Pages/Assessments/Assessments";
 const AllRoutes = () => {
     return(
         <>
@@ -14,8 +16,11 @@ const AllRoutes = () => {
             <Routes>
                 <Route path='/' element={<App/>}/>
                 <Route path='/Home' element={<Home/>}/>
-                <Route path='/attendance' element={<Attendance/>}/>
+                <Route path='/Attendance' element={<Attendance/>}/>
+                <Route path='/Leave' element={<Leave/>}/>
                 <Route path='/Contact' element={<ContactUs/>}/>
+                <Route path='/Assessment' element={<Assessments/>}/>
+                <Route path='/Assessment:id' element={<Assessments/>}/>
                 <Route path='*' element={<Error404/>}/>
             </Routes>
         </BrowserRouter>

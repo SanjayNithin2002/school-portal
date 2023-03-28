@@ -1,0 +1,15 @@
+.tablestyle{
+    border-collapse: initial;
+    border:1px groove gray;
+    margin-left:auto; 
+    margin-right:auto;
+}
+.tablestyle th,.tablestyle td{
+    padding:10px;
+    border-collapse: collapse;
+}
+
+.tablestyle th{
+    border-color:white;
+    font-size:20px;
+}
