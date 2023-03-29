@@ -6,7 +6,7 @@ import SideNavBar from "../../components/SideNavBar/SideNavBar";
 function ContactUs(){
 
     return(
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div className="Main">
             <SideNavBar/>
             
         </div>

@@ -4,9 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import SideNavBar from "../../components/SideNavBar/SideNavBar"
 function Home() {
     return (
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+        <div className="Main">
             <SideNavBar eventKey='1'/>
-            <div className="Home" style={{ width: "80%", margin: "10px auto" }}>
+            <div className="Home">
                 <div class="container rounded bg-white">
                     <div class="row">
                         <div class="col-md-4">
