@@ -8,6 +8,7 @@ import Error404 from "./Pages/Error404";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Leave from "./Pages/Leave/Leave";
 import Assessments from "./Pages/Assessments/Assessments";
+import Teacher from "./Pages/Teacher/Teacher";
 const AllRoutes = () => {
     return(
         <>
@@ -21,6 +22,7 @@ const AllRoutes = () => {
                 <Route path='/Contact' element={<ContactUs/>}/>
                 <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment:id' element={<Assessments/>}/>
+                <Route path='/Teachers' element={<Teacher/>}/>
                 <Route path='*' element={<Error404/>}/>
             </Routes>
         </BrowserRouter>

@@ -24,6 +24,9 @@ const Student = () => {
             <Nav.Item href='/Assessment' icon={<Graph />}>
               Assessment
             </Nav.Item>
+            <Nav.Item href='/Marks' icon={<Graph />}>
+              Marks
+            </Nav.Item>
             <Nav.Item href='/Teachers' icon={<User />}>
               Teachers
             </Nav.Item>
