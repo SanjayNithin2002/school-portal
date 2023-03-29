@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const userRoutes = require("./api/routes/Users");
 const attendanceRoutes = require("./api/routes/Attendance");
+var classRoutes = require('./api/routes/Classes');
 const app = express();
 
 // Middleware
@@ -33,6 +34,7 @@ mongoose.connect("mongodb+srv://sanjaynithin2002:" +process.env.MONGODB_PASSWORD
 //routes
 app.use("/users", userRoutes);
 app.use("/attendance", attendanceRoutes);
+app.use("/class", classRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
