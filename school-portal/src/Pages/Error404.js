@@ -5,9 +5,9 @@ import SideNavBar from "../components/SideNavBar/SideNavBar"
 
 function Error404() {
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div className="Main">
             <SideNavBar />
-            <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
+            <div className="Home">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">

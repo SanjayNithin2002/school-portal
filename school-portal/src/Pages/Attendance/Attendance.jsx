@@ -38,11 +38,13 @@ function Attendance() {
     }]
 
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div className="Main">
             
             <SideNavBar/>
-            <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
-                <div class="container rounded bg-white" style={{ padding: "10px" }}>
+            <div className="Home">
+                <div class="container rounded bg-white">
+                    <h2>Attendance</h2>
+                    <hr style={{border:"1px solid gray"}}/>
                     <Calendar localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
                 </div>
             </div >

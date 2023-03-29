@@ -4,10 +4,11 @@ import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
 import GroupIcon from '@rsuite/icons/legacy/Group';
 import Upload from '@rsuite/icons/legacy/FileUpload';
 import Calendar from '@rsuite/icons/legacy/Calendar';
-import Graph from "@rsuite/icons/legacy/BarChart";
+import Marks from "@rsuite/icons/legacy/BarChart";
+import Graph from "@rsuite/icons/legacy/Briefcase";
 import User from "@rsuite/icons/legacy/User"
 import Payment from "@rsuite/icons/legacy/CreditCard"
-import Setting from "@rsuite/icons/legacy/Setting"
+import Setting from "@rsuite/icons/legacy/Gear"
 
 const Student = () => {
     return(
@@ -23,6 +24,9 @@ const Student = () => {
             </Nav.Item>
             <Nav.Item href='/Assessment' icon={<Graph />}>
               Assessment
+            </Nav.Item>
+            <Nav.Item href='/Marks' icon={<Marks />}>
+              Marks
             </Nav.Item>
             <Nav.Item href='/Teachers' icon={<User />}>
               Teachers

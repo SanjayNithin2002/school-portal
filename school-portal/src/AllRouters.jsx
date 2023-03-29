@@ -8,9 +8,12 @@ import Error404 from "./Pages/Error404";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Leave from "./Pages/Leave/Leave";
 import Assessments from "./Pages/Assessments/Assessments";
+import Teacher from "./Pages/Teacher/Teacher";
+import Settings from "./Pages/Settings/Settings";
+import ViewAssessment from "./Pages/Assessments/ViewAssessment";
+import Marks from "./Pages/Marks/Marks";
 const AllRoutes = () => {
     return(
-        <>
         <BrowserRouter>
             <Navbar/>
             <Routes>
@@ -20,11 +23,13 @@ const AllRoutes = () => {
                 <Route path='/Leave' element={<Leave/>}/>
                 <Route path='/Contact' element={<ContactUs/>}/>
                 <Route path='/Assessment' element={<Assessments/>}/>
-                <Route path='/Assessment:id' element={<Assessments/>}/>
+                <Route path='/Assessment/:id' element={<ViewAssessment />}/>
+                <Route path='/Marks' element={<Marks/>}/>
+                <Route path='/Teachers' element={<Teacher/>}/>
+                <Route path='/Setting' element={<Settings/>}/>
                 <Route path='*' element={<Error404/>}/>
             </Routes>
         </BrowserRouter>
-        </>
     )
 }
 export default AllRoutes;

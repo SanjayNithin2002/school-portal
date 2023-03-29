@@ -15,7 +15,6 @@ function ContactUs(){
 
     return(
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-
             <SideNavBar/>
 
             <Container >
