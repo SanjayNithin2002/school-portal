@@ -6,10 +6,10 @@ import "./Teacher.css"
 
 function Teacher() {
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div className='Main'>
             <SideNavBar />
-            <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
-                <div class="container rounded bg-white" style={{ minHeight: "50vh", padding: "20px" }}>
+            <div className="Home">
+                <div class="container rounded bg-white">
                     <h2>Teachers</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <Table bordered className='tablestyle1'>

@@ -8,10 +8,10 @@ function Leave() {
     const navigate = useNavigate();
     return (
         localStorage.getItem("type")==="teacher" ?
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div className="Main">
             <SideNavBar/>
-            <div className="Home" style={{ width: "90%", margin: "10px auto" }}>
-                <div class="container rounded bg-white" style={{ padding: "10px" }}>
+            <div className="Home">
+                <div class="container rounded bg-white">
                     <br/><br/>
                     <div className="row" style={{display:"flex",justifyContent: "center",alignItems:"center"}}>
                         <div className="col-lg-2 col-md-5">
