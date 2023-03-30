@@ -1,0 +1,42 @@
+.bonafide-content-1{
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.bonafide-content-2{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.selectPicker{
+    width:100%;
+    padding:7px;
+    border-radius: 5px;
+}
+
+.selectPicker1{
+    width:50%;
+    padding:7px;
+    border-radius: 5px;
+}
+
+.tablestyle3{
+    width:75%;
+    margin:10px auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.tablestyle3 th,.tablestyle3 td{
+    border: 1px solid black;
+    padding:10px;
+}
+
+.tablestyle3 th{
+    background-color: gray;
+    color:white;
+    font-weight: 800;
+}

@@ -9,6 +9,7 @@ import Graph from "@rsuite/icons/legacy/Briefcase";
 import User from "@rsuite/icons/legacy/User"
 import Payment from "@rsuite/icons/legacy/CreditCard"
 import Setting from "@rsuite/icons/legacy/Gear"
+import Bonafide from "@rsuite/icons/legacy/Certificate"
 
 const Student = () => {
     return(
@@ -30,6 +31,9 @@ const Student = () => {
             </Nav.Item>
             <Nav.Item href='/Teachers' icon={<User />}>
               Teachers
+            </Nav.Item>
+            <Nav.Item href='/Bonafide' icon={<Bonafide/>}>
+              Bonafide
             </Nav.Item>
             <Nav.Item href='/Payment' icon={<Payment />}>
               Payment

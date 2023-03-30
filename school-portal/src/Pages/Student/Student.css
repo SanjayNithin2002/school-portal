@@ -1,0 +1,35 @@
+.selectPicker2{
+    width: 50%;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.studentinfo-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.tablestyle4{
+    width:100%;
+    margin:10px auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.tablestyle4 th,.tablestyle4 td{
+    border: 1px solid black;
+    padding:10px;
+}
+
+.tablestyle4 th{
+    background-color: gray;
+    color:white;
+    font-weight: 800;
+    font-size:19px;
+}
+
+.tablestyle4 td{
+    font-weight: 800;
+    font-size:16px;
+}
