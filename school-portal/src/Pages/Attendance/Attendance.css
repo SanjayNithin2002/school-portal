@@ -1,3 +1,9 @@
+.poststudent-container{
+  align-items: center;
+  justify-content: center;
+}
+
+
 .rbc-btn {
     color: inherit;
     font: inherit;
