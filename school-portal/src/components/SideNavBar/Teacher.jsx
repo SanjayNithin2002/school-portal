@@ -26,7 +26,7 @@ const Teacher = () => {
               <Nav.Item href='/StaffInfo'>Staffs Info</Nav.Item>
             </Nav.Menu>
             <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
-              <Nav.Item href='/StudentInfo'>Student List</Nav.Item>
+              <Nav.Item href='/StudentList'>Student List</Nav.Item>
               <Nav.Item href='/PostAttendance'>Attendance</Nav.Item>
               <Nav.Item href='/ClassMessage'>Class Message</Nav.Item>
               <Nav.Item href='/Assessments'>Assessments</Nav.Item>

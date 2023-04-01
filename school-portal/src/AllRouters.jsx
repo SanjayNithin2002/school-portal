@@ -12,6 +12,11 @@ import Teacher from "./Pages/Teacher/Teacher";
 import Settings from "./Pages/Settings/Settings";
 import ViewAssessment from "./Pages/Assessments/ViewAssessment";
 import Marks from "./Pages/Marks/Marks";
+import Bonafide from "./Pages/Bonafide/Bonafide";
+import StudentInfo from "./Pages/Student/StudentInfo";
+import TeacherInfo from "./Pages/Teacher/TeacherInfo";
+import StudentList from "./Pages/Student/StudentList";
+import PostStudent from "./Pages/Attendance/PostStudent";
 const AllRoutes = () => {
     return(
         <BrowserRouter>
@@ -27,6 +32,11 @@ const AllRoutes = () => {
                 <Route path='/Marks' element={<Marks/>}/>
                 <Route path='/Teachers' element={<Teacher/>}/>
                 <Route path='/Setting' element={<Settings/>}/>
+                <Route path='/Bonafide' element={<Bonafide/>}/>
+                <Route path='/StudentInfo' element={<StudentInfo/>}/>
+                <Route path='/StaffInfo' element={<TeacherInfo/>}/>
+                <Route path='/StudentList' element={<StudentList/>}/>
+                <Route path='/PostAttendance' element={<PostStudent/>}/>
                 <Route path='*' element={<Error404/>}/>
             </Routes>
         </BrowserRouter>
