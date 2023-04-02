@@ -2,9 +2,8 @@ var mongoose = require('mongoose');
 
 var leaveSchema = mongoose.Schema({
     _id : mongoose.SchemaTypes.ObjectId,
-    teacherId : {
-        type : mongoose.SchemaTypes.ObjectId,
-        ref : 'Teachers'
+    userId : {
+        type : mongoose.SchemaTypes.ObjectId
     },
     type : {
         type : String
