@@ -18,7 +18,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-    Students.findById(req.params.id).populate('classes').exec()
+    Students.findById(req.params.id).populate('user').exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -35,8 +35,25 @@ router.post("/", (req, res, next) => {
     var students = new Students({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        user : req.body.user,
-        classes: req.body.classes
+        studysIn : {
+            standard : req.body.studysIn.standard,
+            section : req.body.studysIn.section
+        },
+        age : req.body.age,
+        dob : req.body.dob,
+        father : req.body.father || null,
+        mother : req.body.mother || null,
+        guardian : req.body.guardian || null,
+        hosteller : {
+            roomno : req.body.hosteller.roomno,
+            block : req.body.hosteller.block
+        },
+        address : {
+            houseNumber : req.body.address.houseNumber,
+            street : req.body.address.street,
+            city : req.body.address.city,
+            zipCode : req.body.address.zipCode
+        }
     });
     students.save()
         .then(docs => {

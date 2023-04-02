@@ -30,6 +30,14 @@ var teacherSchema = mongoose.Schema({
     dob : {
         type : Date
     },
+    handles : {
+        standard: {
+            type: Number
+        },
+        section: {
+            type: String
+        }
+    },
     level : {
         type : Number
     },
@@ -41,6 +49,18 @@ var teacherSchema = mongoose.Schema({
     },
     address : {
         type : addressSchema
+    },
+    casualLeave : {
+        type : Number,
+        default : 12
+    },
+    earnedLeave :{
+        type : Number,
+        default : 12
+    },
+    sickLeave : {
+        type : Number,
+        default : 12
     }
 });
 

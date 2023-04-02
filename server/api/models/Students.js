@@ -25,11 +25,13 @@ var studentSchema = mongoose.Schema({
     name: {
         type: String
     },
-    standard: {
-        type: Number
-    },
-    section: {
-        type: String
+    studysIn : {
+        standard: {
+            type: Number
+        },
+        section: {
+            type: String
+        }
     },
     age: {
         type: Number
@@ -38,13 +40,16 @@ var studentSchema = mongoose.Schema({
         type: Date
     },
     father: {
-        type: String
+        type: String,
+        default : null
     },
     mother: {
-        type: String
+        type: String,
+        default : null
     },
     guardian: {
-        type: String
+        type: String,
+        default : null
     },
     hosteller: {
         roomno: {
@@ -53,10 +58,6 @@ var studentSchema = mongoose.Schema({
         block: {
             type: String
         }
-    },
-    classTeacher: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Teachers'
     },
     address : {
         type : addressSchema

@@ -4,7 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get("/", (req, res, next) => {
-    Teachers.find().populate('classes').exec()
+    Teachers.find().populate('user').exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -18,7 +18,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-    Teachers.findById(req.params.id).populate('classes').exec()
+    Teachers.findById(req.params.id).populate('user').exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -34,9 +34,23 @@ router.get("/:id", (req, res, next) => {
 router.post("/", (req, res, next) => {
     var teachers = new Teachers({
         _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
+        name : req.body.name,
         user : req.body.user,
-        classes: req.body.classes
+        age : req.body.age,
+        dob : req.body.dob,
+        handles : {
+            standard : req.body.handles.standard,
+            section : req.body.handles.section
+        },
+        level : req.body.level,
+        salary : req.body.salary,
+        joinDate : req.body.joinDate,
+        address : {
+            houseNumber : req.body.address.houseNumber,
+            street : req.body.address.street,
+            city : req.body.address.city,
+            zipCode : req.body.address.zipCode
+        }
     });
     teachers.save()
         .then(docs => {

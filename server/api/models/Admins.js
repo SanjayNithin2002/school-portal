@@ -41,8 +41,19 @@ var adminSchema = mongoose.Schema({
     },
     address : {
         type : addressSchema
+    },
+    casualLeave : {
+        type : Number,
+        default : 12
+    },
+    earnedLeave :{
+        type : Number,
+        default : 12
+    },
+    sickLeave : {
+        type : Number,
+        default : 12
     }
-
 });
 
 module.exports = mongoose.model("Admins", adminSchema);
