@@ -19,6 +19,8 @@ import StudentList from "./Pages/Student/StudentList";
 import PostStudent from "./Pages/Attendance/PostStudent2";
 import PostStudent1 from "./Pages/Attendance/PostStudent1";
 import ClassMessage from "./Pages/ClassMessage/ClassMessage";
+import PostStudent from "./Pages/Attendance/PostStudent";
+import Timetable from "./Pages/Time table/timetable";
 const AllRoutes = () => {
     return(
         <BrowserRouter>
@@ -41,6 +43,7 @@ const AllRoutes = () => {
                 <Route path='/PostAttendance' element={<PostStudent/>}/>
                 <Route path='/PostAttendance1' element={<PostStudent1/>}/>
                 <Route path='/ClassMessage' element={<ClassMessage/>}/>
+                <Route path='/timetable' element={<Timetable/>}/> 
                 <Route path='*' element={<Error404/>}/>
             </Routes>
         </BrowserRouter>
