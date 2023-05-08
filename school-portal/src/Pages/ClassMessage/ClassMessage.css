@@ -1,19 +1,31 @@
-.classmessage-container{
+.classmessage-container-1{
     align-items: center;
     justify-content: center;
 }
 
+.classmessage-container-2{
+    justify-content: center;
+}
+
 .chat-container{
-    border:2px groove gray;
+    border:none;
     border-radius: 10px;
-    height:50vh;
+    height:60vh;
     padding:0px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-box{
+    align-items: initial;
 }
 
 .chat-container-1{
+    width: 100%;
     padding:10px;
-    height:40vh;
-    overflow-y: auto;
+    height:60vh;
+    justify-content: center;
 }
 
 .chat-container-2{
@@ -30,4 +42,31 @@
     width: 100%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+.Avatar{
+    display: flex;
+    font-size: 25px;
+    padding:0px;
+    height:8vh;
+}
+.Avatar-1{
+    padding:5px;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: orange;
+}
+.message-content{    
+    box-shadow: 0px 0px 10px lightgray;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 20px;
+    font-size:18px;
+}
+
+.timer{
+    display: flex;
+    justify-content: flex-end;
+    opacity: 0.8;
+    font-size: 15px;
 }

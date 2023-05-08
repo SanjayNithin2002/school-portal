@@ -33,6 +33,8 @@ const AllRoutes = () => {
                 <Route path='/Contact' element={<ContactUs/>}/>
                 <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment/:id' element={<ViewAssessment />}/>
+                <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
+                <Route path='/PostAssessment' element={<NewAssessment />}/>
                 <Route path='/Marks' element={<Marks/>}/>
                 <Route path='/Teachers' element={<Teacher/>}/>
                 <Route path='/Setting' element={<Settings/>}/>
@@ -45,6 +47,7 @@ const AllRoutes = () => {
                 <Route path='/ClassMessage' element={<ClassMessage/>}/>
                 <Route path='/timetable' element={<Timetable/>}/> 
                 <Route path='*' element={<Error404/>}/>
+                <Route path='/Exam' element={<Exam/>}/>
             </Routes>
         </BrowserRouter>
     )
