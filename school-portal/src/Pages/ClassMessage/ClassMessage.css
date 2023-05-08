@@ -1,0 +1,33 @@
+.classmessage-container{
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-container{
+    border:2px groove gray;
+    border-radius: 10px;
+    height:50vh;
+    padding:0px;
+}
+
+.chat-container-1{
+    padding:10px;
+    height:40vh;
+    overflow-y: auto;
+}
+
+.chat-container-2{
+    
+    display: flex;
+    margin-top:7px;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.textarea{
+    resize: none;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
