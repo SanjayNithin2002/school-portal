@@ -12,7 +12,7 @@ const TimIcon = ({ size }) => <TimeIcon style={{ fontSize: size, marginRight: 10
 const MailIcon = ({ size }) => <EmailIcon style={{ fontSize: size, marginRight: 10 }} />;
 const PhIcon = ({ size }) => <PhoneIcon style={{ fontSize: size, marginRight: 10 }} />;
 
-function ContactUs() {
+function ContactUsStudent() {
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -24,28 +24,28 @@ function ContactUs() {
             <h2>Contact Us</h2>
             <hr style={{ border: "1px solid gray" }} />
           </Header><br /><br />
-          <Content>
-            <Grid fluid >
 
+          <Content style={{marginLeft:"10px"}}>
+            <Grid fluid >
               <Col className="show-grid" xl={11}>
                 <Row>
                   <Col > <LocIcon size="3em" /> </Col>
-                  <Col ><h3>Location:</h3><h6> XYZ block, abc road, pqr layout, abcd Nagar, Vellore.</h6></Col>
+                  <Col ><h4>Location:</h4><h6> XYZ block, abc road, pqr layout, abcd Nagar, Vellore.</h6></Col>
                 </Row>
                 <br /><br/>
                 <Row>
                   <Col > <TimIcon size="3em" /></Col>
-                  <Col ><h3>Open Hours:</h3><h6>Monday-Friday:</h6><h6>09:00 AM - 03:00 PM</h6><h6>Saturday:</h6><h6>09:00 AM – 12:30 PM</h6></Col>
+                  <Col ><h4>Open Hours:</h4><h6>Monday-Friday:</h6><h6>09:00 AM - 03:00 PM</h6><h6>Saturday:</h6><h6>09:00 AM – 12:30 PM</h6></Col>
                 </Row>
                 <br /><br/>
                 <Row>
                   <Col > <MailIcon size="3em" /></Col>
-                  <Col ><h3>Email:</h3><h6> abcdefg@gmail.com</h6> <h6> zxyasfd@gmail.com</h6></Col>
+                  <Col ><h4>Email:</h4><h6> abcdefg@gmail.com</h6> <h6> zxyasfd@gmail.com</h6></Col>
                 </Row>
                 <br /><br/>
                 <Row>
                   <Col > <PhIcon size="3em" /></Col>
-                  <Col ><h3>Call:</h3><h6> +91 123456789</h6> <h6> +91 987654321</h6></Col>
+                  <Col ><h4>Call:</h4><h6> +91 123456789</h6> <h6> +91 987654321</h6></Col>
                 </Row>
               </Col>
 
@@ -90,5 +90,5 @@ function ContactUs() {
   )
 }
 
-export default ContactUs;
+export default ContactUsStudent;
 

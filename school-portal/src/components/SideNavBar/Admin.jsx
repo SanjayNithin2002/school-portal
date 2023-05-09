@@ -44,9 +44,9 @@ const Admin = () => {
       <Nav.Item href='/Setting' icon={<Setting />}>
         Settings
       </Nav.Item>
-      <Nav.Item href='/Contact' icon={<GroupIcon />}>
+      {/* <Nav.Item href='/Contact' icon={<GroupIcon />}>
         Contact
-      </Nav.Item>
+      </Nav.Item> */}
       {/*<Nav.Menu placement="rightStart" eventKey="3" title="Advanced" icon={<MagicIcon />}>
               <Nav.Item eventKey="3-1">Geo</Nav.Item>
               <Nav.Item eventKey="3-2">Devices</Nav.Item>
