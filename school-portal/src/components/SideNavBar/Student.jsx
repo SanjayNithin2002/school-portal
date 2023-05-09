@@ -45,7 +45,7 @@ const Student = () => {
             <Nav.Item href='/Setting' icon={<Setting />}>
               Settings
             </Nav.Item>
-            <Nav.Item href='/Contact' icon={<GroupIcon />}>
+            <Nav.Item href='/ContactUsStudent' icon={<GroupIcon />}>
               Contact
             </Nav.Item>
             {/*<Nav.Menu placement="rightStart" eventKey="3" title="Advanced" icon={<MagicIcon />}>

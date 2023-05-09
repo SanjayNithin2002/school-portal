@@ -5,7 +5,8 @@ import Navbar from "./components/NavBar/Navbar";
 import Home from "./Pages/Home/Home"
 import Attendance from "./Pages/Attendance/Attendance"
 import Error404 from "./Pages/Error404";
-import ContactUs from "./Pages/ContactUs/ContactUs";
+import ContactUsStudent from "./Pages/ContactUs/ContactUsStudent";
+import ContactUsTeacher from "./Pages/ContactUs/ContactUsTeacher";
 import Leave from "./Pages/Leave/Leave";
 import Assessments from "./Pages/Assessments/Assessments";
 import Teacher from "./Pages/Teacher/Teacher";
@@ -34,7 +35,8 @@ const AllRoutes = () => {
                 <Route path='/Home' element={<Home/>}/>
                 <Route path='/Attendance' element={<Attendance/>}/>
                 <Route path='/Leave' element={<Leave/>}/>
-                <Route path='/Contact' element={<ContactUs/>}/>
+                <Route path='/ContactUsStudent' element={<ContactUsStudent/>}/>
+                <Route path='/ContactUsTeacher' element={<ContactUsTeacher/>}/>
                 <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment/:id' element={<ViewAssessment />}/>
                 <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
