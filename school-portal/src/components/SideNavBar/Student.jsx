@@ -10,10 +10,11 @@ import User from "@rsuite/icons/legacy/User"
 import Payment from "@rsuite/icons/legacy/CreditCard"
 import Setting from "@rsuite/icons/legacy/Gear"
 import Bonafide from "@rsuite/icons/legacy/Certificate"
+import Message from "@rsuite/icons/Message"
 
 const Student = () => {
     return(
-        <Nav>
+        <Nav style={{width:"100%"}}>
             <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
               Dashboard
             </Nav.Item>
@@ -28,6 +29,9 @@ const Student = () => {
             </Nav.Item>
             <Nav.Item href='/Marks' icon={<Marks />}>
               Marks
+            </Nav.Item>
+            <Nav.Item href='/ClassMessage' icon={<Message />}>
+              Class Message
             </Nav.Item>
             <Nav.Item href='/Teachers' icon={<User />}>
               Teachers

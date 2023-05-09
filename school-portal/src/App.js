@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Nav } from 'rsuite';
-import HomeIcon from '@rsuite/icons/legacy/Home';
-import CogIcon from '@rsuite/icons/legacy/Cog';
+import { Navbar} from 'rsuite';
 
 function App() {
   const navigate = useNavigate();
@@ -13,12 +11,9 @@ function App() {
   }
   return (
     <div className="App">
-
       <div class="card">
       <Navbar>
     <Navbar.Brand href="#">SCHOOL NAME</Navbar.Brand>
-    
-    
   </Navbar>
       </div>
       <br></br><br></br>

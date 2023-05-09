@@ -1,12 +1,11 @@
 import React from 'react'
 import Student from './Student'
 import Teacher from './Teacher'
-import Error404 from '../Error404'
+import Error404 from "../../Pages/Error404";
+const ClassMessage = () => {
 
-const Assessments = () => {
-  return (
-    <>
-    {
+  return (<>
+  {
     localStorage.getItem('type') && localStorage.getItem('type')==="student" &&
         <Student/>
     }
@@ -22,4 +21,4 @@ const Assessments = () => {
   )
 }
 
-export default Assessments
+export default ClassMessage

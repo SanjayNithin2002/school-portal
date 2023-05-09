@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { Table } from 'rsuite';
 const { Column, ColumnGroup, HeaderCell, Cell } = Table;
+
 const data = [
     {
         id: 1,

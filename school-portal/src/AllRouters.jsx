@@ -17,8 +17,14 @@ import Bonafide from "./Pages/Bonafide/Bonafide";
 import StudentInfo from "./Pages/Student/StudentInfo";
 import TeacherInfo from "./Pages/Teacher/TeacherInfo";
 import StudentList from "./Pages/Student/StudentList";
-import PostStudent from "./Pages/Attendance/PostStudent";
+import PostStudent from "./Pages/Attendance/PostStudent2";
+import PostStudent1 from "./Pages/Attendance/PostStudent1";
+import ClassMessage from "./Pages/ClassMessage/ClassMessage";
 import Timetable from "./Pages/Time table/timetable";
+import PostAssessment from "./Pages/Assessments/PostAssessment"
+import NewAssessment from "./Pages/Assessments/NewAssessment"
+import Exam from "./Pages/Exam/Exam"
+
 const AllRoutes = () => {
     return(
         <BrowserRouter>
@@ -32,6 +38,8 @@ const AllRoutes = () => {
                 <Route path='/ContactUsTeacher' element={<ContactUsTeacher/>}/>
                 <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment/:id' element={<ViewAssessment />}/>
+                <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
+                <Route path='/PostAssessment' element={<NewAssessment />}/>
                 <Route path='/Marks' element={<Marks/>}/>
                 <Route path='/Teachers' element={<Teacher/>}/>
                 <Route path='/Setting' element={<Settings/>}/>
@@ -40,8 +48,11 @@ const AllRoutes = () => {
                 <Route path='/StaffInfo' element={<TeacherInfo/>}/>
                 <Route path='/StudentList' element={<StudentList/>}/>
                 <Route path='/PostAttendance' element={<PostStudent/>}/>
+                <Route path='/PostAttendance1' element={<PostStudent1/>}/>
+                <Route path='/ClassMessage' element={<ClassMessage/>}/>
                 <Route path='/timetable' element={<Timetable/>}/> 
                 <Route path='*' element={<Error404/>}/>
+                <Route path='/Exam' element={<Exam/>}/>
             </Routes>
         </BrowserRouter>
     )

@@ -89,11 +89,6 @@ function StudentList() {
                         <br />
                         <br />
                         <div className="row studentlist-container">
-                            <div className="col-lg-8" style={{ display: "flex", alignItems: "center", justifyContent: "flex-end"}}>
-                                <input type="search" placeholder="Search... " />
-                            </div>
-                        </div>
-                        <div className="row studentlist-container">
                             <div className="col-lg-8">
                                 <Table striped className="tablestyle4">
                                     <thead>
