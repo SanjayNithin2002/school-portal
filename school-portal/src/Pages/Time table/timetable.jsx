@@ -2,84 +2,80 @@ import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import { Table } from 'rsuite';
-const { Column, ColumnGroup, HeaderCell, Cell } = Table;
+import Table from "react-bootstrap/Table";
 
-const data = [
-    {
-        id: 1,
-        email: 'Leora13@yahoo.com',
-        firstName: 'Ernest Schuppe Anderson',
-        lastName: null,
-        city: 'New Gust',
-        companyName: 'Lebsack - Nicolas'
-    },
-    {
-        id: 2,
-        email: 'Mose_Gerhold51@yahoo.com',
-        firstName: 'Janis',
-        lastName: 'Bode',
-        city: 'New Gust',
-        companyName: 'Glover - Hermiston'
-    },
-    {
-        id: 3,
-        city: 'New Gust',
-        email: 'Frieda.Sauer61@gmail.com',
-        firstName: 'Makenzie Vandervort',
-        lastName: null,
-        companyName: 'Williamson - Kassulke'
-    },
-    {
-        id: 4,
-        email: 'Eloisa.OHara@hotmail.com',
-        firstName: 'Ciara',
-        lastName: 'Towne',
-        city: 'Vandervort',
-        companyName: 'Hilpert, Eichmann and Brown'
-    },
-    {
-        id: 5,
-        email: 'Brisa46@hotmail.com',
-        firstName: 'Suzanne',
-        lastName: 'Wolff',
-        city: 'Vandervort',
-        companyName: 'Mayer - Considine'
-    },
-    {
-        id: 6,
-        email: 'Cody.Schultz56@gmail.com',
-        firstName: 'Alessandra',
-        lastName: null,
-        city: 'Vandervort',
-        companyName: 'Nikolaus and Sons'
-    },
-    {
-        id: 7,
-        email: 'Enrico_Beer@yahoo.com',
-        firstName: 'Margret',
-        lastName: 'Heller',
-        city: 'Vandervort',
-        companyName: 'Corwin, Maggio and Wintheiser'
-    },
-    {
-        id: 8,
-        email: 'Mitchel.Herman@yahoo.com',
-        firstName: 'Emiliano',
-        lastName: 'Moore',
-        city: 'Gilberthaven',
-        companyName: 'Gulgowski - Botsford'
-    },
-    {
-        id: 9,
-        city: 'Gilberthaven',
-        email: 'Gaylord_Reichel16@yahoo.com',
-        firstName: 'Alessandra',
-        lastName: 'Smith',
-        companyName: 'Maggio LLC'
-    }
-];
-function timetable() {
+
+
+
+function Timetable() {
+    const data = [
+        {
+            Day: "Monday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+        {
+            Day: "Tuesday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+        {
+            Day: "Wednesday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+        {
+            Day: "Thursday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+        {
+            Day: "Friday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+        {
+            Day: "Saturday",
+            p1: "Physics",
+            p2: "Geometry",
+            p3: "Biology",
+            p4: "English",
+            p5: "Algebra",
+            p6: "Chemistry",
+            p7: "Tamil",
+            p8: "Hindi"
+        },
+    ];
 
     return (
         <div className="Main">
@@ -89,38 +85,41 @@ function timetable() {
                     <h2>Time Table</h2>
                     <hr style={{ border: "1px solid gray" }} />
 
-                    <Table bordered cellBordered height={420} headerHeight={80} data={data}>
 
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Monday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Tuesday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Wednesday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Thursday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Friday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Saturday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-                        <Column width={200} colSpan={2}>
-                            <HeaderCell>Sunday</HeaderCell>
-                            <Cell dataKey="city" />
-                        </Column>
-
+                    <Table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Days/Time</th>
+                                <th>8-8:45</th>
+                                <th>9-9:45</th>
+                                <th>10-10:45</th>
+                                <th>11-11:45</th>
+                                <th>12-12:45</th>
+                                <th>2-2:45</th>
+                                <th>3-3:45</th>
+                                <th>4-4:45</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {(
+                                data.map((item) => (
+                                    <tr key={item}>
+                                        <th>{item.Day}</th>
+                                        <td>{item.p1}</td>
+                                        <td>{item.p2}</td>
+                                        <td>{item.p3}</td>
+                                        <td>{item.p4}</td>
+                                        <td>{item.p5}</td>
+                                        <td>{item.p6}</td>
+                                        <td>{item.p7}</td>
+                                        <td>{item.p8}</td>
+                                        
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
                     </Table>
+
 
                 </div>
             </div >
@@ -128,4 +127,4 @@ function timetable() {
     );
 }
 
-export default timetable;
+export default Timetable;
