@@ -23,6 +23,7 @@ import Timetable from "./Pages/Time table/timetable";
 import PostAssessment from "./Pages/Assessments/PostAssessment"
 import NewAssessment from "./Pages/Assessments/NewAssessment"
 import Exam from "./Pages/Exam/Exam"
+import AddStudent from "./Pages/Student/AddStudent";
 
 const AllRoutes = () => {
     return(
@@ -43,6 +44,7 @@ const AllRoutes = () => {
                 <Route path='/Setting' element={<Settings/>}/>
                 <Route path='/Bonafide' element={<Bonafide/>}/>
                 <Route path='/StudentInfo' element={<StudentInfo/>}/>
+                <Route path='/AddStudent' element={<AddStudent/>}/>
                 <Route path='/StaffInfo' element={<TeacherInfo/>}/>
                 <Route path='/StudentList' element={<StudentList/>}/>
                 <Route path='/PostAttendance' element={<PostStudent/>}/>

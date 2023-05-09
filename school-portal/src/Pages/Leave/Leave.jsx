@@ -1,5 +1,4 @@
 import React from "react"
-import { useNavigate } from "react-router-dom";
 import { Popover, Whisper, Button } from 'rsuite';
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Leave.css";
@@ -31,11 +30,7 @@ function Leave() {
           </Popover>
         );
     });
-   
-
-    const navigate = useNavigate();
     return (
-        localStorage.getItem("type")==="teacher" ?
         <div className="Main">
             <SideNavBar/>
             <div className="Home">
@@ -111,7 +106,6 @@ function Leave() {
                 </div>
             </div>
         </div>
-        :<>{navigate('/Error')}</>
     )
 }
 
