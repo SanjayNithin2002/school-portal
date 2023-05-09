@@ -1,5 +1,4 @@
 import React,{useState} from 'react'
-import { useParams } from 'react-router-dom'
 import { Uploader } from 'rsuite';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import Table from 'react-bootstrap/esm/Table';
@@ -7,7 +6,6 @@ import Table from 'react-bootstrap/esm/Table';
 
 
 function NewAssessment() {
-    const { id } = useParams();
     const [stardard, setStardard] = useState("");
     const [section, setSection] = useState("");
     return (

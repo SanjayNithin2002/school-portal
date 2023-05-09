@@ -1,10 +1,38 @@
 import React from "react"
 import { useNavigate } from "react-router-dom";
-
+import { Popover, Whisper, Button } from 'rsuite';
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Leave.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as solid from "@fortawesome/free-solid-svg-icons";
 
 function Leave() {
+    const DefaultPopover = React.forwardRef(({...props}, ref) => {
+        return (
+          <Popover ref={ref} title="Leave Status" {...props}>
+            <hr style={{position:"relative",top:"-20px",borderTop:"2px solid black"}}/>
+            <table style={{position:"relative",top:"-30px"}}>
+                    <tr>
+                        <th>CL</th>
+                        <th>:&ensp;</th>
+                        <td>5/12</td>
+                    </tr>
+                    <tr>
+                        <th>EL</th>
+                        <th>:</th>
+                        <td>5/12</td>
+                    </tr>
+                    <tr>
+                        <th>Medical</th>
+                        <th>:</th>
+                        <td>5/50</td>
+                    </tr>
+                </table>
+          </Popover>
+        );
+    });
+   
+
     const navigate = useNavigate();
     return (
         localStorage.getItem("type")==="teacher" ?
@@ -30,6 +58,11 @@ function Leave() {
                                 <option>Medical Leave</option>
                                 <option>Other</option>
                             </select>
+                            &emsp;
+                            <Whisper placement="auto" controlId="control-id-hover-enterable" trigger="hover" speaker={<DefaultPopover/>} enterable>
+                                <Button appearance="subtle"><FontAwesomeIcon style={{fontSize:"20px",cursor:"pointer"}} icon={solid.faExclamationCircle}/></Button>
+                            </Whisper>
+                            
                         </div>
                     </div>
                     <br/>

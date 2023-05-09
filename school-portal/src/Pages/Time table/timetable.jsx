@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { Table } from 'rsuite';
-const { Column, ColumnGroup, HeaderCell, Cell } = Table;
+const { Column, HeaderCell, Cell } = Table;
 
 const data = [
     {

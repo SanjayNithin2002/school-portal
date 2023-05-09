@@ -19,8 +19,11 @@ import StudentList from "./Pages/Student/StudentList";
 import PostStudent from "./Pages/Attendance/PostStudent2";
 import PostStudent1 from "./Pages/Attendance/PostStudent1";
 import ClassMessage from "./Pages/ClassMessage/ClassMessage";
-import PostStudent from "./Pages/Attendance/PostStudent";
 import Timetable from "./Pages/Time table/timetable";
+import PostAssessment from "./Pages/Assessments/PostAssessment"
+import NewAssessment from "./Pages/Assessments/NewAssessment"
+import Exam from "./Pages/Exam/Exam"
+
 const AllRoutes = () => {
     return(
         <BrowserRouter>
