@@ -2,17 +2,16 @@ import React,{useState} from 'react'
 import { Steps, ButtonGroup, Button } from 'rsuite';
 
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import "./Student.css";
+import "./Teacher.css";
 import Table from 'react-bootstrap/esm/Table';
 
-const AddStudent = () => {
+const AddTeacher = () => {
     const [step, setStep] = useState(0);
-    const [father,setFather] = useState(false);
-    const [mother,setMother] = useState(false); 
+    const [UG,setUG] = useState(false);
+    const [PG,setPG] = useState(false); 
     const [bus,setBus] = useState(false);
     const [hostel,setHostel] = useState(false);
-    // eslint-disable-next-line
-    const [siblings,setSiblings] = useState(false);
+    const [PHD,setPHD] = useState(false);
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
@@ -26,14 +25,14 @@ const AddStudent = () => {
             <div className="Home">
                 <div className="container rounded bg-white">
                     <div className='d-flex justify-content-between'>
-                        <h2>Add Student</h2>
+                        <h2>Add Staff</h2>
                         {step===3 && <button className='btn btn-primary'>Submit</button>}
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="">
                         <Steps current={step}>
                             <Steps.Item title="Personal" />
-                            <Steps.Item title="Family" />
+                            <Steps.Item title={<>Education<br/>Salary</>} />
                             <Steps.Item title={<>School Bus <br/>& Hostel</>} />
                             <Steps.Item title="Review" />
                         </Steps>
@@ -41,7 +40,7 @@ const AddStudent = () => {
                         {step === 0 &&
                             <div className='row'>
                                 <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='AddStudent-Table-List'>
+                                    <Table bordered className='AddTeacher-Table-List'>
                                         <tbody>
                                             <tr>
                                                 <td>First Name</td>
@@ -49,6 +48,10 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Last Name</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>EMP ID</td>
                                                 <td><input type="text" /></td>
                                             </tr>
                                             <tr>
@@ -68,141 +71,9 @@ const AddStudent = () => {
                                                 <td><input type="text" /></td>
                                             </tr>
                                             <tr>
-                                                <td>Standard</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Section</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
                                                 <td>Mother Tongue</td>
                                                 <td><input type="text" /></td>
                                             </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
-                        }
-                        {step === 1 &&
-                            <div className='row'>
-                                <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='AddStudent-Table-List'>
-                                        <tbody>
-                                            <tr>
-                                                <td>Do he/she have a Father?</td>
-                                                <td className='radio'><input type="radio" name="father" onClick={()=>setFather(true)} />Yes &emsp; <input type="radio" name="father" onClick={()=>setFather(false)} />No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Do he/she have a Mother?</td>
-                                                <td className='radio'><input type="radio" name="mother" onClick={()=>setMother(true)} />Yes &emsp; <input type="radio" name="mother" onClick={()=>setMother(false)} />No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Do he/she have a Siblings?</td>
-                                                <td className='radio'><input type="radio" name="siblings" />Yes &emsp; <input type="radio" name="siblings" />No</td>
-                                            </tr>
-                                            {father && <>
-                                            <tr>
-                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>Father Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Age</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Qualification</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Occupation</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Annual Income</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone No</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email ID</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            </>
-                                            }
-                                            {mother && <>
-                                            <tr>
-                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>Mother Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Age</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Qualification</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Occupation</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Annual Income</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone No</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email ID</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            </>
-                                            }
-                                            {!father && !mother && <>
-                                            <tr>
-                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>Guardian Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Age</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Qualification</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Occupation</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Annual Income</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone No</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Email ID</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            </>
-                                            }
                                             <tr>
                                                 <td>Address Line-1</td>
                                                 <td><textarea rows={4} cols={30}/></td>
@@ -223,6 +94,141 @@ const AddStudent = () => {
                                                 <td>Pincode</td>
                                                 <td><input type="text" /></td>
                                             </tr>
+                                            <tr>
+                                                <td>Phone No</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email ID</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                        }
+                        {step === 1 &&
+                            <div className='row'>
+                                <div className='col-lg-8 justify-content-center'>
+                                    <Table bordered className='AddTeacher-Table-List'>
+                                        <tbody>
+                                            <tr>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>Education Details</td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td>Qualification</td>
+                                                <td className='radio'><input type="checkbox" name="qualification" onClick={()=>setUG(!UG)} />UG &emsp; <input type="checkbox" name="qualification" onClick={()=>setPG(!PG)} />PG &emsp; <input type="checkbox" name="qualification" onClick={()=>setPHD(!PHD)} />PHD &emsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>How many years experience in this field</td>
+                                                <td className='radio'><input type="text"/> </td>
+                                            </tr>
+                                            {UG && <>
+                                            <tr>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>UG Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Location<br/>(City,State,Country)</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed out</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Percentage</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certificate</td>
+                                                <td><input type="file" /></td>
+                                            </tr>
+                                            </>
+                                            }
+                                            {PG && <>
+                                            <tr>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>PG Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Location<br/>(City,State,Country)</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed out</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Percentage</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certificate</td>
+                                                <td><input type="file" /></td>
+                                            </tr>
+                                            </>
+                                            }
+                                            {PHD && <>
+                                            <tr>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>PHD Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Location<br/>(City,State,Country)</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed out</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Percentage</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Certificate</td>
+                                                <td><input type="file" /></td>
+                                            </tr>
+                                            </>
+                                            }
+                                            <tr>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>Salary Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Basic</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>HRA</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Conveyance</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>PA</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>PF</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Professional Tax</td>
+                                                <td><input type="text" /></td>
+                                            </tr>
                                             
                                         </tbody>
                                     </Table>
@@ -232,9 +238,9 @@ const AddStudent = () => {
                         {step === 2 &&
                             <div className='row'>
                                 <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='AddStudent-Table-List'>
+                                    <Table bordered className='AddTeacher-Table-List'>
                                         <tbody>
-                                            {
+                                           {
                                             (bus || (!bus && !hostel) ) && 
                                             <tr>
                                                 <td>Does the student need school bus : </td>
@@ -285,7 +291,7 @@ const AddStudent = () => {
                         {step === 3 &&
                             <div className='row'>
                                 <div className='col-lg-8 justify-content-center'>
-                                    <Table className='AddStudent-Table-List-1'>
+                                    <Table className='AddTeacher-Table-List-1'>
                                         <tbody>
                                             <tr>
                                                 <td colSpan={4}>Personal Details</td>
@@ -405,4 +411,4 @@ const AddStudent = () => {
     )
 }
 
-export default AddStudent
+export default AddTeacher

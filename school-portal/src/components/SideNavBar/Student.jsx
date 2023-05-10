@@ -11,7 +11,7 @@ import Payment from "@rsuite/icons/legacy/CreditCard"
 import Setting from "@rsuite/icons/legacy/Gear"
 import Bonafide from "@rsuite/icons/legacy/Certificate"
 import Message from "@rsuite/icons/Message"
-
+import Class from "@rsuite/icons/legacy/Book";
 const Student = () => {
     return(
         <Nav style={{width:"100%"}}>
@@ -24,15 +24,20 @@ const Student = () => {
             <Nav.Item href='/Timetable' icon={<Calendar />}>
               TimeTable
             </Nav.Item>
-            <Nav.Item href='/Assessment' icon={<Graph />}>
+            <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
+            <Nav.Item href='/Assessment'>
               Assessment
             </Nav.Item>
-            <Nav.Item href='/Marks' icon={<Marks />}>
-              Marks
-            </Nav.Item>
-            <Nav.Item href='/ClassMessage' icon={<Message />}>
+            <Nav.Item href='/ClassMessage'>
               Class Message
             </Nav.Item>
+            <Nav.Item href='/Exam'>
+              Exam Schedule
+            </Nav.Item>
+            <Nav.Item href='/Marks'>
+              Marks/Grade
+            </Nav.Item>
+            </Nav.Menu>
             <Nav.Item href='/Teachers' icon={<User />}>
               Teachers
             </Nav.Item>

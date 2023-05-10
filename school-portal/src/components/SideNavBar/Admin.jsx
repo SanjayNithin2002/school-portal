@@ -38,7 +38,7 @@ const Admin = () => {
         <Nav.Item href='/StudentInfo'>Exams</Nav.Item>
         <Nav.Item href='/PostAttendance'>TimeTable</Nav.Item>
       </Nav.Menu>
-      <Nav.Item href='/Fees' icon={<Fees />}>
+      <Nav.Item href='/payment' icon={<Fees />}>
         Fees Stucture
       </Nav.Item>
       <Nav.Item href='/Setting' icon={<Setting />}>

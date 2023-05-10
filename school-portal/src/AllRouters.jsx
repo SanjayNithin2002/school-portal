@@ -25,6 +25,8 @@ import PostAssessment from "./Pages/Assessments/PostAssessment"
 import NewAssessment from "./Pages/Assessments/NewAssessment"
 import Exam from "./Pages/Exam/Exam"
 import AddStudent from "./Pages/Student/AddStudent";
+import AddTeacher from "./Pages/Teacher/AddTeacher";
+import Fees from "./Pages/Fees/Fees";
 
 const AllRoutes = () => {
     return(
@@ -55,6 +57,8 @@ const AllRoutes = () => {
                 <Route path='/timetable' element={<Timetable/>}/> 
                 <Route path='*' element={<Error404/>}/>
                 <Route path='/Exam' element={<Exam/>}/>
+                <Route path='/AddStaff' element={<AddTeacher/>}/>
+                <Route path='/Payment' element={<Fees/>}/>
             </Routes>
         </BrowserRouter>
     )

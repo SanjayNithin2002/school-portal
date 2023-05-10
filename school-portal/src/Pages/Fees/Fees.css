@@ -1,0 +1,30 @@
+.Normal1{
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+}
+
+.Normal3{
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+}
+
+.Normal2{
+    border-radius: 0%;
+}
+
+.Normal1,.Normal2,.Normal3{
+    font-size: 20px;
+    font-weight: 500;
+    font-style: italic;
+    padding: auto;
+}
+
+.payment-btn{
+    padding:30px;
+    font-size:25px;
+}
+
+.payment-tab{
+    display: flex;
+    justify-content: space-evenly;
+}
