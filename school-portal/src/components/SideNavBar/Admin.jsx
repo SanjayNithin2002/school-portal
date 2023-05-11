@@ -35,8 +35,8 @@ const Admin = () => {
         <Nav.Item href='/Meeting'>Meetings</Nav.Item>
       </Nav.Menu>
       <Nav.Menu placement="rightStart" title="Class" icon={<Class />}>
-        <Nav.Item href='/StudentInfo'>Exams</Nav.Item>
-        <Nav.Item href='/PostAttendance'>TimeTable</Nav.Item>
+        <Nav.Item href='/Exam'>Exams</Nav.Item>
+        <Nav.Item href='/TimeTable'>TimeTable</Nav.Item>
       </Nav.Menu>
       <Nav.Item href='/payment' icon={<Fees />}>
         Fees Stucture
