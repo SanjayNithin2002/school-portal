@@ -3,11 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import AllRoutes from './AllRouters';
+import { Provider } from 'react-redux';
+import {legacy_createStore as createStore, applyMiddleware, compose } from "redux"
+import thunk from "redux-thunk"
+import  Reducers from './reducers';
+
+const store = createStore(Reducers, compose(applyMiddleware(thunk)))
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <React.StrictMode>
     <AllRoutes/>
   </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

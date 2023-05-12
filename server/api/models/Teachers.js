@@ -1,54 +1,15 @@
 var mongoose = require('mongoose');
 
-var addressSchema = new mongoose.Schema({
-    houseNumber: {
-        type: String,
-    },
-    street: {
-        type: String,
-    },
-    city: {
-        type: String,
-    },
-    zipCode: {
-        type: String,
-    }
-});
-
 var teacherSchema = mongoose.Schema({
-    _id : mongoose.SchemaTypes.ObjectId,
-    user : {
-        type : mongoose.SchemaTypes.ObjectId,
-        ref : 'Users'
+    _id: mongoose.SchemaTypes.ObjectId,
+    password : {
+        type : String, 
+        required : true
     },
-    name : {
-        type:  String
-    },
-    age : {
-        type : Number
-    },
-    dob : {
-        type : Date
-    },
-    handles : {
-        standard: {
-            type: Number
-        },
-        section: {
-            type: String
-        }
-    },
-    level : {
-        type : Number
-    },
-    salary : {
-        type : Number
-    },
-    joinDate : {
-        type : Date
-    },
-    address : {
-        type : addressSchema
+    email : {
+        type : String,
+        required : true,
+        unique : true
     },
     casualLeave : {
         type : Number,
@@ -64,4 +25,4 @@ var teacherSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Teacher", teacherSchema);
+module.exports = mongoose.model("Teachers", teacherSchema);

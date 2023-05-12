@@ -27,6 +27,9 @@ import Exam from "./Pages/Exam/Exam"
 import AddStudent from "./Pages/Student/AddStudent";
 import AddTeacher from "./Pages/Teacher/AddTeacher";
 import Fees from "./Pages/Fees/Fees";
+import AddExam from "./Pages/Exam/AddExam";
+import Meeting from "./Pages/Meeting/Meeting";
+import AddMeeting from "./Pages/Meeting/AddMeeting";
 
 const AllRoutes = () => {
     return(
@@ -59,6 +62,10 @@ const AllRoutes = () => {
                 <Route path='/Exam' element={<Exam/>}/>
                 <Route path='/AddStaff' element={<AddTeacher/>}/>
                 <Route path='/Payment' element={<Fees/>}/>
+                <Route path='/AddSchedule' element={<AddExam/>} />
+                <Route path='/Meeting' element={<Meeting/>} />
+                <Route path='/AddMeeting' element={<AddMeeting/>} />
+                
             </Routes>
         </BrowserRouter>
     )

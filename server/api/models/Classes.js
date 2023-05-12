@@ -2,16 +2,19 @@ var mongoose = require('mongoose');
 
 var classSchema = mongoose.Schema({
     _id : mongoose.SchemaTypes.ObjectId,
-    faculty : {
+    teacher : {
         type : mongoose.SchemaTypes.ObjectId,
-        ref : 'Users',
-        require : true
+        ref : 'Teachers',
+        required : true
     },
-    classno : Number,
-    students : [{
-        type : mongoose.SchemaTypes.ObjectId,
-        ref : 'Users'
+    standard : Number,
+    section : String,
+    subject : String, 
+    timings : [{
+        startTime : String,
+        endTime : String,
+        day : String
     }]
-})
+});
 
 module.exports = mongoose.model('Classes', classSchema);

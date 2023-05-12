@@ -4,14 +4,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 //importing routes
-const userRoutes = require("./api/routes/Users");
-const attendanceRoutes = require("./api/routes/Attendance");
 var classRoutes = require('./api/routes/Classes');
-var timetableRoutes = require('./api/routes/Timetable');
 var studentRoutes = require('./api/routes/Students');
 var teacherRoutes = require('./api/routes/Teachers');
 var adminRoutes = require('./api/routes/Admins');
 var leaveRoutes = require('./api/routes/Leave');
+var classMessageRoutes = require('./api/routes/ClassMessages');
+var examRoutes = require('./api/routes/Exams');
 const app = express();
 
 // Middleware
@@ -39,14 +38,13 @@ mongoose.connect("mongodb+srv://sanjaynithin2002:" +process.env.MONGODB_PASSWORD
 
 
 //routes
-app.use("/users", userRoutes);
-app.use("/attendance", attendanceRoutes);
-app.use("/class", classRoutes);
-app.use('/timetable', timetableRoutes);
+app.use("/classes", classRoutes);
 app.use('/students', studentRoutes);
 app.use('/teachers', teacherRoutes);
 app.use('/admins', adminRoutes);
 app.use('/leave', leaveRoutes);
+app.use('/classmessages', classMessageRoutes);
+app.use('/exams', examRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
