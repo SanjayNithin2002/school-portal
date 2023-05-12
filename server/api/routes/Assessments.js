@@ -62,6 +62,7 @@ router.get("/students/:studentID", (req, res) => {
                         return {
                             _id: doc._id,
                             maxMarks: doc.maxMarks,
+                            weightageMarks: doc.weightageMarks,
                             postedOn: doc.postedOn,
                             lastDate: doc.lastDate,
                             title: doc.title,
@@ -86,6 +87,7 @@ router.post("/", upload.single('questionPaper'), (req, res) => {
     var assessment = new Assessments({
         _id: new mongoose.Types.ObjectId(),
         maxMarks: req.body.maxMarks,
+        weightageMarks: req.body.weightageMarks,
         postedOn: new Date().toJSON().slice(0, 10),
         lastDate: req.body.lastDate,
         title: req.body.title,

@@ -8,6 +8,7 @@ var assessmentSchema = mongoose.Schema({
         required : true
     },
     maxMarks : Number,
+    weightageMarks : Number,
     postedOn : Date,
     lastDate : Date,
     title : String,
