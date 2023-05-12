@@ -9,7 +9,7 @@ var router = express.Router();
 
 router.post("/", (req, res, next) => {
     if (req.body.user === "Teacher") {
-        Teachers.findById(req.body.userId).exec()
+        Teachers.findById(req.body.userID).exec()
             .then(docs => {
                 if (docs) {
                     if (docs[req.body.type] < dateDiffInDays(req.body.startDate, req.body.endDate)) {
@@ -19,7 +19,7 @@ router.post("/", (req, res, next) => {
                     } else {
                         var leave = new Leave({
                             _id: new mongoose.Types.ObjectId(),
-                            userId: req.body.userId,
+                            userID: req.body.userID,
                             type: req.body.type,
                             startDate: req.body.startDate,
                             endDate: req.body.endDate,
@@ -27,7 +27,7 @@ router.post("/", (req, res, next) => {
                         });
                         leave.save()
                             .then(docs => {
-                                Teachers.findByIdAndUpdate(req.body.userId, { $inc: { [req.body.type]: -dateDiffInDays(req.body.startDate, req.body.endDate) } }, { new: true }).exec()
+                                Teachers.findByIdAndUpdate(req.body.userID, { $inc: { [req.body.type]: -dateDiffInDays(req.body.startDate, req.body.endDate) } }, { new: true }).exec()
                                     .then(doc => {
                                         res.status(201).json({
                                             message: "Leave Created Successfully",
@@ -49,7 +49,8 @@ router.post("/", (req, res, next) => {
                 }
                 else {
                     res.status(404).json({
-                        message: "Teacher Not Found"
+                        message: "Teacher Not Found",
+                        doc : docs
                     })
                 }
             })
@@ -60,7 +61,7 @@ router.post("/", (req, res, next) => {
             });
     }
     if (req.body.user === "Admin") {
-        Admins.findById(req.body.userId).exec()
+        Admins.findById(req.body.userID).exec()
             .then(docs => {
                 if (docs) {
                     if (docs[req.body.type] < dateDiffInDays(req.body.startDate, req.body.endDate)) {
@@ -70,7 +71,7 @@ router.post("/", (req, res, next) => {
                     } else {
                         var leave = new Leave({
                             _id: new mongoose.Types.ObjectId(),
-                            userId: req.body.userId,
+                            userID: req.body.userID,
                             type: req.body.type,
                             startDate: req.body.startDate,
                             endDate: req.body.endDate,
@@ -78,7 +79,7 @@ router.post("/", (req, res, next) => {
                         });
                         leave.save()
                             .then(docs => {
-                                Admins.findByIdAndUpdate(req.body.userId, { $inc: { [req.body.type]: -dateDiffInDays(req.body.startDate, req.body.endDate) } }, { new: true }).exec()
+                                Admins.findByIdAndUpdate(req.body.userID, { $inc: { [req.body.type]: -dateDiffInDays(req.body.startDate, req.body.endDate) } }, { new: true }).exec()
                                     .then(doc => {
                                         res.status(201).json({
                                             message: "Leave Created Successfully",
@@ -141,13 +142,13 @@ router.get("/:id", (req, res, next) => {
         })
 });
 
-router.patch("/:id", (req, res, next) => {
+router.patch("/", (req, res, next) => {
     if (req.body.user === "Teacher") {
         if (req.body.status === "Approved") {
-            Leave.findByIdAndUpdate(req.params.id, { $set: { status: req.body.status } }, { new: true }).exec()
+            Leave.findByIdAndUpdate(req.body.id, { $set: { status: req.body.status } }, { new: true }).exec()
                 .then(docs => {
                     res.status(200).json({
-                        message: "Leave Deleted Successfully",
+                        message: "Leave Approved Successfully",
                         docs: docs
                     })
                 })
@@ -158,9 +159,9 @@ router.patch("/:id", (req, res, next) => {
                 });
         }
         if (req.body.status === "Rejected") {
-            Leave.findById(req.params.id).exec()
+            Leave.findById(req.body.id).exec()
                 .then(docs => {
-                    Teachers.findByIdAndUpdate(docs.userId, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
+                    Teachers.findByIdAndUpdate(docs.userID, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
                         .then(doc => {
                             res.status(200).json({
                                 message: "Leave Cancelled Successfully",
@@ -182,7 +183,7 @@ router.patch("/:id", (req, res, next) => {
     }
     if (req.body.user === "Admin") {
         if (req.body.status === "Approved") {
-            Leave.findByIdAndUpdate(req.params.id, { $set: { status: req.body.status } }, { new: true }).exec()
+            Leave.findByIdAndUpdate(req.body.id, { $set: { status: req.body.status } }, { new: true }).exec()
                 .then(docs => {
                     res.status(200).json({
                         message: "Leave Deleted Successfully",
@@ -196,9 +197,9 @@ router.patch("/:id", (req, res, next) => {
                 });
         }
         if (req.body.status === "Rejected") {
-            Leave.findById(req.params.id).exec()
+            Leave.findById(req.body.id).exec()
                 .then(docs => {
-                    Admins.findByIdAndUpdate(docs.userId, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
+                    Admins.findByIdAndUpdate(docs.userID, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
                         .then(doc => {
                             res.status(200).json({
                                 message: "Leave Cancelled Successfully",
@@ -221,11 +222,11 @@ router.patch("/:id", (req, res, next) => {
 
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/", (req, res, next) => {
     if (req.body.user === "Teacher") {
-        Leave.findByIdAndRemove(req.params.id).exec()
+        Leave.findByIdAndRemove(req.body.id).exec()
             .then(docs => {
-                Teachers.findByIdAndUpdate(docs.userId, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
+                Teachers.findByIdAndUpdate(docs.userID, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
                     .then(doc => {
                         res.status(200).json({
                             message: "Leave Deleted Successfully",
@@ -245,9 +246,9 @@ router.delete("/:id", (req, res, next) => {
             })
     }
     if (req.body.user === "Admin") {
-        Leave.findByIdAndRemove(req.params.id).exec()
+        Leave.findByIdAndRemove(req.body.userID).exec()
             .then(docs => {
-                Admins.findByIdAndUpdate(docs.userId, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
+                Admins.findByIdAndUpdate(docs.userID, { $inc: { [docs.type]: dateDiffInDays(docs.startDate, docs.endDate) } }, { new: true }).exec()
                     .then(doc => {
                         res.status(200).json({
                             message: "Leave Deleted Successfully",
