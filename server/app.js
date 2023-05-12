@@ -12,6 +12,8 @@ var leaveRoutes = require('./api/routes/Leave');
 var classMessageRoutes = require('./api/routes/ClassMessages');
 var examRoutes = require('./api/routes/Exams');
 var assesssmentRoutes = require('./api/routes/Assessments');
+var bonafideRoutes = require('.//api/routes/Bonafides');
+
 const app = express();
 
 // Middleware
@@ -47,6 +49,7 @@ app.use('/leave', leaveRoutes);
 app.use('/classmessages', classMessageRoutes);
 app.use('/exams', examRoutes);
 app.use('/assessments', assesssmentRoutes);
+app.use('/bonafides', bonafideRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
