@@ -15,6 +15,9 @@ var assesssmentRoutes = require('./api/routes/Assessments');
 var bonafideRoutes = require('./api/routes/Bonafides');
 var sendEmailRoutes = require('./api/routes/SendEmail');
 var marksRoutes = require('./api/routes/Marks');
+var adminAttendanceRoutes = require('./api/routes/AdminAttendance');
+var teacherAttendanceRoutes = require('./api/routes/TeacherAttendance');
+var studentAttendanceRoutes = require('./api/routes/StudentAttendance');
 
 const app = express();
 
@@ -54,6 +57,9 @@ app.use('/assessments', assesssmentRoutes);
 app.use('/bonafides', bonafideRoutes);
 app.use('/sendmail', sendEmailRoutes);
 app.use('/marks', marksRoutes);
+app.use('/adminattendances', adminAttendanceRoutes);
+app.use('/teacherattendances', teacherAttendanceRoutes);
+app.use('/studentattendances', studentAttendanceRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
