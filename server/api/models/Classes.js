@@ -5,9 +5,9 @@ var classSchema = mongoose.Schema({
     teacher : {
         type : mongoose.SchemaTypes.ObjectId,
         ref : 'Teachers',
-        require : true
+        required : true
     },
-    class : Number,
+    standard : Number,
     section : String,
     subject : String, 
     timings : [{

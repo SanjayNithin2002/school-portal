@@ -25,4 +25,4 @@ var teacherSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Teacher", teacherSchema);
+module.exports = mongoose.model("Teachers", teacherSchema);

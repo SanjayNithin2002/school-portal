@@ -9,6 +9,7 @@ var studentRoutes = require('./api/routes/Students');
 var teacherRoutes = require('./api/routes/Teachers');
 var adminRoutes = require('./api/routes/Admins');
 var leaveRoutes = require('./api/routes/Leave');
+var classMessageRoutes = require('./api/routes/ClassMessages');
 const app = express();
 
 // Middleware
@@ -41,6 +42,7 @@ app.use('/students', studentRoutes);
 app.use('/teachers', teacherRoutes);
 app.use('/admins', adminRoutes);
 app.use('/leave', leaveRoutes);
+app.use('/classmessages', classMessageRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{

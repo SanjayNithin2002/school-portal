@@ -5,7 +5,7 @@ var timeToString = require('../middleware/timeToString');
 var Classes = require('../models/Classes');
 
 router.get("/", (req, res, next) => {
-    Classes.find().populate('teacher students').exec()
+    Classes.find().populate('teacher').exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -22,7 +22,7 @@ router.post("/", (req, res, next) => {
     var classes = new Classes({
         _id: new mongoose.Types.ObjectId(),
         teacher: req.body.teacher,
-        class : req.body.class,
+        standard : req.body.standard,
         section : req.body.section,
         subject : req.body.subject,
         timings : req.body.timings.map(timing => {
