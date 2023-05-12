@@ -1,0 +1,15 @@
+.rightcol{
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+.leftcol{
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+.col{
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}

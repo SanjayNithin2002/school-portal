@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Sidenav } from 'rsuite';
-
 import './SideNavBar.css';
 import Student from './Student';
 import Teacher from './Teacher';
