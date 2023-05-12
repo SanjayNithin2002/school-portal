@@ -12,7 +12,8 @@ var leaveRoutes = require('./api/routes/Leave');
 var classMessageRoutes = require('./api/routes/ClassMessages');
 var examRoutes = require('./api/routes/Exams');
 var assesssmentRoutes = require('./api/routes/Assessments');
-var bonafideRoutes = require('.//api/routes/Bonafides');
+var bonafideRoutes = require('./api/routes/Bonafides');
+var sendEmailRoutes = require('./api/routes/SendEmail');
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use('/classmessages', classMessageRoutes);
 app.use('/exams', examRoutes);
 app.use('/assessments', assesssmentRoutes);
 app.use('/bonafides', bonafideRoutes);
+app.use('/sendmail', sendEmailRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{
