@@ -814,13 +814,7 @@
   }
   
 
-  [title="present"]{
-    background-color: #74ad31;
-    padding:4px;
-    border-radius: 5px;
-  }
-  [title="absent"]{
-    background-color: red;
+  .attendance-status-view{
     padding:4px;
     border-radius: 5px;
   }
