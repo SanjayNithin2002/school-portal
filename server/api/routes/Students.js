@@ -126,7 +126,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-    Students.findById(req.params.id).populate('user').exec()
+    Students.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -145,7 +145,7 @@ router.patch("/:id", (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-    Students.findByIdAndUpdate(id, updateOps).populate('classes').exec()
+    Students.findByIdAndUpdate(id, updateOps).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Student Updated Successfully",
@@ -161,7 +161,7 @@ router.patch("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
     var id = req.params.id;
-    Students.findByIdAndDelete(id).populate('classes').exec()
+    Students.findByIdAndDelete(id).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Student Deleted Successfully",

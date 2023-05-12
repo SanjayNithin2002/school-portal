@@ -125,7 +125,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-    Admins.findById(req.params.id).populate('user').exec()
+    Admins.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -144,7 +144,7 @@ router.patch("/:id", (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-    Admins.findByIdAndUpdate(id, updateOps).populate('classes').exec()
+    Admins.findByIdAndUpdate(id, updateOps).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Admin Updated Successfully",
@@ -159,7 +159,7 @@ router.patch("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-    Admins.findByIdAndDelete(req.params.id).populate('classes').exec()
+    Admins.findByIdAndDelete(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Admin Deleted Successfully",

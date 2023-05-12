@@ -123,7 +123,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:id", (req, res, next) => {
-    Teachers.findById(req.params.id).populate('user').exec()
+    Teachers.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
                 docs: docs
@@ -143,7 +143,7 @@ router.patch("/:id", (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-    Teachers.findByIdAndUpdate(id, updateOps).populate('classes').exec()
+    Teachers.findByIdAndUpdate(id, updateOps).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Teacher Updated Successfully",
