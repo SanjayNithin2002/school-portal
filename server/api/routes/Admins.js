@@ -34,7 +34,7 @@ router.post("/sendotp", (req, res, next) => {
         });
 });
 
-router.post("/signup",(req, res, next) => {
+router.post("/signup", (req, res, next) => {
     Admins.find({ email: req.body.email }).exec()
         .then(docs => {
             if (docs.length > 0) {
@@ -76,7 +76,7 @@ router.post("/signup",(req, res, next) => {
 
 });
 
-router.post("/login",(req, res, next) => {
+router.post("/login", (req, res, next) => {
     Admins.find({ email: req.body.email }).exec()
         .then(docs => {
             if (docs.length < 1) {
@@ -149,11 +149,6 @@ router.get("/:id", checkAuth, (req, res, next) => {
 
 router.patch("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
-    if(req.userData._id !== id){
-        res.status(401).json({
-            message: "Auth Failed"
-        });
-    }else{
     var updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
@@ -170,17 +165,10 @@ router.patch("/:id", checkAuth, (req, res, next) => {
                 error: err
             })
         })
-    }
 });
 
 router.delete("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
-    if(req.userData._id !== id){
-        res.status(401).json({
-            message: "Auth Failed"
-        });
-    }
-    else{
     Admins.findByIdAndDelete(id).exec()
         .then(docs => {
             res.status(200).json({
@@ -193,7 +181,6 @@ router.delete("/:id", checkAuth, (req, res, next) => {
                 error: err
             })
         })
-    }
 });
 
 module.exports = router;

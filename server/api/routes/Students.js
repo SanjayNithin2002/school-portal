@@ -332,51 +332,38 @@ router.patch("/password", checkAuth, (req, res) => {
 
 router.patch("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
-    if (req.userData._id !== id) {
-        res.status(401).json({
-            message: "Auth Failed"
-        })
-    } else {
-        var updateOps = {};
-        for (const ops of req.body) {
-            updateOps[ops.propName] = ops.value;
-        }
-        Students.findByIdAndUpdate(id, updateOps).exec()
-            .then(docs => {
-                res.status(200).json({
-                    message: "Student Updated Successfully",
-                    docs: docs
-                })
-            })
-            .catch(err => {
-                res.status(500).json({
-                    error: err
-                })
-            })
+    var updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
     }
+    Students.findByIdAndUpdate(id, updateOps).exec()
+        .then(docs => {
+            res.status(200).json({
+                message: "Student Updated Successfully",
+                docs: docs
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        })
 });
 
 router.delete("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
-    if (req.userData._id !== id) {
-        res.status(401).json({
-            message: "Auth Failed"
+    Students.findByIdAndDelete(id).exec()
+        .then(docs => {
+            res.status(200).json({
+                message: "Student Deleted Successfully",
+                docs: docs
+            })
         })
-    }
-    else {
-        Students.findByIdAndDelete(id).exec()
-            .then(docs => {
-                res.status(200).json({
-                    message: "Student Deleted Successfully",
-                    docs: docs
-                })
+        .catch(err => {
+            res.status(500).json({
+                error: err
             })
-            .catch(err => {
-                res.status(500).json({
-                    error: err
-                })
-            })
-    }
+        })
 });
 
 module.exports = router;
