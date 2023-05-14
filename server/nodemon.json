@@ -1,9 +1,0 @@
-{
-    "env" : {
-        "PORT" : "3000",
-        "MONGODB_PASSWORD" : "sanjaynithin2002",
-        "NODEMAIL" : "noman19102002@gmail.com",
-        "NODEMAIL_PASSWORD" : "fqtwwwrcfacuwequ",
-        "BUCKET_URL" : "gs://school-portal-42f6b.appspot.com/"
-    }
-}
