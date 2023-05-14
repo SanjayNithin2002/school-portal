@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var multer = require('multer');
+var admin = require("firebase-admin");
+var serviceAccount = require("../../serviceAccountKey.json");
 var Bonafides = require('../models/Bonafides');
 var router = express.Router();
 
@@ -33,12 +35,27 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.BUCKET_URL
+}, "bonafides");
+
+var bucket = admin.storage().bucket();
+
 router.get("/", (req, res) => {
     Bonafides.find().exec()
         .then(docs => {
-            res.status(200).json({
-                bonafides: docs
+            var bonafides = docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    service: doc.service,
+                    description: doc.description,
+                    requestedFile: doc.requestedFile !== null ? "http://localhost:3000/downloadfile/" + doc.requestedFile.split("\\").join("/") : null,
+                }
             });
+            res.status(200).json({
+                bonafides: bonafides
+            })
         }).catch(err => {
             res.status(500).json({
                 error: err
@@ -50,7 +67,12 @@ router.get("/:id", (req, res) => {
     Bonafides.findById(req.params.id).exec()
         .then(doc => {
             res.status(200).json({
-                bonafide: doc
+                bonafide: {
+                    _id: doc._id,
+                    service: doc.service,
+                    description: doc.description,
+                    requestedFile: req.body.requestedFile !== null ? "http://localhost:3000/downloadfile/" + doc.requestedFile.split("\\").join("/") : null,
+                }
             })
         }).catch(err => {
             res.status(500).json({
@@ -62,8 +84,16 @@ router.get("/:id", (req, res) => {
 router.get("/students/:studentID", (req, res) => {
     Bonafides.find({ student: req.params.studentID }).exec()
         .then(docs => {
+            var bonafides = docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    service: doc.service,
+                    description: doc.description,
+                    requestedFile: doc.requestedFile !== null ? "http://localhost:3000/downloadfile/" + doc.requestedFile.split("\\").join("/") : null,
+                }
+            });
             res.status(200).json({
-                bonafides: docs
+                bonafides: bonafides
             })
         })
         .catch(err => {
@@ -78,7 +108,8 @@ router.post("/", (req, res) => {
         _id: new mongoose.Types.ObjectId(),
         service: req.body.service,
         description: req.body.description,
-        student : req.body.student
+        student: req.body.student,
+        requestedFile: req.body.requestedFile ? req.body.requestedFile : null,
     });
     bonafide.save()
         .then(doc => {
@@ -102,10 +133,24 @@ router.patch("/:id", upload.single("bonafide"), (req, res) => {
         }
     }).exec()
         .then(doc => {
-            res.status(201).json({
-                message: "Bonafide Request Updated Successfully",
-                bonafide: doc
-            })
+            bucket.upload(req.file.path, {
+                destination: 'bonafides/' + req.file.filename,
+                metadata: {
+                    contentType: req.file.mimetype
+                }
+            }, (err, file) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    res.status(201).json({
+                        message: "Bonafide Uploaded Successfully",
+                        doc: doc
+                    });
+                }
+            }
+            );
         })
         .catch(err => {
             res.status(500).json({

@@ -18,6 +18,7 @@ var marksRoutes = require('./api/routes/Marks');
 var adminAttendanceRoutes = require('./api/routes/AdminAttendance');
 var teacherAttendanceRoutes = require('./api/routes/TeacherAttendance');
 var studentAttendanceRoutes = require('./api/routes/StudentAttendance');
+var downloadFileRoutes = require('./api/routes/DownloadFile');
 
 const app = express();
 
@@ -60,6 +61,7 @@ app.use('/marks', marksRoutes);
 app.use('/adminattendances', adminAttendanceRoutes);
 app.use('/teacherattendances', teacherAttendanceRoutes);
 app.use('/studentattendances', studentAttendanceRoutes);
+app.use('/downloadfile', downloadFileRoutes);
 
 // handling "Not Found" errors
 app.use((req,res,next)=>{

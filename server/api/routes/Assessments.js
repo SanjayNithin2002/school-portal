@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var multer = require('multer');
+var admin = require("firebase-admin");
+var serviceAccount = require("../../serviceAccountKey.json");
 var Students = require('../models/Students');
 var Assessments = require('../models/Assessments');
 var router = express.Router();
@@ -34,11 +36,32 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.BUCKET_URL
+});
+
+var bucket = admin.storage().bucket();
+
 router.get("/", (req, res) => {
     Assessments.find().exec()
         .then(docs => {
+            var assessments = docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    maxMarks: doc.maxMarks,
+                    weightageMarks: doc.weightageMarks,
+                    postedOn: doc.postedOn,
+                    lastDate: doc.lastDate,
+                    title: doc.title,
+                    questionPaper: "http://localhost:3000/downloadfile/" + doc.questionPaper.split("\\").join("/"),
+                    subject: doc.class.subject,
+                    standard: doc.class.standard,
+                    section: doc.class.section
+                }
+            });
             res.status(200).json({
-                docs: docs
+                assessments: assessments
             });
         })
         .catch(err => {
@@ -50,14 +73,12 @@ router.get("/", (req, res) => {
 
 router.get("/students/:studentID", (req, res) => {
     Students.findById(req.params.studentID).exec()
-        .then(doc => {
-            var standard = doc.standard;
-            var section = doc.section;
+        .then(studDoc => {
+            var standard = studDoc.standard;
+            var section = studDoc.section;
             Assessments.find().populate('class').exec()
                 .then(docs => {
-                    var assessments = docs.filter(doc => {
-                        return doc.class.standard === standard && doc.class.section === section
-                    });
+                    var assessments = docs.filter(doc => doc.class.standard == standard && doc.class.section == section);
                     var assessments = assessments.map(doc => {
                         return {
                             _id: doc._id,
@@ -66,23 +87,27 @@ router.get("/students/:studentID", (req, res) => {
                             postedOn: doc.postedOn,
                             lastDate: doc.lastDate,
                             title: doc.title,
-                            questionPaper: doc.questionPaper,
+                            questionPaper: "http://localhost:3000/downloadfile/" + doc.questionPaper.split("\\").join("/"),
                             subject: doc.class.subject,
                             standard: doc.class.standard,
                             section: doc.class.section
                         }
-                    });
-                    res.status(200).json({
-                        assessments : assessments
                     })
-                }).catch(err => {
+                    res.status(200).json({
+                        assessments: assessments
+                    });
+                })
+                .catch(err => {
                     res.status(500).json({
                         error: err
                     })
                 });
-        })
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        });
 });
-
 router.post("/", upload.single('questionPaper'), (req, res) => {
     var assessment = new Assessments({
         _id: new mongoose.Types.ObjectId(),
@@ -91,15 +116,29 @@ router.post("/", upload.single('questionPaper'), (req, res) => {
         postedOn: new Date().toJSON().slice(0, 10),
         lastDate: req.body.lastDate,
         title: req.body.title,
-        questionPaper : req.file.path,
+        questionPaper: req.file.path,
         class: req.body.class
     });
     assessment.save()
         .then(doc => {
-            res.status(201).json({
-                message: "Assessment Created Successfully",
-                doc: doc
-            })
+            bucket.upload(req.file.path, {
+                destination: 'assessments/' + req.file.filename,
+                metadata: {
+                    contentType: req.file.mimetype
+                }
+            }, (err, file) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                else {
+                    res.status(201).json({
+                        message: "Assessment Uploaded Successfully",
+                        doc: doc
+                    });
+                }
+            }
+            );
         })
         .catch(err => {
             res.status(500).json({
