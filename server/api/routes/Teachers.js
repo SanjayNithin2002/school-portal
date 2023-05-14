@@ -287,7 +287,6 @@ router.patch("/password", (req, res) => {
                 error: err
             })
         });
-
 });
 
 router.patch("/:id", (req, res, next) => {
