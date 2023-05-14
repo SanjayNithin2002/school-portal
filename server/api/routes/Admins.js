@@ -8,30 +8,52 @@ const jwt = require("jsonwebtoken");
 const checkAuth = require('../middleware/checkAuth');
 
 router.post("/sendotp", (req, res, next) => {
-    const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
-    const mailOptions = {
-        from: 'schoolportal@vit.edu.in',
-        to: req.body.email,
-        subject: 'Verify your OTP for School Portal',
-        text: 'Your OTP for the school portal is ' + otp
-    };
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.NODEMAIL,
-            pass: process.env.NODEMAIL_PASSWORD
-        }
-    })
-        .sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.status(201).json({
-                    message: "OTP Sent Successfully",
-                    otp: otp
-                });
-            }
+    var id = req.body.id;
+    if (req.body.id === undefined) {
+        res.status(400).json({
+            message: "ID not provided"
         });
+    } else {
+        Admins.findById(id).exec()
+            .then(doc => {
+                if (doc !== null) {
+                    const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
+                    const mailOptions = {
+                        from: 'schoolportal@vit.edu.in',
+                        to: doc.email,
+                        subject: 'Verify your OTP for School Portal',
+                        text: 'Your OTP for the school portal is ' + otp
+                    };
+                    const transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.NODEMAIL,
+                            pass: process.env.NODEMAIL_PASSWORD
+                        }
+                    })
+                        .sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                res.status(201).json({
+                                    message: "OTP Sent Successfully",
+                                    otp: otp
+                                });
+                            }
+                        });
+                }
+                else {
+                    res.status(404).json({
+                        message: "User not found"
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
 });
 
 router.post("/signup", (req, res, next) => {

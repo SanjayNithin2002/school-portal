@@ -7,32 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const checkAuth = require('../middleware/checkAuth');
 
-router.post("/sendotp", (req, res, next) => {
-    const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
-    const mailOptions = {
-        from: 'schoolportal@vit.edu.in',
-        to: req.body.email,
-        subject: 'Verify your OTP for School Portal',
-        text: 'Your OTP for the school portal is ' + otp
-    };
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.NODEMAIL,
-            pass: process.env.NODEMAIL_PASSWORD
-        }
-    })
-        .sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.status(201).json({
-                    message: "OTP Sent Successfully",
-                    otp: otp
-                });
-            }
-        });
-});
+
 router.post("/signup", (req, res, next) => {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
