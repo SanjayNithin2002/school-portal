@@ -272,6 +272,45 @@ router.patch("/userID", (req, res, next) => {
         })
 });
 
+router.patch("/password", (req, res) => {
+    var id = req.body.id;
+    var currentPassword = req.body.currentPassword;
+    var newPassword = req.body.newPassword;
+    Students.findById(id).exec()
+        .then(doc => {
+            bcrypt.compare(currentPassword, doc.password, (err, response) => {
+                if (err) {
+                    res.status(401).json({
+                        message: "Auth Failed"
+                    });
+                }
+                if (response) {
+                    bcrypt.hash(newPassword, 10, (err, hash) => {
+                        Students.findByIdAndUpdate(id, { password: hash }).exec()
+                            .then(docs => {
+                                res.status(200).json({
+                                    message: "Password Updated Successfully"
+                                })
+                            })
+                            .catch(err => {
+                                res.status(500).json({
+                                    error: err
+                                })
+                            });
+                    });
+                } else {
+                    res.status(401).json({
+                        message: "Auth Failed"
+                    });
+                }
+            })
+        }).catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        });
+});
+
 router.patch("/:id", (req, res, next) => {
     var id = req.params.id;
     var updateOps = {};
