@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 var TeacherAttendance = require('../models/TeacherAttendance');
 
-
 router.get("/", (req, res) => {
     TeacherAttendance.find().populate("teacher").exec()
         .then(docs => {
@@ -60,7 +59,6 @@ router.get("/teachers/:teacherID", (req, res) => {
         }
         )
 });
-
 
 router.post("/", (req, res) => {
     const teacherAttendance = new TeacherAttendance({

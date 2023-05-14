@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 var AdminAttendance = require('../models/AdminAttendance');
 
-
 router.get("/", (req, res) => {
     AdminAttendance.find().populate("admin").exec()
         .then(docs => {
@@ -60,7 +59,6 @@ router.get("/admins/:adminID", (req, res) => {
         }
         )
 });
-
 
 router.post("/", (req, res) => {
     const adminAttendance = new AdminAttendance({
