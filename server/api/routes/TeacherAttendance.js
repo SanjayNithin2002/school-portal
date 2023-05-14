@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var TeacherAttendance = require('../models/TeacherAttendance');
+var checkAuth = require('../middleware/checkAuth');
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     TeacherAttendance.find().populate("teacher").exec()
         .then(docs => {
             res.status(200).json({
@@ -18,7 +19,7 @@ router.get("/", (req, res) => {
         )
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAuth, (req, res) => {
     TeacherAttendance.findById(req.params.id).populate("teacher").exec()
         .then(docs => {
             res.status(200).json({
@@ -33,7 +34,7 @@ router.get("/:id", (req, res) => {
         )
 });
 
-router.get("/teachers/:teacherID", (req, res) => {
+router.get("/teachers/:teacherID", checkAuth, (req, res) => {
     TeacherAttendance.find({ teacher: req.params.teacherID }).exec()
         .then(docs => {
             var present = 0;
@@ -60,7 +61,7 @@ router.get("/teachers/:teacherID", (req, res) => {
         )
 });
 
-router.post("/", (req, res) => {
+router.post("/", checkAuth, (req, res) => {
     const teacherAttendance = new TeacherAttendance({
         _id: new mongoose.Types.ObjectId(),
         teacher: req.body.teacher,
@@ -81,7 +82,7 @@ router.post("/", (req, res) => {
 
 });
 
-router.post("/postmany", (req, res) => {
+router.post("/postmany", checkAuth, (req, res) => {
     var date = req.body.date;
     var time = req.body.time;
     var attendances = req.body.attendances;
@@ -109,7 +110,7 @@ router.post("/postmany", (req, res) => {
     )
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAuth, (req, res) => {
     TeacherAttendance.findByIdAndDelete(req.params.id).exec()
         .then(docs => {
             res.status(200).json({

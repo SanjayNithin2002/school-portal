@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var AdminAttendance = require('../models/AdminAttendance');
+var checkAuth = require('../middleware/checkAuth');
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     AdminAttendance.find().populate("admin").exec()
         .then(docs => {
             res.status(200).json({
@@ -18,7 +19,7 @@ router.get("/", (req, res) => {
         )
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAuth, (req, res) => {
     AdminAttendance.findById(req.params.id).populate("admin").exec()
         .then(docs => {
             res.status(200).json({
@@ -33,7 +34,7 @@ router.get("/:id", (req, res) => {
         )
 });
 
-router.get("/admins/:adminID", (req, res) => {
+router.get("/admins/:adminID", checkAuth, (req, res) => {
     AdminAttendance.find({ admin: req.params.adminID }).exec()
         .then(docs => {
             var present = 0;
@@ -60,7 +61,7 @@ router.get("/admins/:adminID", (req, res) => {
         )
 });
 
-router.post("/", (req, res) => {
+router.post("/",checkAuth,  (req, res) => {
     const adminAttendance = new AdminAttendance({
         _id: new mongoose.Types.ObjectId(),
         admin: req.body.admin,
@@ -81,7 +82,7 @@ router.post("/", (req, res) => {
 
 });
 
-router.post("/postmany", (req, res) => {
+router.post("/postmany", checkAuth, (req, res) => {
     var date = req.body.date;
     var time = req.body.time;
     var attendances = req.body.attendances;
@@ -109,7 +110,7 @@ router.post("/postmany", (req, res) => {
     )
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAuth, (req, res) => {
     AdminAttendance.findByIdAndDelete(req.params.id).exec()
         .then(docs => {
             res.status(200).json({

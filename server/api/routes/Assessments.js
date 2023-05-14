@@ -5,6 +5,7 @@ var admin = require("firebase-admin");
 var serviceAccount = require("../../serviceAccountKey.json");
 var Students = require('../models/Students');
 var Assessments = require('../models/Assessments');
+var checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 
 const storage = multer.diskStorage({
@@ -43,7 +44,7 @@ admin.initializeApp({
 
 var bucket = admin.storage().bucket();
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     Assessments.find().exec()
         .then(docs => {
             var assessments = docs.map(doc => {
@@ -71,7 +72,7 @@ router.get("/", (req, res) => {
         });
 });
 
-router.get("/students/:studentID", (req, res) => {
+router.get("/students/:studentID", checkAuth, (req, res) => {
     Students.findById(req.params.studentID).exec()
         .then(studDoc => {
             var standard = studDoc.standard;
@@ -108,7 +109,7 @@ router.get("/students/:studentID", (req, res) => {
             })
         });
 });
-router.post("/", upload.single('questionPaper'), (req, res) => {
+router.post("/", checkAuth, upload.single('questionPaper'), (req, res) => {
     var assessment = new Assessments({
         _id: new mongoose.Types.ObjectId(),
         maxMarks: req.body.maxMarks,
@@ -147,7 +148,7 @@ router.post("/", upload.single('questionPaper'), (req, res) => {
         });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAuth, (req, res) => {
     Assessments.findByIdAndDelete(req.params.id).exec()
         .then(doc => {
             res.status(201).json({

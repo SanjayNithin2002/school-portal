@@ -4,8 +4,9 @@ var Exams = require('../models/Exams');
 var Students = require('../models/Students');
 var timeToString = require('../middleware/timeToString');
 var router = express.Router();
+var checkAuth = require('../middleware/checkAuth');
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     Exams.find().populate('class').exec()
         .then(docs => {
             res.status(200).json({
@@ -31,7 +32,7 @@ router.get("/", (req, res) => {
         });
 });
 
-router.get("/students/:studentID", (req, res) => {
+router.get("/students/:studentID", checkAuth, (req, res) => {
     Students.findById(req.params.studentID).exec()
         .then(studDoc => {
             var standard = studDoc.standard;
@@ -72,7 +73,7 @@ router.get("/students/:studentID", (req, res) => {
 });
 
 
-router.post("/", (req, res) => {
+router.post("/", checkAuth, (req, res) => {
     var exam = new Exams({
         _id: new mongoose.Types.ObjectId(),
         class: req.body.class,
@@ -96,7 +97,7 @@ router.post("/", (req, res) => {
         });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id",checkAuth,  (req, res) => {
     Exams.findByIdAndDelete(req.params.id).exec()
         .then(doc => {
             res.status(201).json({

@@ -5,9 +5,9 @@ const Admins = require('../models/Admins');
 var dateDiffInDays = require('../middleware/dateDiffInDays');
 var express = require('express');
 var router = express.Router();
+var checkAuth = require('../middleware/checkAuth');
 
-
-router.post("/", (req, res, next) => {
+router.post("/",checkAuth, (req, res, next) => {
     if (req.body.user === "Teacher") {
         Teachers.findById(req.body.userID).exec()
             .then(docs => {
@@ -114,7 +114,7 @@ router.post("/", (req, res, next) => {
     }
 });
 
-router.get("/", (req, res, next) => {
+router.get("/", checkAuth, (req, res, next) => {
     Leave.find().exec()
         .then(docs => {
             res.status(200).json({
@@ -128,7 +128,7 @@ router.get("/", (req, res, next) => {
         })
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", checkAuth, (req, res, next) => {
     Leave.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
@@ -142,7 +142,7 @@ router.get("/:id", (req, res, next) => {
         })
 });
 
-router.patch("/", (req, res, next) => {
+router.patch("/", checkAuth, (req, res, next) => {
     if (req.body.user === "Teacher") {
         if (req.body.status === "Approved") {
             Leave.findByIdAndUpdate(req.body.id, { $set: { status: req.body.status } }, { new: true }).exec()
@@ -222,7 +222,7 @@ router.patch("/", (req, res, next) => {
 
 });
 
-router.delete("/", (req, res, next) => {
+router.delete("/", checkAuth, (req, res, next) => {
     if (req.body.user === "Teacher") {
         Leave.findByIdAndRemove(req.body.id).exec()
             .then(docs => {
@@ -268,7 +268,5 @@ router.delete("/", (req, res, next) => {
             })
     }
 });
-
-
 
 module.exports = router;

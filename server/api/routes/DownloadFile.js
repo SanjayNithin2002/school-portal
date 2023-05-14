@@ -2,6 +2,7 @@ var admin = require("firebase-admin");
 var serviceAccount = require("../../serviceAccountKey.json");
 var express = require('express');
 var router = express.Router();
+var checkAuth = require('../middleware/checkAuth');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -10,7 +11,7 @@ admin.initializeApp({
 
 var bucket = admin.storage().bucket();
 
-router.post("/:location/:filename", (req, res) => {
+router.get("/:location/:filename", checkAuth, (req, res) => {
     var location = req.params.location;
     var filename = req.params.filename;
     var filepath = location + "/" + filename;

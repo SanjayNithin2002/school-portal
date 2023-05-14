@@ -28,7 +28,7 @@ const app = express();
 //Schedule Job to clear Assessment and Bonafide Directories
 
 const clearDirectory = require('./api/middleware/clearDirectory');
-const job = schedule.scheduleJob('*/1 * * * *', () => {
+const job = schedule.scheduleJob('*/5 * * * *', () => {
     clearDirectory('./assessments/');
     clearDirectory('./bonafides/');
     console.log("Cleared Assessment and Bonafide Directories");

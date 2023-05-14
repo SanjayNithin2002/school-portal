@@ -4,6 +4,7 @@ var multer = require('multer');
 var admin = require("firebase-admin");
 var serviceAccount = require("../../serviceAccountKey.json");
 var Bonafides = require('../models/Bonafides');
+var checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 
 const storage = multer.diskStorage({
@@ -42,7 +43,7 @@ admin.initializeApp({
 
 var bucket = admin.storage().bucket();
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     Bonafides.find().exec()
         .then(docs => {
             var bonafides = docs.map(doc => {
@@ -63,7 +64,7 @@ router.get("/", (req, res) => {
         });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAuth, (req, res) => {
     Bonafides.findById(req.params.id).exec()
         .then(doc => {
             res.status(200).json({
@@ -81,7 +82,7 @@ router.get("/:id", (req, res) => {
         });
 });
 
-router.get("/students/:studentID", (req, res) => {
+router.get("/students/:studentID", checkAuth, (req, res) => {
     Bonafides.find({ student: req.params.studentID }).exec()
         .then(docs => {
             var bonafides = docs.map(doc => {
@@ -103,7 +104,7 @@ router.get("/students/:studentID", (req, res) => {
         });
 });
 
-router.post("/", (req, res) => {
+router.post("/",checkAuth,  (req, res) => {
     var bonafide = new Bonafides({
         _id: new mongoose.Types.ObjectId(),
         service: req.body.service,
@@ -126,7 +127,7 @@ router.post("/", (req, res) => {
 });
 
 
-router.patch("/:id", upload.single("bonafide"), (req, res) => {
+router.patch("/:id", checkAuth, upload.single("bonafide"), (req, res) => {
     Bonafides.findByIdAndUpdate(req.params.id, {
         $set: {
             requestedFile: req.file.path
@@ -159,7 +160,7 @@ router.patch("/:id", upload.single("bonafide"), (req, res) => {
         });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAuth, (req, res) => {
     Bonafides.findByIdAndDelete(req.params.id).exec()
         .then(doc => {
             res.status(200).json({

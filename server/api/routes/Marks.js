@@ -3,8 +3,8 @@ var Marks = require('../models/Marks');
 var Assessments = require('../models/Assessments');
 var express = require('express');
 var router = express.Router();
-
-router.get("/", (req, res) => {
+var checkAuth = require('../middleware/checkAuth');
+router.get("/", checkAuth, (req, res) => {
     Marks.find().populate([{path : "assessment", populate : {path : "class"}}, {path : "student"}]).exec()
         .then(docs => {
             res.status(200).json({
@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
         });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", checkAuth, (req, res) => {
     Marks.findById(req.params.id).populate([{path : "assessment", populate : {path : "class"}}, {path : "student"}]).exec()
         .then(doc => {
                 res.status(200).json({
@@ -32,7 +32,7 @@ router.get("/:id", (req, res) => {
         });
 });
 
-router.get("/students/:studentID", (req, res) => {
+router.get("/students/:studentID",  checkAuth, (req, res) => {
     Marks.find({ student: req.params.studentID }).populate([{path : "assessment", populate : {path : "class"}}, {path : "student"}]).exec()
         .then(docs => {
             res.status(200).json({
@@ -48,7 +48,7 @@ router.get("/students/:studentID", (req, res) => {
         );
 });
 
-router.get("/assessments/:assessmentID", (req, res) => {
+router.get("/assessments/:assessmentID", checkAuth, (req, res) => {
     Marks.find({ assessment: req.params.assessmentID }).populate([{path : "assessment", populate : {path : "class"}}, {path : "student"}]).exec()
         .then(docs => {
             res.status(200).json({
@@ -64,7 +64,7 @@ router.get("/assessments/:assessmentID", (req, res) => {
         );
 });
 
-router.post("/", (req, res) => {
+router.post("/", checkAuth, (req, res) => {
     Assessments.findById(req.body.assessment).exec()
         .then(doc => {
             var maxMarks = doc.maxMarks;
@@ -96,7 +96,7 @@ router.post("/", (req, res) => {
         })
 });
 
-router.post("/postmany", (req, res) => {
+router.post("/postmany", checkAuth, (req, res) => {
     //receive student array and perform insert many operation
     Assessments.findById(req.body.assessment).exec()
         .then(doc => {
@@ -131,7 +131,7 @@ router.post("/postmany", (req, res) => {
         )
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkAuth, (req, res) => {
     Marks.findByIdAndDelete(req.params.id).exec()
         .then(doc => {
             res.status(200).json({

@@ -4,7 +4,8 @@ var express = require('express');
 var router = express.Router();
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
+const checkAuth = require('../middleware/checkAuth');
 
 router.post("/sendotp", (req, res, next) => {
     const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
@@ -90,8 +91,16 @@ router.post("/login",(req, res, next) => {
                         });
                     }
                     if (response) {
+                        var token = jwt.sign({
+                            userID: docs[0].userID,
+                            _id: docs[0]._id
+                        }, process.env.JWT_KEY, {
+                            expiresIn: "1h"
+                        });
                         res.status(200).json({
-                            message: "Auth Successful"
+                            message: "Auth Successful",
+                            _id: docs[0]._id,
+                            token: token
                         });
                     } else {
                         res.status(401).json({
@@ -110,7 +119,7 @@ router.post("/login",(req, res, next) => {
 });
 
 
-router.get("/", (req, res, next) => {
+router.get("/", checkAuth, (req, res, next) => {
     Admins.find().exec()
         .then(docs => {
             res.status(200).json({
@@ -124,7 +133,7 @@ router.get("/", (req, res, next) => {
         })
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", checkAuth, (req, res, next) => {
     Admins.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
@@ -138,8 +147,13 @@ router.get("/:id", (req, res, next) => {
         })
 });
 
-router.patch("/:id", (req, res, next) => {
+router.patch("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
+    if(req.userData._id !== id){
+        res.status(401).json({
+            message: "Auth Failed"
+        });
+    }else{
     var updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
@@ -156,10 +170,18 @@ router.patch("/:id", (req, res, next) => {
                 error: err
             })
         })
+    }
 });
 
-router.delete("/:id", (req, res, next) => {
-    Admins.findByIdAndDelete(req.params.id).exec()
+router.delete("/:id", checkAuth, (req, res, next) => {
+    var id = req.params.id;
+    if(req.userData._id !== id){
+        res.status(401).json({
+            message: "Auth Failed"
+        });
+    }
+    else{
+    Admins.findByIdAndDelete(id).exec()
         .then(docs => {
             res.status(200).json({
                 message: "Admin Deleted Successfully",
@@ -171,6 +193,7 @@ router.delete("/:id", (req, res, next) => {
                 error: err
             })
         })
+    }
 });
 
 module.exports = router;

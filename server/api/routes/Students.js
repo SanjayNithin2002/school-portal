@@ -4,7 +4,8 @@ var express = require('express');
 var router = express.Router();
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
+const checkAuth = require('../middleware/checkAuth');
 
 router.post("/sendotp", (req, res, next) => {
     const otp = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
@@ -164,9 +165,16 @@ router.post("/login", (req, res, next) => {
                         });
                     }
                     if (response) {
+                        var token = jwt.sign({
+                            userID: docs[0].userID,
+                            _id: docs[0]._id
+                        }, process.env.JWT_KEY, {
+                            expiresIn: "1h"
+                        });
                         res.status(200).json({
                             message: "Auth Successful",
                             _id: docs[0]._id,
+                            token: token
                         });
                     } else {
                         res.status(401).json({
@@ -180,12 +188,10 @@ router.post("/login", (req, res, next) => {
                 error: err
             })
         });
-
-
 });
 
 
-router.get("/", (req, res, next) => {
+router.get("/", checkAuth, (req, res, next) => {
     Students.find().exec()
         .then(docs => {
             res.status(200).json({
@@ -199,7 +205,7 @@ router.get("/", (req, res, next) => {
         })
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", checkAuth, (req, res, next) => {
     Students.findById(req.params.id).exec()
         .then(docs => {
             res.status(200).json({
@@ -213,138 +219,164 @@ router.get("/:id", (req, res, next) => {
         })
 });
 
-router.patch("/userID", (req, res, next) => {
+router.patch("/userID", checkAuth, (req, res, next) => {
     var id = req.body.id;
-    var currentUserID = req.body.currentUserID;
-    var newUserID = req.body.newUserID;
-    var password = req.body.password;
-    Students.find({ userID: newUserID }).exec()
-        .then(docs => {
-            if (docs.length >= 1) {
-                res.status(409).json({
-                    message: "User ID Already Exists"
-                })
-            } else {
-                Students.findById(id).exec()
-                .then(doc => {
-                    if(doc === null){
-                        res.status(404).json({
-                            message: "Student Not Found"
-                    })
-                } else if(doc.userID !== currentUserID){
-                    res.status(401).json({
-                        message: "Auth Failed"
-                    })
-                }
-                else{
-                    bcrypt.compare(password, doc.password, (err, response) => {
-                        if (err) {
-                            res.status(401).json({
-                                message: "Auth Failed"
-                            });
-                        }
-                        if (response) {
-                            Students.findByIdAndUpdate(id, { userID: newUserID }).exec()
-                            .then(docs => {
-                                res.status(200).json({
-                                    message: "User ID Updated Successfully",
-                                    docs: docs
-                                })
-                            })
-                            .catch(err => {
-                                res.status(500).json({
-                                    error: err
-                                })
-                            })
-                        } else {
-                            res.status(401).json({
-                                message: "Auth Failed"
-                            });
-                        }
-                    })
-                }
-            })  
-            }
-        }).catch(err => {
-            res.status(500).json({
-                error: err
-            })
+    if (req.userData._id !== id) {
+        res.status(401).json({
+            message: "Auth Failed"
         })
-});
-
-router.patch("/password", (req, res) => {
-    var id = req.body.id;
-    var currentPassword = req.body.currentPassword;
-    var newPassword = req.body.newPassword;
-    Students.findById(id).exec()
-        .then(doc => {
-            bcrypt.compare(currentPassword, doc.password, (err, response) => {
-                if (err) {
-                    res.status(401).json({
-                        message: "Auth Failed"
-                    });
-                }
-                if (response) {
-                    bcrypt.hash(newPassword, 10, (err, hash) => {
-                        Students.findByIdAndUpdate(id, { password: hash }).exec()
-                            .then(docs => {
-                                res.status(200).json({
-                                    message: "Password Updated Successfully"
-                                })
-                            })
-                            .catch(err => {
-                                res.status(500).json({
-                                    error: err
-                                })
-                            });
-                    });
-                } else {
-                    res.status(401).json({
-                        message: "Auth Failed"
-                    });
-                }
-            })
-        }).catch(err => {
-            res.status(500).json({
-                error: err
-            })
-        });
-});
-
-router.patch("/:id", (req, res, next) => {
-    var id = req.params.id;
-    var updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
     }
-    Students.findByIdAndUpdate(id, updateOps).exec()
-        .then(docs => {
-            res.status(200).json({
-                message: "Student Updated Successfully",
-                docs: docs
+    else {
+        var currentUserID = req.body.currentUserID;
+        var newUserID = req.body.newUserID;
+        var password = req.body.password;
+        Students.find({ userID: newUserID }).exec()
+            .then(docs => {
+                if (docs.length >= 1) {
+                    res.status(409).json({
+                        message: "User ID Already Exists"
+                    })
+                } else {
+                    Students.findById(id).exec()
+                        .then(doc => {
+                            if (doc === null) {
+                                res.status(404).json({
+                                    message: "Student Not Found"
+                                })
+                            } else if (doc.userID !== currentUserID) {
+                                res.status(401).json({
+                                    message: "Auth Failed"
+                                })
+                            }
+                            else {
+                                bcrypt.compare(password, doc.password, (err, response) => {
+                                    if (err) {
+                                        res.status(401).json({
+                                            message: "Auth Failed"
+                                        });
+                                    }
+                                    if (response) {
+                                        Students.findByIdAndUpdate(id, { userID: newUserID }).exec()
+                                            .then(docs => {
+                                                res.status(200).json({
+                                                    message: "User ID Updated Successfully",
+                                                    docs: docs
+                                                })
+                                            })
+                                            .catch(err => {
+                                                res.status(500).json({
+                                                    error: err
+                                                })
+                                            })
+                                    } else {
+                                        res.status(401).json({
+                                            message: "Auth Failed"
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                }
+            }).catch(err => {
+                res.status(500).json({
+                    error: err
+                })
             })
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            })
-        })
+    }
 });
 
-router.delete("/:id", (req, res, next) => {
+router.patch("/password", checkAuth, (req, res) => {
+    if (req.userData._id !== req.body.id) {
+        res.status(401).json({
+            message: "Auth Failed"
+        });
+    } else {
+        var id = req.body.id;
+        var currentPassword = req.body.currentPassword;
+        var newPassword = req.body.newPassword;
+        Students.findById(id).exec()
+            .then(doc => {
+                bcrypt.compare(currentPassword, doc.password, (err, response) => {
+                    if (err) {
+                        res.status(401).json({
+                            message: "Auth Failed"
+                        });
+                    }
+                    if (response) {
+                        bcrypt.hash(newPassword, 10, (err, hash) => {
+                            Students.findByIdAndUpdate(id, { password: hash }).exec()
+                                .then(docs => {
+                                    res.status(200).json({
+                                        message: "Password Updated Successfully"
+                                    })
+                                })
+                                .catch(err => {
+                                    res.status(500).json({
+                                        error: err
+                                    })
+                                });
+                        });
+                    } else {
+                        res.status(401).json({
+                            message: "Auth Failed"
+                        });
+                    }
+                })
+            }).catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
+});
+
+router.patch("/:id", checkAuth, (req, res, next) => {
     var id = req.params.id;
-    Students.findByIdAndDelete(id).exec()
-        .then(docs => {
-            res.status(200).json({
-                message: "Student Deleted Successfully",
-                docs: docs
-            })
+    if (req.userData._id !== id) {
+        res.status(401).json({
+            message: "Auth Failed"
         })
-        .catch(err => {
-            res.status(500).json({
-                error: err
+    } else {
+        var updateOps = {};
+        for (const ops of req.body) {
+            updateOps[ops.propName] = ops.value;
+        }
+        Students.findByIdAndUpdate(id, updateOps).exec()
+            .then(docs => {
+                res.status(200).json({
+                    message: "Student Updated Successfully",
+                    docs: docs
+                })
             })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            })
+    }
+});
+
+router.delete("/:id", checkAuth, (req, res, next) => {
+    var id = req.params.id;
+    if (req.userData._id !== id) {
+        res.status(401).json({
+            message: "Auth Failed"
         })
+    }
+    else {
+        Students.findByIdAndDelete(id).exec()
+            .then(docs => {
+                res.status(200).json({
+                    message: "Student Deleted Successfully",
+                    docs: docs
+                })
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            })
+    }
 });
 
 module.exports = router;
