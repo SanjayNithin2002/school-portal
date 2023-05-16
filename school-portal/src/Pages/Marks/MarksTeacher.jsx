@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import Table from "react-bootstrap/Table";
+import { TagGroup, Tag } from 'rsuite';
 
 const data = [
   {
@@ -47,10 +47,24 @@ const data = [
     grade: 'B'
   },
 ];
+
 const MarksTeacher = () => {
   const [stardard, setStardard] = useState("");
   const [section, setSection] = useState("");
   const [subject, setSubject] = useState("");
+  let sum=0;
+  for(let i=0;i<data.length;i++){
+   sum+=data[i].marks;
+  }
+  const avg=(sum/data.length).toFixed(2);
+  let lmark=data[0].marks;
+  let hmark=data[0].marks;
+  for(let i=0;i<data.length;i++){
+    if(lmark>data[i].marks)
+    lmark=data[i].marks;
+    if(hmark<data[i].marks)
+    hmark=data[i].marks;
+  }
   return (
     <>
       <div className="Main">
@@ -60,7 +74,7 @@ const MarksTeacher = () => {
             <h2>Marks Analysis</h2>
             <hr style={{ border: "1px solid gray" }} />
             <div>
-              <div className="row classmessage-container-1">  
+              <div className="row classmessage-container-1">
                 <div className="col-lg-2">
                   <h4>Select Class : </h4>
                 </div>
@@ -119,7 +133,7 @@ const MarksTeacher = () => {
               </div>
               <br />
               <br />
-              {stardard && section && subject &&<>
+              {stardard && section && subject && <>
                 <div className="row studentlist-container">
                   <div className="col-lg-8">
                     <Table striped className="tablestyle4">
@@ -154,8 +168,22 @@ const MarksTeacher = () => {
                     </Table>
                   </div>
                 </div>
+                <hr style={{ border: "1px solid gray" }} />
+                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Class Average</Tag>
+                    <Tag size="lg">{avg}</Tag>
+                  </TagGroup>
+                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Highest Mark</Tag>
+                    <Tag size="lg">{hmark}</Tag>
+                  </TagGroup>
+                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Lowest Mark</Tag>
+                    <Tag size="lg">{lmark}</Tag>
+                  </TagGroup>
               </>
               }
+
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import React, { useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
-import { Panel, Table, Steps, Placeholder, Tag, TagGroup, ButtonGroup, Button } from 'rsuite';
+import { Panel, Table, Steps, Tag, TagGroup, ButtonGroup, Button } from 'rsuite';
 import './Home.css';
 const { Column, HeaderCell, Cell } = Table;
 
