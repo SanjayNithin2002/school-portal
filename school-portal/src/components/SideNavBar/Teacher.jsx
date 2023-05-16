@@ -30,6 +30,7 @@ const Teacher = () => {
               <Nav.Item href='/PostAttendance'>Attendance</Nav.Item>
               <Nav.Item href='/ClassMessage'>Class Message</Nav.Item>
               <Nav.Item href='/Assessment'>Assessments</Nav.Item>
+              <Nav.Item href='/MarksTeacher'>Marks Analysis</Nav.Item>
               <Nav.Item href='/Exam'>Exam</Nav.Item>
             </Nav.Menu>
             <Nav.Item href='/Setting' icon={<Setting />}>
