@@ -77,7 +77,7 @@ function ContactUsStudent() {
                   </Form.Group>
                 </Form>
               </Col>
-
+                  
             </Grid>
           </Content>
 

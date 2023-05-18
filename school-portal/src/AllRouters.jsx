@@ -2,7 +2,8 @@ import React from "react";
 import { Routes,Route,BrowserRouter} from "react-router-dom"
 import App from "./App"
 import Navbar from "./components/NavBar/Navbar";
-import Home from "./Pages/Home/Home"
+import StudentDashboard from "./Pages/Dashboard/StudentDashboard"
+import TeacherDashboard from "./Pages/Dashboard/TeacherDashboard";
 import Attendance from "./Pages/Attendance/Attendance"
 import Error404 from "./Pages/Error404";
 import ContactUsStudent from "./Pages/ContactUs/ContactUsStudent";
@@ -31,6 +32,8 @@ import AddExam from "./Pages/Exam/AddExam";
 import Meeting from "./Pages/Meeting/Meeting";
 import AddMeeting from "./Pages/Meeting/AddMeeting";
 import MarksTeacher from "./Pages/Marks/MarksTeacher";
+import AdminBonafide from "./Pages/Bonafide/AdminBonafide";
+import Student from "./components/SideNavBar/Student";
 
 const AllRoutes = () => {
     return(
@@ -38,7 +41,8 @@ const AllRoutes = () => {
             <Navbar/>
             <Routes>
                 <Route path='/' element={<App/>}/>
-                <Route path='/Home' element={<Home/>}/>
+                <Route path='/StudentDashboard' element={<StudentDashboard/>}/>
+                <Route path='/TeacherDashboard' element={<TeacherDashboard/>}/>
                 <Route path='/Attendance' element={<Attendance/>}/>
                 <Route path='/Leave' element={<Leave/>}/>
                 <Route path='/ContactUsStudent' element={<ContactUsStudent/>}/>
@@ -67,6 +71,7 @@ const AllRoutes = () => {
                 <Route path='/Meeting' element={<Meeting/>} />
                 <Route path='/AddMeeting' element={<AddMeeting/>} />
                 <Route path='/MarksTeacher' element={<MarksTeacher/>} />
+                <Route path='/AdminBonafide' element={<AdminBonafide/>} />
                 
             </Routes>
         </BrowserRouter>

@@ -23,6 +23,8 @@ function App() {
       <br></br>
       <br></br>
       <div class="row">
+
+        
         <div class="col-sm-4">
           <div class="card">
             <div class="card-body">
@@ -59,6 +61,8 @@ function App() {
             </div>
           </div>
         </div>
+
+
         <div class="col-sm-4">
           <div class="card">
             <div class="card-body">
