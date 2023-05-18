@@ -15,7 +15,7 @@ import Class from "@rsuite/icons/legacy/Book";
 const Student = () => {
     return(
         <Nav style={{width:"100%"}}>
-            <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
+            <Nav.Item href='/StudentDashboard' title={"DashBoard"} icon={<DashboardIcon />}>
               Dashboard
             </Nav.Item>
             <Nav.Item href='/Attendance' icon={<Upload />}>
