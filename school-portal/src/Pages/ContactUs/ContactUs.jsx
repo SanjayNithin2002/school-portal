@@ -3,7 +3,7 @@ import Student from './Student'
 import Teacher from './Teacher'
 import Error404 from '../Error404'
 
-const Marks = () => {
+const ContactUs = () => {
   return (
     <>
     {
@@ -22,4 +22,4 @@ const Marks = () => {
   )
 }
 
-export default Marks
+export default ContactUs

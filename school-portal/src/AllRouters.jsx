@@ -2,12 +2,10 @@ import React from "react";
 import { Routes,Route,BrowserRouter} from "react-router-dom"
 import App from "./App"
 import Navbar from "./components/NavBar/Navbar";
-import StudentDashboard from "./Pages/Dashboard/StudentDashboard"
-import TeacherDashboard from "./Pages/Dashboard/TeacherDashboard";
+import Home from "./Pages/Dashboard/Student";
 import Attendance from "./Pages/Attendance/Attendance"
 import Error404 from "./Pages/Error404";
-import ContactUsStudent from "./Pages/ContactUs/ContactUsStudent";
-import ContactUsTeacher from "./Pages/ContactUs/ContactUsTeacher";
+import ContactUs from "./Pages/ContactUs/ContactUs";
 import Leave from "./Pages/Leave/Leave";
 import Assessments from "./Pages/Assessments/Assessments";
 import Teacher from "./Pages/Teacher/Teacher";
@@ -31,7 +29,6 @@ import Fees from "./Pages/Fees/Fees";
 import AddExam from "./Pages/Exam/AddExam";
 import Meeting from "./Pages/Meeting/Meeting";
 import AddMeeting from "./Pages/Meeting/AddMeeting";
-import MarksTeacher from "./Pages/Marks/MarksTeacher";
 import AdminBonafide from "./Pages/Bonafide/AdminBonafide";
 import Student from "./components/SideNavBar/Student";
 
@@ -41,13 +38,10 @@ const AllRoutes = () => {
             <Navbar/>
             <Routes>
                 <Route path='/' element={<App/>}/>
-                <Route path='/StudentDashboard' element={<StudentDashboard/>}/>
-                <Route path='/TeacherDashboard' element={<TeacherDashboard/>}/>
+                <Route path='/Home' element={<Home/>}/>
                 <Route path='/Attendance' element={<Attendance/>}/>
                 <Route path='/Leave' element={<Leave/>}/>
-                <Route path='/ContactUsStudent' element={<ContactUsStudent/>}/>
-                <Route path='/ContactUsTeacher' element={<ContactUsTeacher/>}/>
-                <Route path='/Assessment' element={<Assessments/>}/>
+                <Route path='/ContactUs' element={<ContactUs/>}/>                <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment/:id' element={<ViewAssessment />}/>
                 <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
                 <Route path='/PostAssessment' element={<NewAssessment />}/>
@@ -70,7 +64,6 @@ const AllRoutes = () => {
                 <Route path='/AddSchedule' element={<AddExam/>} />
                 <Route path='/Meeting' element={<Meeting/>} />
                 <Route path='/AddMeeting' element={<AddMeeting/>} />
-                <Route path='/MarksTeacher' element={<MarksTeacher/>} />
                 <Route path='/AdminBonafide' element={<AdminBonafide/>} />
                 
             </Routes>

@@ -4,12 +4,7 @@ import { setCurrentUser } from "./currentUser"
 export const logIn = (authData,navigate) => async (dispatch) => {
     try{
         localStorage.setItem("type",authData.type);
-        if(authData.type === "student")
-        navigate('/StudentDashboard');
-        else if(authData.type ==="teacher")
-        navigate('/TeacherDashboard')
-        else if(authData.type ==="admin")
-        navigate('/TeacherDashboard')
+        navigate("Home");
 
         console.log(authData); 
         // const { data } = await api.logIn(authData)
