@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Steps, ButtonGroup, Button } from 'rsuite';
+import { Steps, ButtonGroup, Button, useToaster } from 'rsuite';
 
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Teacher.css";
@@ -7,11 +7,53 @@ import Table from 'react-bootstrap/esm/Table';
 
 const AddTeacher = () => {
     const [step, setStep] = useState(0);
-    const [UG,setUG] = useState(false);
-    const [PG,setPG] = useState(false); 
-    const [bus,setBus] = useState(false);
-    const [hostel,setHostel] = useState(false);
-    const [PHD,setPHD] = useState(false);
+    const [fname, setFname] = useState("");
+    const [lname, setLname] = useState("");
+    const [empID, setEmpID] = useState("");
+    const [dob, setDob] = useState("");
+    const [gender, setDender] = useState("");
+    const [blood, setBlood] = useState("");
+    const [aadhar, setAadhar] = useState("");
+    const [mothertongue, setMotherTongue] = useState("");
+    const [address1, setAddress1] = useState("");
+    const [address2, setAddress2] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [pincode, setPincode] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [qualification, setQualification] = useState("");
+    const [exp, setExp] = useState("");
+    const [ugName, setUgName] = useState("");
+    const [ugLoc, setUgLoc] = useState("");
+    const [ugpassOut, setUgPassOut] = useState("");
+    const [ugPersentage, setUgPercentage] = useState("");
+    const [ugCert, setUgCert] = useState(0);
+    const [pgName, setPgName] = useState("");
+    const [pgLoc, setPgLoc] = useState("");
+    const [pgpassOut, setPgPassOut] = useState("");
+    const [pgPersentage, setPgPercentage] = useState("");
+    const [pgCert, setPgCert] = useState(0);
+    const [phdName, setPhdName] = useState("");
+    const [phdLoc, setPhdLoc] = useState("");
+    const [phdpassOut, setPhdPassOut] = useState("");
+    const [phdPersentage, setPhdPercentage] = useState("");
+    const [phdCert, setPhdCert] = useState(0);
+    const [UG,setUG] = useState("");
+    const [PG,setPG] = useState(""); 
+    const [PHD,setPHD] = useState("");
+    const [basic, setBasic] = useState("");
+    const [hra,setHra] = useState("");
+    const [conveyance,setConveyance] = useState("");
+    const [pa, setPa] = useState("");
+    const [pf, setPf] = useState("");
+    const [pt, setPt] = useState("");
+    const [busArea, setBusArea] = useState("");
+    const [busStop, setBusStop] = useState("");
+    const [busAvailable, setBusAvailable] = useState("");
+    const [busRoute, setBusRoute] = useState("");
+    const [bus,setBus] = useState("");
+    const [hostel,setHostel] = useState("");
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };

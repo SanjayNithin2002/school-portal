@@ -11,7 +11,7 @@ import Setting from "@rsuite/icons/legacy/Setting"
 const Teacher = () => {
     return(
         <Nav>
-            <Nav.Item href='/TeacherDashboard' title={"DashBoard"} icon={<DashboardIcon />}>
+            <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
               Dashboard
             </Nav.Item>
             <Nav.Menu placement="rightStart" title="Attendance" icon={<Upload />}>
@@ -30,13 +30,13 @@ const Teacher = () => {
               <Nav.Item href='/PostAttendance'>Attendance</Nav.Item>
               <Nav.Item href='/ClassMessage'>Class Message</Nav.Item>
               <Nav.Item href='/Assessment'>Assessments</Nav.Item>
-              <Nav.Item href='/MarksTeacher'>Marks Analysis</Nav.Item>
+              <Nav.Item href='/Marks'>Marks Analysis</Nav.Item>
               <Nav.Item href='/Exam'>Exam</Nav.Item>
             </Nav.Menu>
             <Nav.Item href='/Setting' icon={<Setting />}>
               Settings
             </Nav.Item>
-            <Nav.Item href='/ContactUsTeacher' icon={<GroupIcon />}>
+            <Nav.Item href='/ContactUs' icon={<GroupIcon />}>
               Contact
             </Nav.Item>
             {/*<Nav.Menu placement="rightStart" eventKey="3" title="Advanced" icon={<MagicIcon />}>

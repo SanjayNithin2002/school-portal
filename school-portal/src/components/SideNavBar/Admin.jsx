@@ -11,7 +11,7 @@ import Setting from "@rsuite/icons/legacy/Setting";
 const Admin = () => {
   return (
     <Nav>
-      <Nav.Item href='/AdminDashboard' title={"DashBoard"} icon={<DashboardIcon />}>
+      <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
         Dashboard
       </Nav.Item>
       <Nav.Menu placement="rightStart" title="Attendance" icon={<Attendance />}>
