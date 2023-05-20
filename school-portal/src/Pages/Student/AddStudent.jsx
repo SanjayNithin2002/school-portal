@@ -6,9 +6,22 @@ import "./Student.css";
 import Table from 'react-bootstrap/esm/Table';
 
 const AddStudent = () => {
+    const [name,setName] = useState({fname:'',lname:''});
+    const [dob,setDob] = useState('');
+    const [gender,setGender] = useState('');
+    const [blood,setBlood] = useState('');
+    const [aadhaar,setAadhaar] = useState('');
+    const [secondLang,setSecondLang] = useState('');
+    const [standard,setStandard] = useState('');
+    const [fatherDetails,setFatherDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
+    const [motherDetails,setMotherDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
+    const [gaudianDetails,setGaudianDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
+    const [address,setAddress] = useState({line1:'',line2:'',city:'',state:'',pincode:''});
+    const [busdetails,setBusdetails] = useState({area:'',stop:'',busNo:'',route:''});
+    const [hostelDetails,setHostelDetails] = useState({roomType:'',foodType:''});
     const [step, setStep] = useState(0);
-    const [father,setFather] = useState(false);
-    const [mother,setMother] = useState(false); 
+    const [father,setFather] = useState(true);
+    const [mother,setMother] = useState(true); 
     const [bus,setBus] = useState(false);
     const [hostel,setHostel] = useState(false);
     // eslint-disable-next-line
@@ -16,10 +29,22 @@ const AddStudent = () => {
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
-
-    const onNext = () => onChange(step + 1);
+    const onNext = () => {
+        if(step===0){
+            if(!name.fname || !name.lname || !dob || !gender || !blood || !aadhaar || !standard || !secondLang){
+                alert("Kindly Fill all the Details")
+            }
+            else{
+                onChange(step + 1);
+            }
+        }
+        else if(step===1){
+            
+        }
+    }
     const onPrevious = () => onChange(step - 1);
-
+    const stardardList = ['LKG','UKG','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+    const incomeList = ["No Income","0-h50000","50000-200000","200000-400000","400000-700000","More than 700000"]
     return (
         <div className="Main">
             <SideNavBar />
@@ -45,39 +70,51 @@ const AddStudent = () => {
                                         <tbody>
                                             <tr>
                                                 <td>First Name</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={name.fname} onChange={(e)=>setName((prev) => ({...prev,fname:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Last Name</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={name.lname} onChange={(e)=>setName((prev) => ({...prev,lname:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>DOB</td>
-                                                <td><input type="date" /></td>
+                                                <td><input value={dob} onChange={(e) => setDob(e.target.value)} type="date" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Gender</td>
-                                                <td><input type="text" /></td>
+                                                <td>
+                                                    <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                                                        <option value="" disabled>Select Gender</option>
+                                                        <option value="male">Male</option>
+                                                        <option value="female">Female</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Blood Group</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={blood} onChange={(e) => setBlood(e.target.value)} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Aadhaar No</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={aadhaar} onChange={(e) => setAadhaar(e.target.value)} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Standard</td>
-                                                <td><input type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Section</td>
-                                                <td><input type="text" /></td>
+                                                <td>
+                                                    <select value={standard} onChange={(e) => setStandard(e.target.value)}>
+                                                        <option value="" disabled>Select Standard</option>
+                                                        {
+                                                            stardardList.map((item)=>(
+                                                                <option value={item}>{item}</option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Mother Tongue</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={secondLang} onChange={(e) => setSecondLang(e.target.value)}  type="text" /></td>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -107,31 +144,40 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Name</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.name} onChange={(e)=>setFatherDetails((prev) => ({...prev,name:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Age</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.age} onChange={(e)=>setFatherDetails((prev) => ({...prev,age:e.target.value}))} type="number" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.qualification} onChange={(e)=>setFatherDetails((prev) => ({...prev,qualification:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Occupation</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.occupation} onChange={(e)=>setFatherDetails((prev) => ({...prev,occupation:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Annual Income</td>
-                                                <td><input type="text" /></td>
+                                                <td>
+                                                    <select value={fatherDetails.income} onChange={(e) => setFatherDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                        <option value="" disabled>Select Annual Income</option>
+                                                        {
+                                                            incomeList.map((item)=>(
+                                                                <option value={item}>{item}</option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.phone} onChange={(e)=>setFatherDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={fatherDetails.email} onChange={(e)=>setFatherDetails((prev) => ({...prev,email:e.target.value}))} type="text" /></td>
                                             </tr>
                                             </>
                                             }
@@ -141,31 +187,40 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Name</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.name} onChange={(e)=>setMotherDetails((prev) => ({...prev,name:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Age</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.age} onChange={(e)=>setMotherDetails((prev) => ({...prev,age:e.target.value}))} type="number" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.qualification} onChange={(e)=>setMotherDetails((prev) => ({...prev,qualification:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Occupation</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.occupation} onChange={(e)=>setMotherDetails((prev) => ({...prev,occupation:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Annual Income</td>
-                                                <td><input type="text" /></td>
+                                                <td>
+                                                    <select value={motherDetails.income} onChange={(e) => setMotherDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                        <option value="" disabled>Select Annual Income</option>
+                                                        {
+                                                            incomeList.map((item)=>(
+                                                                <option value={item}>{item}</option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.phone} onChange={(e)=>setMotherDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={motherDetails.email} onChange={(e)=>setMotherDetails((prev) => ({...prev,email:e.target.value}))} type="text" /></td>
                                             </tr>
                                             </>
                                             }
@@ -175,53 +230,62 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Name</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.name} onChange={(e)=>setGaudianDetails((prev) => ({...prev,name:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Age</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.age} onChange={(e)=>setGaudianDetails((prev) => ({...prev,age:e.target.value}))} type="number" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.qualification} onChange={(e)=>setGaudianDetails((prev) => ({...prev,qualification:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Occupation</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.occupation} onChange={(e)=>setGaudianDetails((prev) => ({...prev,occupation:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Annual Income</td>
-                                                <td><input type="text" /></td>
+                                                <td>
+                                                    <select value={gaudianDetails.income} onChange={(e) => setGaudianDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                        <option value="" disabled>Select Annual Income</option>
+                                                        {
+                                                            incomeList.map((item)=>(
+                                                                <option value={item}>{item}</option>
+                                                            ))
+                                                        }
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.phone} onChange={(e)=>setGaudianDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={gaudianDetails.email} onChange={(e)=>setGaudianDetails((prev) => ({...prev,email:e.target.value}))} type="text" /></td>
                                             </tr>
                                             </>
                                             }
                                             <tr>
                                                 <td>Address Line-1</td>
-                                                <td><textarea rows={4} cols={30}/></td>
+                                                <td><textarea value={address.line1} onChange={(e)=>setAddress((prev) => ({...prev,line1:e.target.value}))} rows={4} cols={30}/></td>
                                             </tr>
                                             <tr>
                                                 <td>Address Line-2</td>
-                                                <td><textarea rows={4} cols={30}/></td>
+                                                <td><textarea value={address.line2} onChange={(e)=>setAddress((prev) => ({...prev,line2:e.target.value}))} rows={4} cols={30}/></td>
                                             </tr>
                                             <tr>
                                                 <td>City</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={address.city} onChange={(e)=>setAddress((prev) => ({...prev,city:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>State</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={address.state} onChange={(e)=>setAddress((prev) => ({...prev,state:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Pincode</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={address.pincode} onChange={(e)=>setAddress((prev) => ({...prev,pincode:e.target.value}))} type="text" /></td>
                                             </tr>
                                             
                                         </tbody>
@@ -252,29 +316,29 @@ const AddStudent = () => {
                                             {bus && <>
                                             <tr>
                                                 <td>Bus Stop Area</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={busdetails.area} onChange={(e)=>setBusdetails((prev) => ({...prev,area:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Bus Stop</td>
-                                                <td><input type="text" /></td>
+                                                <td><input value={busdetails.stop} onChange={(e)=>setBusdetails((prev) => ({...prev,stop:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Available Bus</td>
-                                                <td><input type="text" /><br/>Automatically</td>
+                                                <td><input value={busdetails.busNo} onChange={(e)=>setBusdetails((prev) => ({...prev,busNo:e.target.value}))} type="text" /><br/>Automatically</td>
                                             </tr>
                                             <tr>
                                                 <td>Route Bus</td>
-                                                <td>Automatically</td>
+                                                <td>{busdetails.route}</td>
                                             </tr>
                                             </>}
                                             {hostel && <>
                                             <tr>
                                                 <td>Room Type</td>
-                                                <td><input type="radio" name="bus" onClick={()=>setBus(true)} />AC &emsp; <input type="radio" name="bus" onClick={()=>setBus(false)} />Non AC</td>
+                                                <td><input type="radio" name="room" onClick={()=>setHostelDetails((prev) => ({...prev,roomType:"AC"}))} />AC &emsp; <input type="radio" name="room" onClick={()=>setHostelDetails((prev) => ({...prev,roomType:"Non AC"}))} />Non AC</td>
                                             </tr>
                                             <tr>
                                                 <td>Food Type</td>
-                                                <td><input type="radio" name="bus" onClick={()=>setBus(true)} />Veg &emsp; <input type="radio" name="bus" onClick={()=>setBus(false)} />Non Veg</td>
+                                                <td><input type="radio" name="food" onClick={()=>setHostelDetails((prev) => ({...prev,foodType:"Veg"}))} />Veg &emsp; <input type="radio" name="food" onClick={()=>setHostelDetails((prev) => ({...prev,foodType:"Non Veg"}))} />Non Veg</td>
                                             </tr>
                                             </>}
                                         </tbody>
@@ -288,101 +352,173 @@ const AddStudent = () => {
                                     <Table className='AddStudent-Table-List-1'>
                                         <tbody>
                                             <tr>
-                                                <td colSpan={4}>Personal Details</td>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Personal Details</td>
                                             </tr>
                                             <tr>
                                                 <td>First Name</td>
-                                                <td>Sathiya</td>
+                                                <td>{name.fname}</td>
                                                 <td>Last Name</td>
-                                                <td>Siva</td>
+                                                <td>{name.lname}</td>
                                             </tr>
                                             <tr>
                                                 <td>DOB</td>
-                                                <td>12/12/2012</td>
+                                                <td>{dob}</td>
                                                 <td>Gender</td>
-                                                <td>Male</td>
+                                                <td>{gender}</td>
                                             </tr>
                                             <tr>
                                                 <td>Standard</td>
-                                                <td>8th grade</td>
+                                                <td>{standard} grade</td>
                                                 <td>Aadhaar No</td>
-                                                <td>798465894662</td>
+                                                <td>{aadhaar}</td>
                                             </tr>
                                             <tr>
                                                 <td>Mother Tongue</td>
-                                                <td>Tamil</td>
+                                                <td>{secondLang}</td>
                                                 <td>Blood Group</td>
-                                                <td>B+</td>
+                                                <td>{blood}</td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={4}>Family Details</td>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Family Details</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Do he/she have a Father?</td>
-                                                <td colSpan={2} className='radio'>Yes</td>
+                                                <td colSpan={2} className='radio'>{father ? "Yes" : "No"}</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Do he/she have a Mother?</td>
-                                                <td colSpan={2} className='radio'>No</td>
+                                                <td colSpan={2} className='radio'>{mother ? "Yes" : "No"}</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Do he/she have a Siblings?</td>
                                                 <td colSpan={2} className='radio'>No</td>
                                             </tr>
+                                            { father && <>
                                             <tr>
-                                                <td colSpan={4}>Father Details</td>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>Father Details</td>
                                             </tr>
                                             <tr>
                                                 <td>Name</td>
-                                                <td>Siva Kumar</td>
+                                                <td>{fatherDetails.name}</td>
                                                 <td>Age</td>
-                                                <td>40</td>
+                                                <td>{fatherDetails.age}</td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
-                                                <td>PHD in Maths</td>
+                                                <td>{fatherDetails.qualification}</td>
                                                 <td>Occupation</td>
-                                                <td>Sr. Professor,VIT,Vellore</td>
+                                                <td>{fatherDetails.occupation}</td>
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td>9875462135</td>
+                                                <td>{fatherDetails.phone}</td>
                                                 <td>Email ID</td>
-                                                <td>sivakumar12@gmail.com</td>
+                                                <td>{fatherDetails.email}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annaual Income</td>
-                                                <td>10000000-20000000</td>
+                                                <td>{fatherDetails.income}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
+                                            </>}
+                                            { mother && <>
                                             <tr>
-                                                <td colSpan={4}>School Bus and Hostel Details</td>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>mother Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>{motherDetails.name}</td>
+                                                <td>Age</td>
+                                                <td>{motherDetails.age}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Qualification</td>
+                                                <td>{motherDetails.qualification}</td>
+                                                <td>Occupation</td>
+                                                <td>{motherDetails.occupation}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone No</td>
+                                                <td>{motherDetails.phone}</td>
+                                                <td>Email ID</td>
+                                                <td>{motherDetails.email}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Annaual Income</td>
+                                                <td>{motherDetails.income}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </>}
+                                            { !father && !mother && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>Guardian Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>{gaudianDetails.name}</td>
+                                                <td>Age</td>
+                                                <td>{gaudianDetails.age}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Qualification</td>
+                                                <td>{gaudianDetails.qualification}</td>
+                                                <td>Occupation</td>
+                                                <td>{gaudianDetails.occupation}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Phone No</td>
+                                                <td>{gaudianDetails.phone}</td>
+                                                <td>Email ID</td>
+                                                <td>{gaudianDetails.email}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Annaual Income</td>
+                                                <td>{gaudianDetails.income}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </>}
+                                            <tr>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>School Bus and Hostel Details</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Does the student need school bus : </td>
-                                                <td colSpan={2}>Yes</td>
+                                                <td colSpan={2}>{bus ? "Yes" : "No"}</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Does the student need Hostal : </td>
-                                                <td colSpan={2}>No</td>
+                                                <td colSpan={2}>{hostel ? "Yes" : "No"}</td>
                                             </tr>
+                                            {bus && <>
                                             <tr>
-                                                <td colSpan={4}>School Bus Details</td>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>School Bus Details</td>
                                             </tr>
                                             <tr>
                                                 <td>Bus Stop Area</td>
-                                                <td>Katpadi</td>
+                                                <td>{busdetails.area}</td>
                                                 <td>Bus Stop</td>
-                                                <td>Muthtamzil Nager</td>
+                                                <td>{busdetails.stop}</td>
                                             </tr>
                                             <tr>
                                                 <td>Available Bus</td>
-                                                <td>3A</td>
+                                                <td>{busdetails.busNo}</td>
                                                 <td>Route Bus</td>
-                                                <td>Thotapalayam Via Katpadi</td>
+                                                <td>{busdetails.route}</td>
                                             </tr>
-                                            
+                                            </>}
+                                            {hostel && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>Hostel Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Room Type</td>
+                                                <td>{hostelDetails.roomType}</td>
+                                                <td>Food Type</td>
+                                                <td>{hostelDetails.foodType}</td>
+                                            </tr>
+                                            </>}
                                         </tbody>
                                     </Table>
                                 </div>
