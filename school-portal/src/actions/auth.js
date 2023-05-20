@@ -24,12 +24,7 @@ export const StudentlogIn = (authData,navigate) => async (dispatch) => {
 export const TeacherlogIn = (authData,navigate) => async (dispatch) => {
     try{
         localStorage.setItem("type",authData.type);
-        if(authData.type === "student")
-        navigate('/StudentDashboard');
-        else if(authData.type ==="teacher")
-        navigate('/TeacherDashboard')
-        else if(authData.type ==="admin")
-        navigate('/TeacherDashboard')
+        navigate("Home");
 
         console.log(authData); 
         // const { data } = await axios.post('http://localhost:5000/teachers/login',authData)
