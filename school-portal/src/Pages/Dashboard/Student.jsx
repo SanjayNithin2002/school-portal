@@ -1,9 +1,10 @@
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Panel, Table, Steps, Tag, TagGroup, ButtonGroup, Button } from 'rsuite';
 import './Home.css';
-const { Column, HeaderCell, Cell } = Table;
+import { setCurrentUser } from "../../actions/currentUser";
+import { useDispatch, useSelector } from "react-redux";
 
 const data = [
     {
@@ -74,6 +75,13 @@ function Home() {
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(setCurrentUser({type:localStorage.getItem("type"),id:localStorage.getItem("id")}))
+    },[dispatch])
+
+const currentUser = useSelector(state => state.currentUserReducer);
+console.log(currentUser)
 
     const onNext = () => onChange(step + 1);
     const onPrevious = () => onChange(step - 1);

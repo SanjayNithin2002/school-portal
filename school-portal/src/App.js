@@ -25,7 +25,7 @@ function App() {
       );
     if (type === "admin")
       dispatch(
-        AdminlogIn({ email: Adminuserid, password: Adminpassword }, navigate)
+        AdminlogIn({ userID: Adminuserid, password: Adminpassword }, navigate)
       );
   };
   return (

@@ -1,11 +1,16 @@
 import React,{useState} from 'react'
 import { Steps, ButtonGroup, Button } from 'rsuite';
+import Table from 'react-bootstrap/esm/Table';
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {AddStudents} from "../../actions/auth";
 
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Student.css";
-import Table from 'react-bootstrap/esm/Table';
 
 const AddStudent = () => {
+    const [request, setRequest] = useState({});
+    const [email,setEmail] = useState('');
     const [name,setName] = useState({fname:'',lname:''});
     const [dob,setDob] = useState('');
     const [gender,setGender] = useState('');
@@ -13,19 +18,17 @@ const AddStudent = () => {
     const [aadhaar,setAadhaar] = useState('');
     const [secondLang,setSecondLang] = useState('');
     const [standard,setStandard] = useState('');
-    const [fatherDetails,setFatherDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
-    const [motherDetails,setMotherDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
-    const [gaudianDetails,setGaudianDetails] = useState({name:'',age:null,qualification:'',occupation:'',income:'',phone:null,email:''});
+    const [fatherDetails,setFatherDetails] = useState({name:'',age:null,qualification:'',occupation:'',annualIncome:'',phoneNumber:null,email:''});
+    const [motherDetails,setMotherDetails] = useState({name:'',age:null,qualification:'',occupation:'',annualIncome:'',phoneNumber:null,email:''});
+    const [gaudianDetails,setGaudianDetails] = useState({name:'',age:null,qualification:'',occupation:'',annualIncome:'',phoneNumber:null,email:''});
     const [address,setAddress] = useState({line1:'',line2:'',city:'',state:'',pincode:''});
-    const [busdetails,setBusdetails] = useState({area:'',stop:'',busNo:'',route:''});
-    const [hostelDetails,setHostelDetails] = useState({roomType:'',foodType:''});
+    const [busdetails,setBusdetails] = useState({isNeeded:false,busStopArea:'',busStop:'',availableBus:''});
+    const [hostelDetails,setHostelDetails] = useState({isNeeded:false,roomType:'',foodType:''});
     const [step, setStep] = useState(0);
     const [father,setFather] = useState(true);
     const [mother,setMother] = useState(true); 
     const [bus,setBus] = useState(false);
     const [hostel,setHostel] = useState(false);
-    // eslint-disable-next-line
-    const [siblings,setSiblings] = useState(false);
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
@@ -39,12 +42,64 @@ const AddStudent = () => {
             }
         }
         else if(step===1){
+            var flag=1;
+            if(father && (!fatherDetails.name || !fatherDetails.age || !fatherDetails.qualification || !fatherDetails.occupation || !fatherDetails.email || !fatherDetails.phoneNumber)){
+                alert("Kindly Fill Father Details")
+                flag=0;
+            }
+            if(mother && (!motherDetails.name || !motherDetails.age || !motherDetails.qualification || !motherDetails.occupation || !motherDetails.email || !motherDetails.phoneNumber)){
+                alert("Kindly Fill Mother Details")
+                flag=0;
+            }
+            if(!father && !mother && (!gaudianDetails.name || !gaudianDetails.age || !gaudianDetails.qualification || !gaudianDetails.occupation || !gaudianDetails.email || !gaudianDetails.phoneNumber)){
+                alert("Kindly Fill Gaudian Details")
+                flag=0;
+            }
+            if(!address.line1 || !address.city || !address.state || !address.pincode){
+                alert("Kindly Fill the Address")
+                flag=0;
+            }
+            if(flag===1){
+                onChange(step + 1);
+            }
+            
+            setFatherDetails((prev) => ({...prev,annualIncome:100000}))
+        }
+        else if(step===2){
+            onChange(step + 1);
+            setRequest({
+                applicationNumber:"T123123",
+                firstName:name.fname,
+                lastName:name.lname,
+                dob,
+                gender,
+                bloodGroup:blood,
+                aadhaarNumber:aadhaar,
+                motherTongue:secondLang,
+                standard:5,
+                section:"",
+                email,
+                address,
+                father:father ? fatherDetails:null,
+                mother:mother ? motherDetails:null,
+                guadian:!father && !mother ? gaudianDetails:null,
+                busDetails: busdetails,
+                hostelDetails : hostelDetails,
+            });
+        }
+        else if(step===3){
             
         }
     }
     const onPrevious = () => onChange(step - 1);
     const stardardList = ['LKG','UKG','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
-    const incomeList = ["No Income","0-h50000","50000-200000","200000-400000","400000-700000","More than 700000"]
+    const incomeList = ["No Income","0-50000","50000-200000","200000-400000","400000-700000","More than 700000"]
+    const dispatch = useDispatch();
+    const navigator = useNavigate();
+    const handleSubmit = () =>{
+        dispatch(AddStudents(request,navigator));
+    }
+    
     return (
         <div className="Main">
             <SideNavBar />
@@ -52,7 +107,7 @@ const AddStudent = () => {
                 <div className="container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Add Student</h2>
-                        {step===3 && <button className='btn btn-primary'>Submit</button>}
+                        {step===3 && <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button>}
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="">
@@ -116,6 +171,10 @@ const AddStudent = () => {
                                                 <td>Mother Tongue</td>
                                                 <td><input value={secondLang} onChange={(e) => setSecondLang(e.target.value)}  type="text" /></td>
                                             </tr>
+                                            <tr>
+                                                <td>Email ID</td>
+                                                <td><input value={email} onChange={(e) => setEmail(e.target.value)}  type="text" /></td>
+                                            </tr>
                                         </tbody>
                                     </Table>
                                 </div>
@@ -128,15 +187,11 @@ const AddStudent = () => {
                                         <tbody>
                                             <tr>
                                                 <td>Do he/she have a Father?</td>
-                                                <td className='radio'><input type="radio" name="father" onClick={()=>setFather(true)} />Yes &emsp; <input type="radio" name="father" onClick={()=>setFather(false)} />No</td>
+                                                <td className='radio'><input type="radio" name="father" onClick={()=>setFather(true)} checked={father}/>Yes &emsp; <input type="radio" name="father" onClick={()=>setFather(false)} checked={!father}/>No</td>
                                             </tr>
                                             <tr>
                                                 <td>Do he/she have a Mother?</td>
-                                                <td className='radio'><input type="radio" name="mother" onClick={()=>setMother(true)} />Yes &emsp; <input type="radio" name="mother" onClick={()=>setMother(false)} />No</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Do he/she have a Siblings?</td>
-                                                <td className='radio'><input type="radio" name="siblings" />Yes &emsp; <input type="radio" name="siblings" />No</td>
+                                                <td className='radio'><input type="radio" name="mother" onClick={()=>setMother(true)} checked={mother}/>Yes &emsp; <input type="radio" name="mother" onClick={()=>setMother(false)} checked={!mother}/>No</td>
                                             </tr>
                                             {father && <>
                                             <tr>
@@ -161,7 +216,7 @@ const AddStudent = () => {
                                             <tr>
                                                 <td>Annual Income</td>
                                                 <td>
-                                                    <select value={fatherDetails.income} onChange={(e) => setFatherDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                    <select value={fatherDetails.annualIncome} onChange={(e) => setFatherDetails((prev) => ({...prev,annualIncome:e.target.value}))}>
                                                         <option value="" disabled>Select Annual Income</option>
                                                         {
                                                             incomeList.map((item)=>(
@@ -173,7 +228,7 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input value={fatherDetails.phone} onChange={(e)=>setFatherDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
+                                                <td><input value={fatherDetails.phoneNumber} onChange={(e)=>setFatherDetails((prev) => ({...prev,phoneNumber:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
@@ -204,7 +259,7 @@ const AddStudent = () => {
                                             <tr>
                                                 <td>Annual Income</td>
                                                 <td>
-                                                    <select value={motherDetails.income} onChange={(e) => setMotherDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                    <select value={motherDetails.annualIncome} onChange={(e) => setMotherDetails((prev) => ({...prev,annualIncome:e.target.value}))}>
                                                         <option value="" disabled>Select Annual Income</option>
                                                         {
                                                             incomeList.map((item)=>(
@@ -216,7 +271,7 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input value={motherDetails.phone} onChange={(e)=>setMotherDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
+                                                <td><input value={motherDetails.phoneNumber} onChange={(e)=>setMotherDetails((prev) => ({...prev,phoneNumber:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
@@ -247,7 +302,7 @@ const AddStudent = () => {
                                             <tr>
                                                 <td>Annual Income</td>
                                                 <td>
-                                                    <select value={gaudianDetails.income} onChange={(e) => setGaudianDetails((prev) => ({...prev,income:e.target.value}))}>
+                                                    <select value={gaudianDetails.annualIncome} onChange={(e) => setGaudianDetails((prev) => ({...prev,annualIncome:e.target.value}))}>
                                                         <option value="" disabled>Select Annual Income</option>
                                                         {
                                                             incomeList.map((item)=>(
@@ -259,7 +314,7 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td><input value={gaudianDetails.phone} onChange={(e)=>setGaudianDetails((prev) => ({...prev,phone:e.target.value}))} type="text" /></td>
+                                                <td><input value={gaudianDetails.phoneNumber} onChange={(e)=>setGaudianDetails((prev) => ({...prev,phoneNumber:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Email ID</td>
@@ -302,7 +357,7 @@ const AddStudent = () => {
                                             (bus || (!bus && !hostel) ) && 
                                             <tr>
                                                 <td>Does the student need school bus : </td>
-                                                <td><input type="radio" name="bus" onClick={()=>setBus(true)} />Yes &emsp; <input type="radio" name="bus" onClick={()=>setBus(false)} />No</td>
+                                                <td><input type="radio" name="bus" onClick={()=>{setBus(true);setBusdetails((prev)=>({...prev,isNeeded:true}));}} checked={bus} />Yes &emsp; <input type="radio" name="bus" onClick={()=>{setBus(false);setBusdetails((prev)=>({...prev,isNeeded:false}));}} checked={!bus} />No</td>
                                             </tr>
                                              
                                            } 
@@ -310,21 +365,21 @@ const AddStudent = () => {
                                             (hostel || (!bus && !hostel) ) && 
                                             <tr>
                                                 <td>Does the student need Hostal : </td>
-                                                <td><input type="radio" name="hostel" onClick={()=>setHostel(true)} />Yes &emsp; <input type="radio" name="hostel" onClick={()=>setHostel(false)} />No</td>
+                                                <td><input type="radio" name="hostel" onClick={()=>{setHostel(true);setHostelDetails((prev)=>({...prev,isNeeded:true}));}} checked={hostel} />Yes &emsp; <input type="radio" name="hostel" onClick={()=>{setHostel(false);setHostelDetails((prev)=>({...prev,isNeeded:false}));}} checked={!hostel} />No</td>
                                             </tr>
                                             }
                                             {bus && <>
                                             <tr>
                                                 <td>Bus Stop Area</td>
-                                                <td><input value={busdetails.area} onChange={(e)=>setBusdetails((prev) => ({...prev,area:e.target.value}))} type="text" /></td>
+                                                <td><input value={busdetails.busStopArea} onChange={(e)=>setBusdetails((prev) => ({...prev,busStopArea:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Bus Stop</td>
-                                                <td><input value={busdetails.stop} onChange={(e)=>setBusdetails((prev) => ({...prev,stop:e.target.value}))} type="text" /></td>
+                                                <td><input value={busdetails.busStop} onChange={(e)=>setBusdetails((prev) => ({...prev,busStop:e.target.value}))} type="text" /></td>
                                             </tr>
                                             <tr>
                                                 <td>Available Bus</td>
-                                                <td><input value={busdetails.busNo} onChange={(e)=>setBusdetails((prev) => ({...prev,busNo:e.target.value}))} type="text" /><br/>Automatically</td>
+                                                <td><input value={busdetails.availableBus} onChange={(e)=>setBusdetails((prev) => ({...prev,availableBus:e.target.value}))} type="text" /><br/>Automatically</td>
                                             </tr>
                                             <tr>
                                                 <td>Route Bus</td>
@@ -379,6 +434,12 @@ const AddStudent = () => {
                                                 <td>{blood}</td>
                                             </tr>
                                             <tr>
+                                                <td>Email ID</td>
+                                                <td>{email}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
                                                 <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Family Details</td>
                                             </tr>
                                             <tr>
@@ -388,10 +449,6 @@ const AddStudent = () => {
                                             <tr>
                                                 <td colSpan={2}>Do he/she have a Mother?</td>
                                                 <td colSpan={2} className='radio'>{mother ? "Yes" : "No"}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>Do he/she have a Siblings?</td>
-                                                <td colSpan={2} className='radio'>No</td>
                                             </tr>
                                             { father && <>
                                             <tr>
@@ -411,13 +468,13 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td>{fatherDetails.phone}</td>
+                                                <td>{fatherDetails.phoneNumber}</td>
                                                 <td>Email ID</td>
                                                 <td>{fatherDetails.email}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annaual Income</td>
-                                                <td>{fatherDetails.income}</td>
+                                                <td>{fatherDetails.annualIncome}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -440,13 +497,13 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td>{motherDetails.phone}</td>
+                                                <td>{motherDetails.phoneNumber}</td>
                                                 <td>Email ID</td>
                                                 <td>{motherDetails.email}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annaual Income</td>
-                                                <td>{motherDetails.income}</td>
+                                                <td>{motherDetails.annualIncome}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -469,13 +526,13 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Phone No</td>
-                                                <td>{gaudianDetails.phone}</td>
+                                                <td>{gaudianDetails.phoneNumber}</td>
                                                 <td>Email ID</td>
                                                 <td>{gaudianDetails.email}</td>
                                             </tr>
                                             <tr>
                                                 <td>Annaual Income</td>
-                                                <td>{gaudianDetails.income}</td>
+                                                <td>{gaudianDetails.annualIncome}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -497,13 +554,13 @@ const AddStudent = () => {
                                             </tr>
                                             <tr>
                                                 <td>Bus Stop Area</td>
-                                                <td>{busdetails.area}</td>
+                                                <td>{busdetails.busStopArea}</td>
                                                 <td>Bus Stop</td>
-                                                <td>{busdetails.stop}</td>
+                                                <td>{busdetails.busStop}</td>
                                             </tr>
                                             <tr>
                                                 <td>Available Bus</td>
-                                                <td>{busdetails.busNo}</td>
+                                                <td>{busdetails.availableBus}</td>
                                                 <td>Route Bus</td>
                                                 <td>{busdetails.route}</td>
                                             </tr>
