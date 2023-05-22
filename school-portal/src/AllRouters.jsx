@@ -29,8 +29,8 @@ import Fees from "./Pages/Fees/Fees";
 import AddExam from "./Pages/Exam/AddExam";
 import Meeting from "./Pages/Meeting/Meeting";
 import AddMeeting from "./Pages/Meeting/AddMeeting";
-import AdminBonafide from "./Pages/Bonafide/AdminBonafide";
-import Student from "./components/SideNavBar/Student";
+import CreateClass from "./Pages/Class/CreateClass";
+import ClassInfo from "./Pages/Class/ClassInfo";
 
 const AllRoutes = () => {
     return(
@@ -64,7 +64,8 @@ const AllRoutes = () => {
                 <Route path='/AddSchedule' element={<AddExam/>} />
                 <Route path='/Meeting' element={<Meeting/>} />
                 <Route path='/AddMeeting' element={<AddMeeting/>} />
-                <Route path='/AdminBonafide' element={<AdminBonafide/>} />
+                <Route path='/CreateClass' element={<CreateClass/>} />
+                <Route path='/ClassInfo' element={<ClassInfo/>} />
                 
             </Routes>
         </BrowserRouter>

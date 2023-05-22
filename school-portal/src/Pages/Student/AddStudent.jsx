@@ -538,6 +538,27 @@ const AddStudent = () => {
                                             </tr>
                                             </>}
                                             <tr>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Address Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address Line1</td>
+                                                <td>{address.line1}</td>
+                                                <td>City</td>
+                                                <td>{address.city}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address Line2</td>
+                                                <td>{address.line2}</td>
+                                                <td>State</td>
+                                                <td>{address.state}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pincode</td>
+                                                <td>{address.pincode}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
                                                 <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>School Bus and Hostel Details</td>
                                             </tr>
                                             <tr>

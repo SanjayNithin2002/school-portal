@@ -1,9 +1,12 @@
 import React,{useState} from 'react'
 import { Steps, ButtonGroup, Button } from 'rsuite';
+import Table from 'react-bootstrap/esm/Table';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import { AddTeachers } from '../../actions/auth';
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Teacher.css";
-import Table from 'react-bootstrap/esm/Table';
 
 const AddTeacher = () => {
     const [step, setStep] = useState(0);
@@ -17,10 +20,10 @@ const AddTeacher = () => {
     const [blood,setBlood] = useState('');
     const [aadhaar,setAadhaar] = useState('');
     const [secondLang,setSecondLang] = useState('');
-    const [experience,setExperience] = useState(0);
+    const [experience,setExperience] = useState();
     const [address,setAddress] = useState({line1:'',line2:'',city:'',state:'',pincode:''});
     const [hostelDetails,setHostelDetails] = useState({isNeeded:false,roomType:'',foodType:''});
-    const [salaryDetails,setSalaryDetails] = useState({basic:0,hra:0,conveyance:0,pa:0,pf:0,pt:0})
+    const [salaryDetails,setSalaryDetails] = useState({basic:'',hra:'',conveyance:'',pa:'',pf:'',pt:''})
     const [busdetails,setBusdetails] = useState({isNeeded:false,busStopArea:'',busStop:'',availableBus:''});
     const [qualification,setQualification] = useState([{}]);
     const [ugDetails,setUgDetails] = useState({title:'UG',collegeName:'',collegeLocation:'',yearPassed:'',percentage:''})
@@ -28,9 +31,9 @@ const AddTeacher = () => {
     const [phdDetails,setPhdDetails] = useState({title:'PhD',collegeName:'',collegeLocation:'',yearPassed:'',percentage:''})
     const [bus,setBus] = useState("");
     const [hostel,setHostel] = useState("");
-    const [UG,setUG] = useState("");
-    const [PG,setPG] = useState(""); 
-    const [PHD,setPHD] = useState("");
+    const [UG,setUG] = useState(true);
+    const [PG,setPG] = useState(false); 
+    const [PHD,setPHD] = useState(false);
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
@@ -52,46 +55,42 @@ const AddTeacher = () => {
         }
         else if(step===1){
             let flag=1;
-            // if(!experience || !salaryDetails.basic || !salaryDetails.conveyance || !salaryDetails.hra || !salaryDetails.pa || !salaryDetails.pf || !salaryDetails.pt){
-            //     alert("Kindly Fill Father Details")
-            //     flag=0;
-            // }
-            // if((UG || PG || PHD) && (!ugDetails.collegeName || !ugDetails.collegeLocation || !ugDetails.yearPassed || !ugDetails.percentage)){
-            //     alert("Kindly Fill Father Details")
-            //     flag=0;
-            // }
-            // else if(UG || PG || PHD){
-            //     setQualification.push(ugDetails);
-            // }
-            // if((PG || PHD) && (!pgDetails.collegeName || !pgDetails.collegeLocation || !pgDetails.yearPassed || !pgDetails.percentage)){
-            //     alert("Kindly Fill Mother Details")
-            //     flag=0;
-            // }
-            // else if(PG || PHD){
-            //     setQualification.push(pgDetails);
-            // }
-            // if(PHD && (!phdDetails.collegeName || !phdDetails.collegeLocation || !phdDetails.yearPassed || !phdDetails.percentage)){
-            //     alert("Kindly Fill Gaudian Details")
-            //     flag=0;
-            // }
-            // else if(PHD){
-            //     setQualification.push(phdDetails);
-            // }
+            if(!experience || !salaryDetails.basic || !salaryDetails.conveyance || !salaryDetails.hra || !salaryDetails.pa || !salaryDetails.pf || !salaryDetails.pt){
+                alert("Kindly Fill experience Details")
+                flag=0;
+            }
+            if((UG || PG || PHD) && (!ugDetails.collegeName || !ugDetails.collegeLocation || !ugDetails.yearPassed || !ugDetails.percentage)){
+                alert("Kindly Fill UG Details")
+                flag=0;
+            }
+            if((PG || PHD) && (!pgDetails.collegeName || !pgDetails.collegeLocation || !pgDetails.yearPassed || !pgDetails.percentage)){
+                alert("Kindly Fill Mother Details")
+                flag=0;
+            }
+            if(PHD && (!phdDetails.collegeName || !phdDetails.collegeLocation || !phdDetails.yearPassed || !phdDetails.percentage)){
+                alert("Kindly Fill Gaudian Details")
+                flag=0;
+            }
             if(flag===1){
                 onChange(step + 1);
+                if(PHD)
                 setQualification([ugDetails,pgDetails,phdDetails])
+                if(PG)
+                setQualification([ugDetails,pgDetails])
+                if(UG)
+                setQualification([ugDetails])
             }
         }
         else if(step===2){
             onChange(step + 1);
             const req = {
-                emp,
+                empID:emp,
                 firstName:name.fname,
                 lastName:name.lname,
                 dob,
                 gender,
                 bloodGroup:blood,
-                aadhaarNumber:aadhaar,
+                aadharNumber:aadhaar,
                 motherTongue:secondLang,
                 phoneNumber:phone,
                 email,
@@ -108,8 +107,11 @@ const AddTeacher = () => {
     } 
     const onPrevious = () => onChange(step - 1);
 
-    const handleSubmit = () =>{
-
+    const dispatch = useDispatch();
+    const navigator = useNavigate();
+    const handleSubmit1 = () =>{
+        console.log("hi")
+        dispatch(AddTeachers(request,navigator));
     }
 
     return (
@@ -119,7 +121,7 @@ const AddTeacher = () => {
                 <div className="container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Add Staff</h2>
-                        {step===3 && <button onClick={() => handleSubmit} className='btn btn-primary'>Submit</button>}
+                        {step===3 && <button onClick={handleSubmit1} className='btn btn-primary'>Submit</button>}
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="">
@@ -218,10 +220,10 @@ const AddTeacher = () => {
                                             
                                             <tr>
                                                 <td>Qualification</td>
-                                                <td className='radio'><input type="checkbox" name="qualification" onClick={()=>setUG(!UG)} />UG &emsp; <input type="checkbox" name="qualification" onClick={()=>setPG(!PG)} />PG &emsp; <input type="checkbox" name="qualification" onClick={()=>setPHD(!PHD)} />PHD &emsp;</td>
+                                                <td className='radio'><input type="radio" name="qualification" onClick={()=>{setUG(true);setPG(false);setPHD(false);}} checked={UG}/>UG &emsp; <input type="radio" name="qualification" onClick={()=>{setUG(false);setPG(true);setPHD(false);}} checked={PG}/>PG &emsp; <input type="radio" name="qualification" onClick={()=>{setUG(false);setPG(false);setPHD(true);}} checked={PHD}/>PHD &emsp;</td>
                                             </tr>
                                             <tr>
-                                                <td>How many years experience in this field</td>
+                                                <td>How many years experience in this field ?</td>
                                                 <td className='radio'><input value={experience} onChange={(e) => setExperience(e.target.value)}  type="number" /></td>
                                             </tr>
                                             {(UG || PG || PHD) && <>
@@ -248,7 +250,7 @@ const AddTeacher = () => {
                                             }
                                             {(PG || PHD) && <>
                                                 <tr>
-                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>UG Details</td>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>PG Details</td>
                                             </tr>
                                             <tr>
                                                 <td>College Name</td>
@@ -270,7 +272,7 @@ const AddTeacher = () => {
                                             }
                                             {PHD && <>
                                                 <tr>
-                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>UG Details</td>
+                                                <td style={{textAlign:"center"}} colSpan={2} className='newstudent-tilte'>PhD Details</td>
                                             </tr>
                                             <tr>
                                                 <td>College Name</td>
@@ -382,101 +384,172 @@ const AddTeacher = () => {
                                     <Table className='AddTeacher-Table-List-1'>
                                         <tbody>
                                             <tr>
-                                                <td colSpan={4}>Personal Details</td>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Personal Details</td>
                                             </tr>
                                             <tr>
                                                 <td>First Name</td>
-                                                <td>Sathiya</td>
+                                                <td>{name.fname}</td>
                                                 <td>Last Name</td>
-                                                <td>Siva</td>
+                                                <td>{name.lname}</td>
                                             </tr>
                                             <tr>
                                                 <td>DOB</td>
-                                                <td>12/12/2012</td>
+                                                <td>{dob}</td>
                                                 <td>Gender</td>
-                                                <td>Male</td>
+                                                <td>{gender}</td>
                                             </tr>
                                             <tr>
-                                                <td>Standard</td>
-                                                <td>8th grade</td>
+                                                <td>EMP ID</td>
+                                                <td>{emp}</td>
                                                 <td>Aadhaar No</td>
-                                                <td>798465894662</td>
+                                                <td>{aadhaar}</td>
                                             </tr>
                                             <tr>
                                                 <td>Mother Tongue</td>
-                                                <td>Tamil</td>
+                                                <td>{secondLang}</td>
                                                 <td>Blood Group</td>
-                                                <td>B+</td>
+                                                <td>{blood}</td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={4}>Family Details</td>
+                                                <td>Address Line1</td>
+                                                <td>{address.line1}</td>
+                                                <td>City</td>
+                                                <td>{address.city}</td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={2}>Do he/she have a Father?</td>
-                                                <td colSpan={2} className='radio'>Yes</td>
+                                                <td>Address Line2</td>
+                                                <td>{address.line2}</td>
+                                                <td>State</td>
+                                                <td>{address.state}</td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={2}>Do he/she have a Mother?</td>
-                                                <td colSpan={2} className='radio'>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>Do he/she have a Siblings?</td>
-                                                <td colSpan={2} className='radio'>No</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={4}>Father Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Siva Kumar</td>
-                                                <td>Age</td>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Qualification</td>
-                                                <td>PHD in Maths</td>
-                                                <td>Occupation</td>
-                                                <td>Sr. Professor,VIT,Vellore</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone No</td>
-                                                <td>9875462135</td>
-                                                <td>Email ID</td>
-                                                <td>sivakumar12@gmail.com</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Annaual Income</td>
-                                                <td>10000000-20000000</td>
+                                                <td>Pincode</td>
+                                                <td>{address.pincode}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colSpan={4}>School Bus and Hostel Details</td>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}} >Education Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={2}>Qualification</td>
+                                                <td colSpan={2} className='radio'>{UG && "UG"}{PG && "PG"}{PHD && "PHD"}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={2}>How many years experience in this field ?</td>
+                                                <td colSpan={2} className='radio'>{experience}</td>
+                                            </tr>
+                                            {( UG || PG || PHD ) && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>UG Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td>{ugDetails.collegeName}</td>
+                                                <td>College Location</td>
+                                                <td>{ugDetails.collegeLocation}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed Out</td>
+                                                <td>{ugDetails.yearPassed}</td>
+                                                <td>Percentage</td>
+                                                <td>{ugDetails.percentage}</td>
+                                            </tr>
+                                            </>}
+                                            {( PG || PHD ) && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>PG Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td>{pgDetails.collegeName}</td>
+                                                <td>College Location</td>
+                                                <td>{pgDetails.collegeLocation}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed Out</td>
+                                                <td>{pgDetails.yearPassed}</td>
+                                                <td>Percentage</td>
+                                                <td>{pgDetails.percentage}</td>
+                                            </tr>
+                                            </>}
+                                            {( PHD ) && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>PhD Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>College Name</td>
+                                                <td>{phdDetails.collegeName}</td>
+                                                <td>College Location</td>
+                                                <td>{phdDetails.collegeLocation}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year Passed Out</td>
+                                                <td>{phdDetails.yearPassed}</td>
+                                                <td>Percentage</td>
+                                                <td>{phdDetails.percentage}</td>
+                                            </tr>
+                                            </>}
+                                            <tr>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}} >Salary Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Basic</td>
+                                                <td>{salaryDetails.basic}</td>
+                                                <td>HRA</td>
+                                                <td>{salaryDetails.hra}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Conveyance</td>
+                                                <td>{salaryDetails.conveyance}</td>
+                                                <td>PA</td>
+                                                <td>{salaryDetails.pa}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PF</td>
+                                                <td>{salaryDetails.pf}</td>
+                                                <td>Personal Tax</td>
+                                                <td>{salaryDetails.pt}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>School Bus and Hostel Details</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Does the student need school bus : </td>
-                                                <td colSpan={2}>Yes</td>
+                                                <td colSpan={2}>{bus ? "Yes" : "No"}</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={2}>Does the student need Hostal : </td>
-                                                <td colSpan={2}>No</td>
+                                                <td colSpan={2}>{hostel ? "Yes" : "No"}</td>
                                             </tr>
+                                            {bus && <>
                                             <tr>
-                                                <td colSpan={4}>School Bus Details</td>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>School Bus Details</td>
                                             </tr>
                                             <tr>
                                                 <td>Bus Stop Area</td>
-                                                <td>Katpadi</td>
+                                                <td>{busdetails.busStopArea}</td>
                                                 <td>Bus Stop</td>
-                                                <td>Muthtamzil Nager</td>
+                                                <td>{busdetails.busStop}</td>
                                             </tr>
                                             <tr>
                                                 <td>Available Bus</td>
-                                                <td>3A</td>
+                                                <td>{busdetails.availableBus}</td>
                                                 <td>Route Bus</td>
-                                                <td>Thotapalayam Via Katpadi</td>
+                                                <td>{busdetails.route}</td>
                                             </tr>
-                                            
+                                            </>}
+                                            {hostel && <>
+                                            <tr>
+                                                <td colSpan={4} style={{fontWeight:"bold"}}>Hostel Details</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Room Type</td>
+                                                <td>{hostelDetails.roomType}</td>
+                                                <td>Food Type</td>
+                                                <td>{hostelDetails.foodType}</td>
+                                            </tr>
+                                            </>}                                            
                                         </tbody>
                                     </Table>
                                 </div>

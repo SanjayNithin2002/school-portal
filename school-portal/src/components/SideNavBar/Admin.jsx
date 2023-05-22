@@ -25,7 +25,7 @@ const Admin = () => {
         </Nav.Item>
         <Nav.Item href='/StudentInfo'>Student Info</Nav.Item>
         <Nav.Item href='/AddStudent'>Add Student</Nav.Item>
-        <Nav.Item href='/AdminBonafide'>Student Bonafide</Nav.Item>
+        <Nav.Item href='/Bonafide'>Student Bonafide</Nav.Item>
         <Nav.Item divider />
         <Nav.Item panel style={{ padding: '15px 20px',color: '#aaa'}}>
           Staff
@@ -36,6 +36,7 @@ const Admin = () => {
         <Nav.Item href='/Meeting'>Meetings</Nav.Item>
       </Nav.Menu>
       <Nav.Menu placement="rightStart" title="Class" icon={<Class />}>
+        <Nav.Item href='/ClassInfo'>Class Info</Nav.Item>
         <Nav.Item href='/Exam'>Exams</Nav.Item>
         <Nav.Item href='/TimeTable'>TimeTable</Nav.Item>
       </Nav.Menu>

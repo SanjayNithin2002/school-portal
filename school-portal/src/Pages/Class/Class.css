@@ -1,0 +1,36 @@
+.ClassSelectPicker{
+    width: 75%;
+    padding: 5px;
+    border-radius: 5px;
+}
+.ClassInfo-container{
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.CreateClass-Table-List{
+    width:100%;
+    justify-content: center;
+}
+
+.CreateClass-Table-List tr:nth-child(odd) td:nth-child(odd){
+    background-color: gray;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 700;
+}
+
+.CreateClass-Table-List tr:nth-child(even) td:nth-child(odd){
+    background-color: lightgray;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 700;
+}
+
+.CreateClass-Table-List input[type="text"]{
+    padding:2px;
+    width:75%;
+    font-size:18px;
+}

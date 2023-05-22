@@ -5,17 +5,17 @@ import { setCurrentUser } from "./currentUser"
 
 export const StudentlogIn = (authData,navigate) => async (dispatch) => {
     try{
-        localStorage.setItem("type","student")
-        navigate('/Home');
-        console.log(authData); 
-        // const { data } = await axios.post('https://schoolportalbackend.onrender.com/students/login',authData)
-        // if(data.docs) {
-        //     localStorage.setItem("type","student")
-        //     localStorage.setItem("id",data.docs._id)
-        //     localStorage.setItem("token",data.token)
-        //     dispatch(setCurrentUser("student",data.docs._id))
-        // }  
-        // data.docs ? navigate('/Home') : navigate('/')
+        // localStorage.setItem("type","student")
+        // navigate('/Home');
+        // console.log(authData); 
+        const { data } = await axios.post('https://schoolportalbackend.onrender.com/students/login',authData)
+        if(data.docs) {
+            localStorage.setItem("type","student")
+            localStorage.setItem("id",data.docs._id)
+            localStorage.setItem("token",data.token)
+            dispatch(setCurrentUser("student",data.docs._id))
+        }  
+        data.docs ? navigate('/Home') : navigate('/')
     }
     catch(err){
         console.log(err)
@@ -63,6 +63,30 @@ export const AddStudents = (authData,navigate) => async (dispatch) => {
     try{
         console.log(authData)
         const {data} = await api.AddStudent(authData)
+        console.log(data)
+        navigate('/AddStudent');
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const AddTeachers = (authData,navigate) => async (dispatch) => {
+    try{
+        console.log(authData)
+        const {data} = await api.AddTeacher(authData)
+        console.log(data)
+        navigate('/AddStaff');
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const requestContact = (contactData,navigate) => async (dispatch) => {
+    try{
+        console.log(contactData)
+        const {data} = await api.requestContact(contactData)
         console.log(data)
         navigate('/Home');
     }

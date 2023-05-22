@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { Container, Header, Content, Footer, Grid, Row, Col, FlexboxGrid, Form, ButtonToolbar, Button, Input, InputGroup, InputNumber } from 'rsuite';
 import LocationIcon from '@rsuite/icons/Location';
 import TimeIcon from '@rsuite/icons/Time';
 import EmailIcon from '@rsuite/icons/Email';
 import PhoneIcon from '@rsuite/icons/Phone';
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+
+import {requestContact} from "../../actions/auth";
+import SideNavBar from "../../components/SideNavBar/SideNavBar";
+
 const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
 const LocIcon = ({ size }) => <LocationIcon style={{ fontSize: size, marginRight: 10 }} />;
 const TimIcon = ({ size }) => <TimeIcon style={{ fontSize: size, marginRight: 10 }} />;
@@ -13,6 +18,13 @@ const MailIcon = ({ size }) => <EmailIcon style={{ fontSize: size, marginRight: 
 const PhIcon = ({ size }) => <PhoneIcon style={{ fontSize: size, marginRight: 10 }} />;
 
 function ContactUsStudent() {
+  const [request,setRequest] = useState({name:'',email:'',subject:'',message:''});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleSubmit = () =>{
+    dispatch(requestContact(request,navigate));
+  }
+
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -53,25 +65,25 @@ function ContactUsStudent() {
                 <Form fluid>
                   <Form.Group controlId="name-1">
                     <Form.ControlLabel><h6>Username</h6></Form.ControlLabel>
-                    <Form.Control name="name" />
+                    <Form.Control defaultValue={request.name} onChange={(value) => setRequest((prev)=>({...prev,name:value}))} name="name" />
                     <Form.HelpText>Required</Form.HelpText>
                   </Form.Group>
                   <Form.Group controlId="email-1">
                     <Form.ControlLabel><h6>Email ID</h6></Form.ControlLabel>
-                    <Form.Control name="email" type="email" />
+                    <Form.Control defaultValue={request.email} onChange={(value) => setRequest((prev)=>({...prev,email:value}))} name="email" type="email" />
                     <Form.HelpText>Required</Form.HelpText>
                   </Form.Group>
                   <Form.Group controlId="password-1">
                     <Form.ControlLabel><h6>Subject</h6></Form.ControlLabel>
-                    <Form.Control name="text" type="text" autoComplete="on" />
+                    <Form.Control defaultValue={request.subject} onChange={(value) => setRequest((prev)=>({...prev,subject:value}))} name="text" type="text" autoComplete="on" />
                   </Form.Group>
                   <Form.Group controlId="textarea-1">
                     <Form.ControlLabel><h6>Message</h6></Form.ControlLabel>
-                    <Form.Control rows={5} cols={12} name="textarea" accepter={Textarea} />
+                    <Form.Control defaultValue={request.message} onChange={(value) => setRequest((prev)=>({...prev,message:value}))} rows={5} cols={12} name="textarea" accepter={Textarea} />
                   </Form.Group>
                   <Form.Group controlId="input-group" alignItems="center">
                     <ButtonToolbar>
-                      <Button appearance="primary">Submit</Button>
+                      <Button appearance="primary" onClick={handleSubmit}>Submit</Button>
                       <Button appearance="default">Cancel</Button>
                     </ButtonToolbar>
                   </Form.Group>
