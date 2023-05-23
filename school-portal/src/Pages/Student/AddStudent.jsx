@@ -12,6 +12,7 @@ const AddStudent = () => {
     const [request, setRequest] = useState({});
     const [email,setEmail] = useState('');
     const [name,setName] = useState({fname:'',lname:''});
+    const [applicationNumber,setApplicationNumber] = useState('');
     const [dob,setDob] = useState('');
     const [gender,setGender] = useState('');
     const [blood,setBlood] = useState('');
@@ -68,7 +69,7 @@ const AddStudent = () => {
         else if(step===2){
             onChange(step + 1);
             setRequest({
-                applicationNumber:"T123123",
+                applicationNumber,
                 firstName:name.fname,
                 lastName:name.lname,
                 dob,
@@ -76,7 +77,7 @@ const AddStudent = () => {
                 bloodGroup:blood,
                 aadhaarNumber:aadhaar,
                 motherTongue:secondLang,
-                standard:5,
+                standard,
                 section:"",
                 email,
                 address,
@@ -92,7 +93,7 @@ const AddStudent = () => {
         }
     }
     const onPrevious = () => onChange(step - 1);
-    const stardardList = ['LKG','UKG','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+    const standardList = [{label:"I",value:1},{label:"II",value:2},{label:"III",value:3},{label:"IV",value:4},{label:"V",value:5},{label:"VI",value:6},{label:"VII",value:7},{label:"VIII",value:8},{label:"IX",value:9},{label:"X",value:10},{label:"XI",value:11},{label:"XII",value:12}];
     const incomeList = ["No Income","0-50000","50000-200000","200000-400000","400000-700000","More than 700000"]
     const dispatch = useDispatch();
     const navigator = useNavigate();
@@ -147,6 +148,10 @@ const AddStudent = () => {
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td>Application No</td>
+                                                <td><input value={applicationNumber} onChange={(e)=>setApplicationNumber(e.target.value)} type="text" /></td>
+                                            </tr>
+                                            <tr>
                                                 <td>Blood Group</td>
                                                 <td><input value={blood} onChange={(e) => setBlood(e.target.value)} type="text" /></td>
                                             </tr>
@@ -160,8 +165,8 @@ const AddStudent = () => {
                                                     <select value={standard} onChange={(e) => setStandard(e.target.value)}>
                                                         <option value="" disabled>Select Standard</option>
                                                         {
-                                                            stardardList.map((item)=>(
-                                                                <option value={item}>{item}</option>
+                                                            standardList.map((item)=>(
+                                                                <option value={item.value}>{item.label}</option>
                                                             ))
                                                         }
                                                     </select>
@@ -436,8 +441,8 @@ const AddStudent = () => {
                                             <tr>
                                                 <td>Email ID</td>
                                                 <td>{email}</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>Application No</td>
+                                                <td>{applicationNumber}</td>
                                             </tr>
                                             <tr>
                                                 <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>Family Details</td>

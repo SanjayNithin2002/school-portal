@@ -34,3 +34,25 @@
     width:75%;
     font-size:18px;
 }
+.CreateClass-subTable td{
+    background-color: white;
+    font-size: initial;
+    font-style: initial;
+    font-weight: initial;
+
+}
+
+.CreateClass-subTable{
+    border:1px solid black;
+}
+.CreateClass-subTable td{
+    border:1px solid black;
+}
+.CreateClass-subTable tr:nth-child(odd) td:nth-child(odd),
+.CreateClass-subTable tr:nth-child(even) td:nth-child(odd){
+    
+    background-color: white;
+    font-size: initial;
+    font-style: initial;
+    font-weight: initial;
+}
