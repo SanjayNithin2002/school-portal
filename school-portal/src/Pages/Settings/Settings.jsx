@@ -1,20 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 import { Input, InputGroup } from 'rsuite';
 import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
-
+import {useDispatch,useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { changePassword, changeUserID, setCurrentUser } from '../../actions/currentUser';
 const styles = {
     width: 300,
     marginBottom: 10
 };
 
 function Settings() {
-    const [visible1, setVisible1] = React.useState(false);
-    const [visible2, setVisible2] = React.useState(false);
-    const [visible3, setVisible3] = React.useState(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        dispatch(setCurrentUser({type:localStorage.getItem('type'),id:localStorage.getItem('id')}));
+    },[dispatch])
+
+    const currentUser = useSelector((state)=>state.currentUserReducer)
+
+    const [visible1, setVisible1] = useState(false);
+    const [visible2, setVisible2] = useState(false);
+    const [visible3, setVisible3] = useState(false);
+    const [visible4, setVisible4] = useState(false);
+    const [confirmPassword,setConfirmPassword] = useState('');
+
+    const [request1, setRequest1] = useState({
+        id:"",
+        currentUserID:"",
+        newUserID:"",
+        password:"",
+    })
+
+    const [request2, setRequest2] = useState({
+        id:"",
+        currentPassword:"",
+        newPassword:"",
+    })
+
+    if(currentUser && request1.id===""){
+        console.log(currentUser.docs)
+        setRequest1((prev)=>({...prev,id:currentUser.docs._id}))
+    }
+
+    if(currentUser && request2.id===""){
+        console.log(currentUser.docs)
+        setRequest2((prev)=>({...prev,id:currentUser.docs._id}))
+    }
+
+
+
+    const handleSubmit1 = () =>{
+        dispatch(changeUserID(localStorage.getItem("type"),request1,navigate))
+    }
+
+    const handleSubmit2 = () =>{
+        dispatch(changePassword(localStorage.getItem("type"),request2,navigate))
+    }
 
     return (
         <div className='Main'>
@@ -34,24 +81,35 @@ function Settings() {
                                             <InputGroup.Addon>
                                                 <AvatarIcon />
                                             </InputGroup.Addon>
-                                            <Input readOnly value="KUMAR12345" />
+                                            <Input type="text" value={request1.currentUserID} onChange={(value)=>setRequest1((prev)=>({...prev,currentUserID:value}))}/>
                                         </InputGroup>
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='col-lg-2'><h6>Preferred Login ID : </h6></div>
+                                    <div className='col-lg-2'><h6>New User ID : </h6></div>
                                     <div className='col-lg-2'>
                                         <InputGroup style={styles}>
                                             <InputGroup.Addon>
                                                 <AvatarIcon />
                                             </InputGroup.Addon>
-                                            <Input />
+                                            <Input type="text" value={request1.newUserID} onChange={(value)=>setRequest1((prev)=>({...prev,newUserID:value}))}/>
+                                        </InputGroup>
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-lg-2'><h6>Password : </h6></div>
+                                    <div className='col-lg-2'>
+                                        <InputGroup inside style={styles}>
+                                            <Input value={request1.password} onChange={(value)=>setRequest1((prev)=>({...prev,password:value}))} type={visible4 ? 'text' : 'password'} />
+                                            <InputGroup.Button onClick={()=>setVisible4(!visible4)}>
+                                                {visible4 ? <EyeIcon /> : <EyeSlashIcon />}
+                                            </InputGroup.Button>
                                         </InputGroup>
                                     </div>
                                 </div>
                                 <div className='row'>
                                     <div className='col-lg-2'>
-                                        <button className='btn btn-primary'>Change</button>
+                                        <button className='btn btn-primary' onClick={handleSubmit1}>Change</button>
                                     </div>
                                 </div>
                             </Accordion.Body>
@@ -63,7 +121,7 @@ function Settings() {
                                     <div className='col-lg-2'><h6>Current Password : </h6></div>
                                     <div className='col-lg-2'>
                                         <InputGroup inside style={styles}>
-                                            <Input type={visible1 ? 'text' : 'password'} />
+                                            <Input value={request2.currentPassword} onChange={(value)=>setRequest2((prev)=>({...prev,currentPassword:value}))} type={visible1 ? 'text' : 'password'} />
                                             <InputGroup.Button onClick={()=>setVisible1(!visible1)}>
                                                 {visible1 ? <EyeIcon /> : <EyeSlashIcon />}
                                             </InputGroup.Button>
@@ -74,7 +132,7 @@ function Settings() {
                                     <div className='col-lg-2'><h6>New Password : </h6></div>
                                     <div className='col-lg-2'>
                                         <InputGroup inside style={styles}>
-                                            <Input type={visible2 ? 'text' : 'password'} />
+                                            <Input value={request2.newPassword} onChange={(value)=>setRequest2((prev)=>({...prev,newPassword:value}))} type={visible2 ? 'text' : 'password'} />
                                             <InputGroup.Button onClick={()=>setVisible2(!visible2)}>
                                                 {visible2 ? <EyeIcon /> : <EyeSlashIcon />}
                                             </InputGroup.Button>
@@ -85,7 +143,7 @@ function Settings() {
                                     <div className='col-lg-2'><h6>Confirm Password : </h6></div>
                                     <div className='col-lg-2'>
                                         <InputGroup inside style={styles}>
-                                            <Input type={visible3 ? 'text' : 'password'} />
+                                            <Input value={confirmPassword} onChange={(value)=>setConfirmPassword(value)} type={visible3 ? 'text' : 'password'} />
                                             <InputGroup.Button onClick={()=>setVisible3(!visible3)}>
                                                 {visible3 ? <EyeIcon /> : <EyeSlashIcon />}
                                             </InputGroup.Button>
@@ -94,7 +152,7 @@ function Settings() {
                                 </div>
                                 <div className='row'>
                                     <div className='col-lg-2'>
-                                        <button className='btn btn-primary'>Change</button>
+                                        <button className='btn btn-primary' onClick={handleSubmit2}>Change</button>
                                     </div>
                                 </div>
                             </Accordion.Body>

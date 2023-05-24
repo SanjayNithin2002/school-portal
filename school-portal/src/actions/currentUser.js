@@ -9,6 +9,30 @@ export const setCurrentUser = (userData) => async(dispatch) =>{
     catch(err){
         console.log(err)
     }
-   
-    
+}
+
+export const changeUserID = (type,userData,navigate) => async(dispatch) =>{
+    try{
+        console.log(userData);
+        const {data} = await api.changeUserID(type,userData);
+        dispatch(setCurrentUser({type:localStorage.getItem('type'),id:localStorage.getItem('id')}))
+        console.log(data);
+        navigate('/Home');
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const changePassword = (type,userData,navigate) => async(dispatch) =>{
+    try{
+        console.log(userData);
+        const {data} = await api.changePassword(type,userData);
+        dispatch(setCurrentUser({type:localStorage.getItem('type'),id:localStorage.getItem('id')}))
+        console.log(data);
+        navigate('/Home');
+    }
+    catch(err){
+        console.log(err)
+    }
 }
