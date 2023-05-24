@@ -15,23 +15,33 @@ const Teacher = () => {
               Dashboard
             </Nav.Item>
             <Nav.Menu placement="rightStart" title="Attendance" icon={<Upload />}>
-              <Nav.Item href='/Attendance'>Attendance</Nav.Item>
-              <Nav.Item href='/Leave'>Leave</Nav.Item>
+              <Nav.Item href='/Attendance'>
+                <a href='/Attendance' style={{ textDecoration: 'none', color: 'black'}}> Attendance </a></Nav.Item>
+              <Nav.Item href='/Leave'>
+                <a href='/Leave' style={{ textDecoration: 'none', color: 'black'}}>Leave</a></Nav.Item>
             </Nav.Menu>
             <Nav.Item href='/Timetable' icon={<Calendar />}>
               TimeTable
             </Nav.Item>
             <Nav.Menu placement="rightStart" title="HR" icon={<HR />}>
-              <Nav.Item href='/StudentInfo'>Student Info</Nav.Item>
-              <Nav.Item href='/StaffInfo'>Staffs Info</Nav.Item>
+              <Nav.Item href='/StudentInfo'>
+                <a href='/StudentInfo' style={{ textDecoration: 'none', color: 'black'}}> Student Info </a></Nav.Item>
+              <Nav.Item href='/StaffInfo'>
+                <a href='/StaffInfo' style={{ textDecoration: 'none', color: 'black'}}> Staffs Info </a></Nav.Item>
             </Nav.Menu>
             <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
-              <Nav.Item href='/StudentList'>Student List</Nav.Item>
-              <Nav.Item href='/PostAttendance'>Attendance</Nav.Item>
-              <Nav.Item href='/ClassMessage'>Class Message</Nav.Item>
-              <Nav.Item href='/Assessment'>Assessments</Nav.Item>
-              <Nav.Item href='/Marks'>Marks Analysis</Nav.Item>
-              <Nav.Item href='/Exam'>Exam</Nav.Item>
+              <Nav.Item href='/StudentList'>
+                <a href='StudentList' style={{ textDecoration: 'none', color: 'black'}}>Student List</a></Nav.Item>
+              <Nav.Item href='/PostAttendance'>
+                <a href='PostAttendance' style={{ textDecoration: 'none', color: 'black'}}>Attendance</a></Nav.Item>
+              <Nav.Item href='/ClassMessage'>
+                <a href='ClassMessage' style={{ textDecoration: 'none', color: 'black'}}>Class Message</a></Nav.Item>
+              <Nav.Item href='/Assessment'>
+                <a href='Assessment' style={{ textDecoration: 'none', color: 'black'}}>Assessments</a></Nav.Item>
+              <Nav.Item href='/Marks'>
+                <a href='Marks' style={{ textDecoration: 'none', color: 'black'}}>Marks Analysis</a></Nav.Item>
+              <Nav.Item href='/Exam'>
+                <a href='Exam' style={{ textDecoration: 'none', color: 'black'}}>Exam</a></Nav.Item>
             </Nav.Menu>
             <Nav.Item href='/Setting' icon={<Setting />}>
               Settings

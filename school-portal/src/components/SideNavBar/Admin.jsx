@@ -15,30 +15,42 @@ const Admin = () => {
         Dashboard
       </Nav.Item>
       <Nav.Menu placement="rightStart" title="Attendance" icon={<Attendance />}>
-        <Nav.Item href='/Attendance'>Attendance</Nav.Item>
-        <Nav.Item href='/Leave'>Leave</Nav.Item>
+        <Nav.Item href='/Attendance'>
+          <a href="/Attendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
+        <Nav.Item href='/Leave'>
+          <a href="/Leave" style={{ textDecoration: 'none', color: 'black'}}>Leave </a></Nav.Item>
       </Nav.Menu>
       <Nav.Menu placement="rightStart" title="HR" icon={<HR />}>
         <Nav.Item divider />
         <Nav.Item panel style={{ padding: '15px 20px',color: '#aaa'}}>
           Student
         </Nav.Item>
-        <Nav.Item href='/StudentInfo'>Student Info</Nav.Item>
-        <Nav.Item href='/AddStudent'>Add Student</Nav.Item>
-        <Nav.Item href='/Bonafide'>Student Bonafide</Nav.Item>
+        <Nav.Item href='/StudentInfo'>
+          <a href="/StudentInfo" style={{ textDecoration: 'none', color: 'black'}}>Student Info </a></Nav.Item>
+        <Nav.Item href='/AddStudent'>
+          <a href="/AddStudent" style={{ textDecoration: 'none', color: 'black'}}>Add Student </a></Nav.Item>
+        <Nav.Item href='/Bonafide'>
+          <a href="/Bonafide" style={{ textDecoration: 'none', color: 'black'}}>Student Bonafide </a></Nav.Item>
         <Nav.Item divider />
         <Nav.Item panel style={{ padding: '15px 20px',color: '#aaa'}}>
           Staff
         </Nav.Item>
-        <Nav.Item href='/StaffInfo'>Staff List</Nav.Item>
-        <Nav.Item href='/AddStaff'>Add Staff</Nav.Item>
-        <Nav.Item href='/PostAttendance'>Attendance</Nav.Item>
-        <Nav.Item href='/Meeting'>Meetings</Nav.Item>
+        <Nav.Item href='/StaffInfo'>
+          <a href="/StaffInfo" style={{ textDecoration: 'none', color: 'black'}}>Staff List </a></Nav.Item>
+        <Nav.Item href='/AddStaff'>
+          <a href="/AddStaff" style={{ textDecoration: 'none', color: 'black'}}>Add Staff </a></Nav.Item>
+        <Nav.Item href='/PostAttendance'>
+          <a href="/PostAttendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
+        <Nav.Item href='/Meeting'>
+          <a href="/Meeting" style={{ textDecoration: 'none', color: 'black'}}>Meetings </a></Nav.Item>
       </Nav.Menu>
       <Nav.Menu placement="rightStart" title="Class" icon={<Class />}>
-        <Nav.Item href='/ClassInfo'>Class Info</Nav.Item>
-        <Nav.Item href='/Exam'>Exams</Nav.Item>
-        <Nav.Item href='/TimeTable'>TimeTable</Nav.Item>
+        <Nav.Item href='/ClassInfo'>
+          <a href="/ClassInfo" style={{ textDecoration: 'none', color: 'black'}}>Class Info </a></Nav.Item>
+        <Nav.Item href='/Exam'>
+          <a href="/Exam" style={{ textDecoration: 'none', color: 'black'}}>Exams </a></Nav.Item>
+        <Nav.Item href='/TimeTable'>
+          <a href="/TimeTable" style={{ textDecoration: 'none', color: 'black'}}>TimeTable </a></Nav.Item>
       </Nav.Menu>
       <Nav.Item href='/payment' icon={<Fees />}>
         Fees Stucture
