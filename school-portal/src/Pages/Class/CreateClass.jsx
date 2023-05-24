@@ -63,7 +63,10 @@ function CreateClass() {
                     request2.push({
                         student,
                         request : [{
-                            section
+                            
+                            propName : "section",
+                            value : section
+                        
                         }]
                     })
                     return true

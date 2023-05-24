@@ -1,34 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
+import { useDispatch,useSelector } from 'react-redux'
 
 import "./Student.css"
+import { requestStudents } from '../../actions/students'
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 
 function StudentInfo() {
 
     const [search,setSearch] = React.useState(''); 
+    const dispatch = useDispatch();
 
-    const studentList = [{
-        name:"Arvind M M",
-        gender:"Male",
-        Stardard:"XII",
-        Section:"D"
-    },{
-        name:"Yukeshwaran",
-        gender:"Male",
-        Stardard:"XII",
-        Section:"A"
-    },{
-        name:"Sanjay Nithin",
-        gender:"Male",
-        Stardard:"XII",
-        Section:"B"
-    },{
-        name:"Chetan",
-        gender:"Male",
-        Stardard:"XII",
-        Section:"C"
-    }]
+    useEffect(()=>{
+        dispatch(requestStudents());
+    },[dispatch])
+
+    const allStudents = useSelector((state)=>state.allStudentsReducer)
+    const standardList = [{label:"I",value:1},{label:"II",value:2},{label:"III",value:3},{label:"IV",value:4},{label:"V",value:5},{label:"VI",value:6},{label:"VII",value:7},{label:"VIII",value:8},{label:"IX",value:9},{label:"X",value:10},{label:"XI",value:11},{label:"XII",value:12}]
+    
 
     return (
         <div className='Main'>
@@ -62,13 +51,16 @@ function StudentInfo() {
                                                 No Data
                                             </td>
                                             </tr>:<>{
-                                            studentList.filter((item)=>item.name.toLowerCase().includes(search.toLowerCase())).map((item,i)=>(
+                                            allStudents.docs.filter((item)=>(item.firstName.toLowerCase()+" "+item.lastName.toLowerCase()).includes(search.toLowerCase())).map((item,i)=>(
                                                 <tr key={item}>
                                                     <td>{i+1}</td>
-                                                    <td>{item.name}</td>
+                                                    <td>{item.firstName.toLowerCase()+" "+item.lastName.toLowerCase()}</td>
                                                     <td>{item.gender}</td>
-                                                    <td>{item.Stardard}</td>
-                                                    <td>{item.Section}</td>
+                                                    <td>
+                                                        {   
+                                                        standardList.filter((standard)=>standard.value===item.standard).map((standard)=>(<>{standard.label}</>))}
+                                                    </td>
+                                                    <td>{item.section}</td>
                                                     <td><button className='btn btn-primary'>View</button></td>
                                                 </tr>
                                             ))}
