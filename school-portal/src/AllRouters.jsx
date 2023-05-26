@@ -31,6 +31,7 @@ import Meeting from "./Pages/Meeting/Meeting";
 import AddMeeting from "./Pages/Meeting/AddMeeting";
 import CreateClass from "./Pages/Class/CreateClass";
 import ClassInfo from "./Pages/Class/ClassInfo";
+import ViewBonafide from "./Pages/Bonafide/ViewBonafide";
 
 const AllRoutes = () => {
     return(
@@ -66,6 +67,7 @@ const AllRoutes = () => {
                 <Route path='/AddMeeting' element={<AddMeeting/>} />
                 <Route path='/CreateClass' element={<CreateClass/>} />
                 <Route path='/ClassInfo' element={<ClassInfo/>} />
+                <Route path='/ViewBonafide' element={<ViewBonafide/>} />
                 
             </Routes>
         </BrowserRouter>
