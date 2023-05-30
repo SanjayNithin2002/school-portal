@@ -5,6 +5,7 @@ const API1 = axios.create({headers:{authorization:`Bearer ${localStorage.getItem
 /* General */
 export const getCurrentUser = (userData) => API.get(`/${userData.type}s/${userData.id}`)
 export const requestStudents = () => API.get('/students/')
+export const requestTeacher = (teacherID) => API.get(`/teachers/${teacherID}`)
 export const requestContact = (contactData) => API.post('/sendmail',contactData)
 export const AddStudent = (authData) => API.post('/students/signup',authData)
 export const AddTeacher = (authData) => API.post('/teachers/signup',authData)
@@ -28,7 +29,14 @@ export const getClass = (userData) => API.get(`/classes/`)
 /* Assessments */
 export const postAssessment = (functionData) => API.post('/assessments',functionData)
 export const getAssessments = (userData) => API.get(`/assessments/${userData.type}s/${userData.id}`)
+export const getAssessment = (functionID) => API.get(`/assessments/${functionID}`);
 export const deleteAssessment = (functionID) => API.delete(`/assessments/${functionID}`)
+
+/* Ansswer */
+export const getAnswers = (userData) => API.get(`/answers/${userData.type}s/${userData.id}`)
+export const postAnswers = (formData) => API.post('/answers',formData);
+export const deleteAnswers = (answerID) => API.delete(`/answers/${answerID}`)
+
 
 export const getAttendance = (userid) => API.get(`${userid}`)
 export const getClassMessage = (classid) =>API.get(`${classid}`)

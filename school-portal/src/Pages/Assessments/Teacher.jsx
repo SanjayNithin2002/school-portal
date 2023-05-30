@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState,useEffect } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import * as Solid from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { TagPicker } from 'rsuite';
@@ -8,29 +8,27 @@ import { TagPicker } from 'rsuite';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./Assessments.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentUser, getClass } from '../../actions/currentUser'
 import { getAssessments } from '../../actions/assessments'
+import { getAnswers } from '../../actions/assessments'
+import PostAssessment from './PostAssessment'
 
 
 function Teacher() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [display, setDisplay] = useState(false);
+    const [assessmentID, setAssessmentID] = useState(false);
 
     useEffect(() => {
-        dispatch(setCurrentUser({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
         dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getAnswers({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
-    const currentUser = useSelector((state) => state.currentUserReducer)
     const assessments = useSelector((state) => state.assessmentsReducer)
-    const classes = useSelector((state) => state.subjectTeacherReducer)
-
-    console.log(currentUser)
+    const answers = useSelector((state) => state.answersReducer)
     console.log(assessments)
-    console.log(classes)
 
     const [length, setlength] = React.useState(100);
     const data = [{
@@ -91,17 +89,27 @@ function Teacher() {
         return false;
     }
 
-    return (
+    const handleClick = (aID) => {
+        setAssessmentID(aID);
+        setDisplay(true);
+    }
 
+    const close = () => {
+        setDisplay(false);
+    }
+
+    return (
         <div className='Main'>
             <SideNavBar />
+            {
+                !display ?
             <div className="Home">
                 <div class="container rounded bg-white">
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <h2>Assessments</h2>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
                             <TagPicker style={{ width: length }} data={data} onChange={handleSelect} placeholder={<><FontAwesomeIcon icons={Solid.faFilter} />Filter</>} groupBy="role" />&emsp;
-                            <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
+                            <div to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</div>
                         </div>
                     </div>
 
@@ -113,7 +121,7 @@ function Teacher() {
                                 {
                                     assessments && assessments.assessments.filter((item)=> { return checkDueDate(item.lastDate)}).map((item) => (
                                         
-                                        <Link to={'/PostAssessment/'+item._id} style={{ color: 'inherit', textDecoration: "none" }}>
+                                        <div onClick={()=>handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
                                             <div className='Assessment-tab'>
                                                 <div className='Assessment-tab-1'>
                                                     <h4>{item.title}</h4>
@@ -132,7 +140,7 @@ function Teacher() {
                                                     <div>{handleDateFormat(item.lastDate)}</div>
                                                 </div>
                                             </div>
-                                        </Link>
+                                        </div>
                                     ))
                                 }
                             </Accordion.Body>
@@ -143,7 +151,7 @@ function Teacher() {
                                 {
                                     assessments && assessments.assessments.filter((item)=> { return !checkDueDate(item.lastDate)}).map((item) => (
                                         
-                                        <Link to={'/PostAssessment/'+item._id} style={{ color: 'inherit', textDecoration: "none" }}>
+                                        <div onClick={()=>handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
                                             <div className='Assessment-tab'>
                                                 <div className='Assessment-tab-1'>
                                                     <h4>{item.title}</h4>
@@ -162,7 +170,7 @@ function Teacher() {
                                                     <div>{handleDateFormat(item.lastDate)}</div>
                                                 </div>
                                             </div>
-                                        </Link>
+                                        </div>
                                     ))
                                 }
                             </Accordion.Body>
@@ -170,6 +178,9 @@ function Teacher() {
                     </Accordion>
                 </div>
             </div>
+            :
+            <PostAssessment assessments={assessments} answers={answers} assessmentID={assessmentID} close={()=>close()} />
+            }
         </div>
     )
 }

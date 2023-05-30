@@ -42,7 +42,8 @@ const AllRoutes = () => {
                 <Route path='/Home' element={<Home/>}/>
                 <Route path='/Attendance' element={<Attendance/>}/>
                 <Route path='/Leave' element={<Leave/>}/>
-                <Route path='/ContactUs' element={<ContactUs/>}/>                <Route path='/Assessment' element={<Assessments/>}/>
+                <Route path='/ContactUs' element={<ContactUs/>}/>                
+                <Route path='/Assessment' element={<Assessments/>}/>
                 <Route path='/Assessment/:id' element={<ViewAssessment />}/>
                 <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
                 <Route path='/PostAssessment' element={<NewAssessment />}/>

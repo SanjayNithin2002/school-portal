@@ -4,20 +4,57 @@ import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import * as Solid from "@fortawesome/free-solid-svg-icons"
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { viewBonafide } from '../../actions/bonafide';
+import { deleteAnswers } from '../../actions/assessments';
+import { useDispatch } from 'react-redux';
 
-function PostAssessment() {
+const PostAssessment = (props) => {
+
     const { id } = useParams();
     const [show, setShow] = useState(false);
+    
+    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
+    const assessments = props.assessments;
+    const answers = props.answers;
+    const dispatch = useDispatch();
+
+    console.log(assessments)
+    console.log(answers)
+
+    const handleDateFormat = (date1) => {
+        const date = new Date(date1);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        const userLocale = navigator.language || navigator.userLanguage;
+        const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
+        return formattedDate
+    }
+
+    const handleDelete = (answerID) => {
+        dispatch(deleteAnswers(answerID));
+    }
+
+    const handleFile = (request) => {
+        dispatch(viewBonafide(request));
+    }
+
     return (
-        <div className='Main'>
-            <SideNavBar />
+            <>
             <div className="Home">
+                {
+                    assessments.assessments.filter((item)=>item._id===props.assessmentID).map((item)=>(
+                
                 <div class="container rounded bg-white">
                     <div className='Assessment-tab-1'>
-                        <h2>Assessment - {id}</h2>
-                        <h4>Physics</h4>
+                        <h2>{item.title}</h2>
+                        <h4>{item.class.subject}</h4>
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='row'>
@@ -46,22 +83,29 @@ function PostAssessment() {
                                 <tr>
                                     <td>Class</td>
                                     <td>:</td>
-                                    <td>Xth C</td>
+                                    <td>
+                                    {
+                                        standardList.filter((item1) => item1.value === item.class.standard).map((standard) => (<>{standard.label}</>))
+                                    }
+                                    th {item.class.section}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Posted on</td>
                                     <td>:</td>
-                                    <td>Timings</td>
+                                    <td>{handleDateFormat(item.postedOn)}</td>
                                 </tr>
                                 <tr>
                                     <td>Due Date</td>
                                     <td>:</td>
-                                    <td>Timings</td>
+                                    <td>{handleDateFormat(item.lastDate)}</td>
                                 </tr>
                                 <tr>
                                     <td style={{ verticalAlign: "top" }}>Uploaded file</td>
                                     <td style={{ verticalAlign: "top" }}>:</td>
-                                    <td>File1<br />File2</td>
+                                    <td>
+                                        <button className='btn btn-primary' onClick={()=>handleFile(item.questionPaper)}>File</button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colSpan={3} align='left'>
@@ -73,8 +117,13 @@ function PostAssessment() {
                             </table>
                         </div>
                     </div>
-                </div>
+                </div>   
+                ))
+                }
             </div>
+            {
+                
+            }
             <Modal
                 show={show}
                 onHide={() => setShow(false)}
@@ -122,7 +171,7 @@ function PostAssessment() {
                     </Table>
                 </Modal.Body>
             </Modal>
-        </div>
+            </>
     )
 }
 
