@@ -3,6 +3,8 @@ const allStudentsReducer = (state=null,action) =>{
     {
         case 'FETCH_ALL_STUDENTS': 
             return action.payload;
+        case 'FETCH_CLASS_STUDENTS':
+            return action.payload;
         default : 
             return state;
     }

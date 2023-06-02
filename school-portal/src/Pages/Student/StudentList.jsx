@@ -1,62 +1,50 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
-import { useDispatch,useSelector } from 'react-redux'
-import {Link,useNavigate} from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import "./Student.css"
-import { requestStudents } from '../../actions/students'
+import { requestClassStudents, requestStudents } from '../../actions/students'
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { getClass } from '../../actions/currentUser'
 
 function StudentList() {
-    const [stardard, setStardard] = useState("");
+    const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
-
+    const [classID, setClassID] = useState(null);
+    const [students, setStudents] = useState(null);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    useEffect(()=>{
-        dispatch(requestStudents());
-    },[dispatch])
+    const class1 = useSelector((state) => state.subjectTeacherReducer)
+    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
-    const allStudents = useSelector((state)=>state.allStudentsReducer)
-    const standardList = [{label:"I",value:1},{label:"II",value:2},{label:"III",value:3},{label:"IV",value:4},{label:"V",value:5},{label:"VI",value:6},{label:"VII",value:7},{label:"VIII",value:8},{label:"IX",value:9},{label:"X",value:10},{label:"XI",value:11},{label:"XII",value:12}]
-    
-    const data = [
-        {
-            rollno: 1,
-            fname: "Arvind",
-            lname: "M M",
-            gender: "Male",
-        },
-        {
-            rollno: 2,
-            fname: "Dharan",
-            lname: "Kumar",
-            gender: "Male",
-        },
-        {
-            rollno: 3,
-            fname: "Keerthy",
-            lname: "Suresh",
-            gender: "Female",
-        },
-        {
-            rollno: 4,
-            fname: "Muthu",
-            lname: "Kumar",
-            gender: "Male",
-        },
-        {
-            rollno: 5,
-            fname: "Ramya",
-            lname: "Pandian",
-            gender: "Female",
-        },
-        {
-            rollno: 6,
-            fname: "Yeshwanth",
-            lname: "J D",
-            gender: "Male",
-        },
-    ];
+    useEffect(() => {
+        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    }, [dispatch])
+
+    if (classID !== null && students === null) {
+        dispatch(requestClassStudents(classID, navigate));
+    }
+
+    if (classID !== null && location.state && (students === null || location.state.students !== students)) {
+        setStudents(location.state.students);
+    }
+
+    const handleClass = (field, value) => {
+        let std = field === "standard" ? value : standard;
+        let sec = field === "section" ? value : section;
+        if (std !== null && sec !== null) {
+            class1.classes.map((item) => {
+                if (item.standard === parseInt(std) && item.section === sec) {
+                    setClassID(item._id);
+                }
+                return true;
+            })
+        }
+        field === "standard" ? setStandard(std) : setSection(sec);
+        setStudents(null);
+    }
 
     return (
         <div className="Main">
@@ -68,33 +56,41 @@ function StudentList() {
                     <div className="">
                         <div className="row studentlist-container">
                             <div className="col-lg-2">
-                                <h4>Select Class : </h4>
+                                <h4>Select Standard : </h4>
                             </div>
                             <div className="col-lg-3">
                                 <select
                                     className="selectPicker3"
-                                    value={stardard}
-                                    onChange={(e) => setStardard(e.target.value)}
+                                    value={standard}
+                                    onChange={(e) => handleClass("standard", e.target.value)}
                                 >
                                     <option value="" disabled>
-                                        Select Class
+                                        Select Standard
                                     </option>
-                                    <option value="VII">VII</option>
-                                    <option value="VIII">VIII</option>
+                                    {
+                                        class1 &&
+                                        class1.classes.map((item) => (
+                                            standardList.filter((class1) => class1.value === item.standard).map((class1) => (
+                                                <option value={class1.value}>{class1.label}</option>
+                                            ))
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="col-lg-2">
-                                <h4>Select Class : </h4>
+                                <h4>Select Section : </h4>
                             </div>
                             <div className="col-lg-3">
-                                <select className="selectPicker3" value={section} onChange={(e) => setSection(e.target.value)} >
+                                <select className="selectPicker3" value={section} onChange={(e) => { handleClass("section", e.target.value); }} >
                                     <option value="" disabled>
-                                        Select Class
+                                        Select Section
                                     </option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
+                                    {
+                                        class1 &&
+                                        class1.classes.filter((item) => parseInt(standard) === item.standard).map((item) => (
+                                            <option value={item.section}>{item.section}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -113,15 +109,15 @@ function StudentList() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {stardard !== "" && section !== "" ? (
-                                            data.map((item) => (
+                                        {standard !== "" && section !== "" ? (
+                                            students && students.map((item, index) => (
                                                 <tr key={item}>
-                                                    <td>{item.rollno}</td>
-                                                    <td>{item.fname}</td>
-                                                    <td>{item.lname}</td>
+                                                    <td>{index + 1}</td>
+                                                    <td>{item.firstName}</td>
+                                                    <td>{item.lastName}</td>
                                                     <td>{item.gender}</td>
                                                     <td>
-                                                        <Link to='/Home' style={{textDecoration:'none',color:"white"}} className="btn btn-primary">View</Link>
+                                                        <Link to='/Home' style={{ textDecoration: 'none', color: "white" }} className="btn btn-primary">View</Link>
                                                     </td>
                                                 </tr>
                                             ))

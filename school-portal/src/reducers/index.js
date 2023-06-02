@@ -8,8 +8,9 @@ import subjectTeacherReducer from "./SubjectTeachers"
 import assessmentsReducer from "./Assessments"
 import answersReducer from "./Answers"
 import teacherReducer from "./Teacher"
+import adminReducer from "./Admin"
 
 export default combineReducers({
     currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,subjectTeacherReducer
-    ,assessmentsReducer,answersReducer,teacherReducer
+    ,assessmentsReducer,answersReducer,teacherReducer,adminReducer
 })

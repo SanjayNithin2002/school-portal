@@ -3,6 +3,8 @@ const teacherReducer = (state=null,action) =>{
     {
         case 'FETCH_TEACHER': 
             return action.payload;
+        case 'FETCH_ALL_TEACHERS': 
+            return action.payload;
         default : 
             return state;
     }

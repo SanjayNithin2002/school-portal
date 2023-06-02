@@ -1,33 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
+import { useDispatch, useSelector } from "react-redux"
 
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { requestAdmins } from '../../actions/admins'
+import { requestTeachers } from '../../actions/teachers'
 
 function TeacherInfo() {
 
-    const [search,setSearch] = React.useState(''); 
+    const [search, setSearch] = useState('');
+    const [records, setRecords] = useState([]);
+    const dispatch = useDispatch();
 
-    const studentList = [{
-        name:"Arvind M M",
-        empid:"10001",
-        designation:"Associate Teacher",
-        subject:"Maths"
-    },{
-        name:"Yukeshwaran",
-        empid:"10002",
-        designation:"Associate Teacher",
-        subject:"English"
-    },{
-        name:"Sanjay Nithin",
-        empid:"10003",
-        designation:"Associate Teacher",
-        subject:"Science,Computer"
-    },{
-        name:"Chetan",
-        empid:"10001",
-        designation:"Associate Teacher",
-        subject:"Social,Drawing"
-    }]
+    useEffect(() => {
+        dispatch(requestAdmins());
+        dispatch(requestTeachers());
+    }, [dispatch])
+
+    const allTeachers = useSelector((state) => state.teacherReducer);
+    const allAdmins = useSelector((state) => state.adminReducer);
+
+    if (allTeachers && allAdmins && records.length === 0) {
+        let temp = [];
+        allTeachers.docs.map((item) => {
+            temp.push(item);
+            return true;
+        });
+        allAdmins.docs.map((item) => {
+            temp.push(item);
+            return true;
+        })
+        setRecords(temp);
+    }
 
     return (
         <div className='Main'>
@@ -37,12 +41,12 @@ function TeacherInfo() {
                     <h2>Staff Info</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='studentinfo-container'>
-                        <div className='row' style={{alignItems:"center"}}>
+                        <div className='row' style={{ alignItems: "center" }}>
                             <div className='col-lg-3'><h5>Search by Staff Name/ID&ensp;:&ensp;</h5></div>
-                            <div className='col-lg-9'><input value={search} onChange={(e)=>setSearch(e.target.value)} type="search" className='selectPicker2'/></div>
+                            <div className='col-lg-9'><input value={search} onChange={(e) => setSearch(e.target.value)} type="search" className='selectPicker2' /></div>
                         </div>
-                        <br/><br/>
-                        <div className='row' style={{justifyContent:"center"}}>
+                        <br /><br />
+                        <div className='row' style={{ justifyContent: "center" }}>
                             <div className='col-lg-10'>
                                 <Table striped className='tablestyle4'>
                                     <thead>
@@ -50,30 +54,36 @@ function TeacherInfo() {
                                         <th>Name</th>
                                         <th>Staff ID</th>
                                         <th>Designation</th>
-                                        <th>Subjects Handling</th>
                                         <th>Action</th>
                                     </thead>
                                     <tbody>
                                         {
-                                            search===''?
-                                            <tr>
-                                            <td align='center' colSpan={6}>
-                                                No Data
-                                            </td>
-                                            </tr>:<>{
-                                            studentList.filter((item)=>{return (item.name.toLowerCase().includes(search.toLowerCase()) || item.empid.toLowerCase().includes(search.toLowerCase()))}).map((item,i)=>(
-                                                <tr key={item}>
-                                                    <td>{i+1}</td>
-                                                    <td>{item.name}</td>
-                                                    <td>{item.empid}</td>
-                                                    <td>{item.designation}</td>
-                                                    <td>{item.subject}</td>
-                                                    <td><button className='btn btn-primary'>View</button></td>
-                                                </tr>
-                                            ))}
-                                            </>
+                                            search === '' ?
+                                                <tr>
+                                                    <td align='center' colSpan={6}>
+                                                        No Data
+                                                    </td>
+                                                </tr> : <>{
+                                                    records.filter((item) => { return ((item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase()) || item.empID.toLowerCase().includes(search.toLowerCase())) }).length !== 0 ?
+                                                        records.filter((item) => { return ((item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase()) || item.empID.toLowerCase().includes(search.toLowerCase())) }).map((item, i) => (
+                                                            <tr key={i}>
+                                                                <td>{i + 1}</td>
+                                                                <td>{item.firstName + " " + item.lastName}</td>
+                                                                <td>{item.empID}</td>
+                                                                <td>{item.designation}</td>
+                                                                <td><button className='btn btn-primary'>View</button></td>
+                                                            </tr>
+                                                        ))
+                                                        :
+                                                        <tr>
+                                                            <td align='center' colSpan={6}>
+                                                                No Data
+                                                            </td>
+                                                        </tr>
+                                                }
+                                                </>
                                         }
-                                        
+
                                     </tbody>
                                 </Table>
                             </div>

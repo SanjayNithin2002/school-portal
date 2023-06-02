@@ -5,6 +5,9 @@ const API1 = axios.create({headers:{authorization:`Bearer ${localStorage.getItem
 /* Generals */
 export const getCurrentUser = (userData) => API.get(`/${userData.type}s/${userData.id}`)
 export const requestStudents = () => API.get('/students/')
+export const requestTeachers = () => API.get('/teachers');
+export const requestAdmins = () => API.get('/admins');
+export const requestClassStudents = (classID) => API.get(`/students/class/${classID}`)
 export const requestTeacher = (teacherID) => API.get(`/teachers/${teacherID}`)
 export const requestContact = (contactData) => API.post('/sendmail',contactData)
 export const AddStudent = (authData) => API.post('/students/signup',authData)
@@ -24,7 +27,7 @@ export const viewBonafide = (request) => API1.get(request)
 /* Classes */
 export const createClass = (classData) => API.post('/classes/',classData)
 export const updateSection = (id,studentData) => API.patch(`/students/${id}`,studentData)
-export const getClass = (userData) => API.get(`/classes/`)
+export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
 
 /* Assessments */
 export const postAssessment = (functionData) => API.post('/assessments',functionData)
