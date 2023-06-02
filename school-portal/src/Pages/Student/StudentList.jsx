@@ -1,11 +1,24 @@
-import React, { useState } from "react";
-import {Link } from "react-router-dom"
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
-import Table from "react-bootstrap/Table";
+import React, { useEffect,useState } from 'react'
+import Table from 'react-bootstrap/Table'
+import { useDispatch,useSelector } from 'react-redux'
+import {Link,useNavigate} from "react-router-dom"
+import "./Student.css"
+import { requestStudents } from '../../actions/students'
+import SideNavBar from '../../components/SideNavBar/SideNavBar'
 
 function StudentList() {
     const [stardard, setStardard] = useState("");
     const [section, setSection] = useState("");
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(requestStudents());
+    },[dispatch])
+
+    const allStudents = useSelector((state)=>state.allStudentsReducer)
+    const standardList = [{label:"I",value:1},{label:"II",value:2},{label:"III",value:3},{label:"IV",value:4},{label:"V",value:5},{label:"VI",value:6},{label:"VII",value:7},{label:"VIII",value:8},{label:"IX",value:9},{label:"X",value:10},{label:"XI",value:11},{label:"XII",value:12}]
+    
     const data = [
         {
             rollno: 1,

@@ -2,7 +2,7 @@ import axios from "axios"
 const API = axios.create({baseURL:'https://schoolportalbackend.onrender.com',headers:{authorization:`Bearer ${localStorage.getItem('token')}`}})
 const API1 = axios.create({headers:{authorization:`Bearer ${localStorage.getItem('token')}`}})
 
-/* General */
+/* Generals */
 export const getCurrentUser = (userData) => API.get(`/${userData.type}s/${userData.id}`)
 export const requestStudents = () => API.get('/students/')
 export const requestTeacher = (teacherID) => API.get(`/teachers/${teacherID}`)
@@ -14,7 +14,7 @@ export const AddTeacher = (authData) => API.post('/teachers/signup',authData)
 export const changeUserID = (type,userData) => API.patch(`/${type}s/changeuserid`,userData)
 export const changePassword = (type,userData) => API.patch(`/${type}s/changepassword`,userData)
 
-/* Bonafide */
+/* Bonafides */
 export const requestBonafide = (requestData) => API.post('/bonafides',requestData)
 export const StudentBonafide = (studentID) => API.get(`/bonafides/students/${studentID}`)
 export const getAllBonafide = () =>API.get('/bonafides/');
@@ -32,11 +32,13 @@ export const getAssessments = (userData) => API.get(`/assessments/${userData.typ
 export const getAssessment = (functionID) => API.get(`/assessments/${functionID}`);
 export const deleteAssessment = (functionID) => API.delete(`/assessments/${functionID}`)
 
-/* Ansswer */
+/* Ansswers */
 export const getAnswers = (userData) => API.get(`/answers/${userData.type}s/${userData.id}`)
 export const postAnswers = (formData) => API.post('/answers',formData);
 export const deleteAnswers = (answerID) => API.delete(`/answers/${answerID}`)
 
+/* Class Messages */
+export const getClassMessage = (userData) => API.get(`/classmessages/${userData.type}s/${userData.id}`)
+export const postClassMessage = (message) => API.post('/classmessages',message);
 
 export const getAttendance = (userid) => API.get(`${userid}`)
-export const getClassMessage = (classid) =>API.get(`${classid}`)

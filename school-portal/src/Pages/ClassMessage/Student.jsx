@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
+import { getClassMessage } from '../../actions/classMessage';
 
 const Student = () => {
 
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    }, [dispatch])
+
+
+    const messages = useSelector((state) => state.classmessageReducer)
+    console.log(messages);
 
     return (
         <div className="Main">
@@ -16,49 +27,20 @@ const Student = () => {
                     <div>
                         <div className="row classmessage-container-2">
                             <div className='col-lg-10 chat-container'>
-                                <div className='row chat-container-1'>
-                                    <div className='col-lg-3 Avatar'>
-                                        <span className='Avatar-1' title='Teacher Name'>Maths Teacher</span>
-                                    </div>
-                                    <div className='col-lg-8 message-content'>
-                                       <p> **Its a Gental Remainder**<br/>
-                                        The Students who are all participating in the tomorrow's event (Drawing) bring the following things:<br/>
-                                        -&gt;A4 sheet<br/>
-                                        -&gt;Color Pencil<br/>
-                                        -&gt;Writing Pad<br/>
-                                        </p>
-                                        <p className='timer'>a day ago</p>
-                                    </div>
-                                </div>
-                                <div className='row chat-container-1'>
-                                    <div className='col-lg-3 Avatar'>
-                                        <span className='Avatar-1' title='Teacher Name'>Science Teacher</span>
-                                    </div>
-                                    <div className='col-lg-8 message-content'>
-                                       <p> **Its a Gental Remainder**<br/>
-                                        The Students who are all participating in the tomorrow's event (Drawing) bring the following things:<br/>
-                                        -&gt;A4 sheet<br/>
-                                        -&gt;Color Pencil<br/>
-                                        -&gt;Writing Pad<br/>
-                                        </p>
-                                        <p className='timer'>a day ago</p>
-                                    </div>
-                                </div>
-                                <div className='row chat-container-1'>
-                                    <div className='col-lg-3 Avatar'>
-                                        <span className='Avatar-1' title='Teacher Name'>Class Teacher</span>
-                                    </div>
-                                    <div className='col-lg-8 message-content'>
-                                       <p> **Its a Gental Remainder**<br/>
-                                        The Students who are all participating in the tomorrow's event (Drawing) bring the following things:<br/>
-                                        -&gt;A4 sheet<br/>
-                                        -&gt;Color Pencil<br/>
-                                        -&gt;Writing Pad<br/>
-                                        </p>
-                                        <p className='timer'>a day ago</p>
-                                    </div>
-                                </div>
-                            </div> 
+                                {
+                                    messages && messages!=null && messages.docs.map((item) => (
+                                        <div className='row chat-container-1'>
+                                            <div className='col-lg-3 Avatar'>
+                                                <span className='Avatar-1' title='Teacher Name'>{item.class.subject} Teacher</span>
+                                            </div>
+                                            <div className='col-lg-8 message-content'>
+                                                <p>{item.message}</p>
+                                                <p className='timer'>a day ago</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
