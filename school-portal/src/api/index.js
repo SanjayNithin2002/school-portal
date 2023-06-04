@@ -29,6 +29,10 @@ export const createClass = (classData) => API.post('/classes/',classData)
 export const updateSection = (id,studentData) => API.patch(`/students/${id}`,studentData)
 export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
 
+/* TimeTables */
+
+export const postTimeTable = (classData) => API.post('/timetables/',classData)
+
 /* Assessments */
 export const postAssessment = (functionData) => API.post('/assessments',functionData)
 export const getAssessments = (userData) => API.get(`/assessments/${userData.type}s/${userData.id}`)
