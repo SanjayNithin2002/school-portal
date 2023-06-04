@@ -85,41 +85,41 @@ function Timetable() {
                     <h2>Time Table</h2>
                     <hr style={{ border: "1px solid gray" }} />
 
+                    <div class="table-responsive">
+                        <Table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Days/Time</th>
+                                    <th>8-8:45</th>
+                                    <th>9-9:45</th>
+                                    <th>10-10:45</th>
+                                    <th>11-11:45</th>
+                                    <th>12-12:45</th>
+                                    <th>2-2:45</th>
+                                    <th>3-3:45</th>
+                                    <th>4-4:45</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {(
+                                    data.map((item) => (
+                                        <tr key={item}>
+                                            <th>{item.Day}</th>
+                                            <td>{item.p1}</td>
+                                            <td>{item.p2}</td>
+                                            <td>{item.p3}</td>
+                                            <td>{item.p4}</td>
+                                            <td>{item.p5}</td>
+                                            <td>{item.p6}</td>
+                                            <td>{item.p7}</td>
+                                            <td>{item.p8}</td>
 
-                    <Table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Days/Time</th>
-                                <th>8-8:45</th>
-                                <th>9-9:45</th>
-                                <th>10-10:45</th>
-                                <th>11-11:45</th>
-                                <th>12-12:45</th>
-                                <th>2-2:45</th>
-                                <th>3-3:45</th>
-                                <th>4-4:45</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {(
-                                data.map((item) => (
-                                    <tr key={item}>
-                                        <th>{item.Day}</th>
-                                        <td>{item.p1}</td>
-                                        <td>{item.p2}</td>
-                                        <td>{item.p3}</td>
-                                        <td>{item.p4}</td>
-                                        <td>{item.p5}</td>
-                                        <td>{item.p6}</td>
-                                        <td>{item.p7}</td>
-                                        <td>{item.p8}</td>
-                                        
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </Table>
-
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
 
                 </div>
             </div >

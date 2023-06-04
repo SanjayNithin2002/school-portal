@@ -5,10 +5,11 @@
 }
 
 .bonafide-content-2{
-    display:flex;
+    overflow-x: auto;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+
 }
 
 .selectPicker{
@@ -40,3 +41,4 @@
     color:white;
     font-weight: 800;
 }
+

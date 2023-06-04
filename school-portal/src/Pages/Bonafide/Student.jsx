@@ -113,8 +113,8 @@ function Student() {
                 <div className="container rounded bg-white">
                     <h2>Bonafide Application</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className='bonafide-content'>
-                        <div className='row bonafide-content-1'>
+                    <div className='container bonafide-content'>
+                        <div className='bonafide-content-1'>
                             <div className='col-lg-3'>
                                 <h4>Select Service : </h4>
                             </div>
@@ -129,6 +129,7 @@ function Student() {
                                 </select>
                             </div>
                         </div>
+
                         <div className='bonafide-content-2'>
                             <br /><br />
                             {certificate !== 'select' &&
@@ -224,9 +225,10 @@ function Student() {
                                 </Table>
                             }
                         </div>
+
                         <div className='bonafide-content-2'>
                             <div className='col-lg-12'>
-                            <Accordion style={{width:"100%"}} defaultActiveKey="0">
+                            <Accordion defaultActiveKey="0">
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header style={{ padding: "initial" }}>Requested Bonafide Certificate</Accordion.Header>
                                     <Accordion.Body>
