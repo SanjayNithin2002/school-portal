@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Table from "react-bootstrap/Table";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { viewBonafide } from '../../actions/bonafide';
 import { deleteAnswers } from '../../actions/assessments';
 import { useDispatch } from 'react-redux';
+import { deleteAssessment } from '../../actions/assessments';
 
 const PostAssessment = (props) => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
     const [show, setShow] = useState(false);
     
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
@@ -37,8 +39,18 @@ const PostAssessment = (props) => {
         return formattedDate
     }
 
-    const handleDelete = (answerID) => {
-        dispatch(deleteAnswers(answerID));
+    const checkDueDate = (date1) => {
+        const startDate = new Date();
+        const endDate = new Date(date1);
+        if(endDate.getTime()-startDate.getTime()>0)
+        return true;
+        else
+        return false;
+    }
+
+    const handleDelete = () => {
+        dispatch(deleteAssessment(props.assessmentID,navigate));
+        props.close();
     }
 
     const handleFile = (request) => {
@@ -107,13 +119,35 @@ const PostAssessment = (props) => {
                                         <button className='btn btn-primary' onClick={()=>handleFile(item.questionPaper)}>File</button>
                                     </td>
                                 </tr>
+                                {
+                                    checkDueDate(item.lastDate) ?
                                 <tr>
-                                    <td colSpan={3} align='left'>
-                                        <Button className='btn btn-warning' onClick={() => setShow(true)}>
+                                    <td>
+                                        <Button className='btn btn-warning' onClick={() => props.close()}>
+                                            Back
+                                        </Button>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <Button className='btn btn-primary' onClick={() => setShow(true)}>
                                             Edit
+                                        </Button>
+                                        &emsp;&emsp;
+                                        <Button className='btn btn-danger' onClick={() => handleDelete()}>
+                                            Delete
+                                        </Button>
+                                    </td>
+                                    
+                                </tr>
+                                :
+                                <tr>
+                                    <td align='left' colSpan={3}>
+                                        <Button className='btn btn-danger' onClick={() => props.close()}>
+                                            Back
                                         </Button>
                                     </td>
                                 </tr>
+                            }
                             </table>
                         </div>
                     </div>

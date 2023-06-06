@@ -53,10 +53,11 @@ export const deleteAnswers = (answerID) => async (dispatch) => {
     }
 }
 
-export const deleteAssessment = (assessmentID) => async (dispatch) => {
+export const deleteAssessment = (assessmentID,navigate) => async (dispatch) => {
     try{
         const { data } = await api.deleteAssessment(assessmentID);
         console.log(data);
+        navigate('/Assessment');
         dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     } catch (err) {
         console.log(err);

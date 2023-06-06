@@ -50,5 +50,7 @@ export const deleteAnswers = (answerID) => API.delete(`/answers/${answerID}`)
 /* Class Messages */
 export const getClassMessage = (userData) => API.get(`/classmessages/${userData.type}s/${userData.id}`)
 export const postClassMessage = (message) => API.post('/classmessages',message);
+export const deleteClassMessage = (messageID) => API.delete(`/classmessages/${messageID}`);
+
 
 export const getAttendance = (userid) => API.get(`${userid}`)

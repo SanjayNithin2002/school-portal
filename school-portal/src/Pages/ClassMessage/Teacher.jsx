@@ -4,10 +4,12 @@ import Attach from "@rsuite/icons/Attachment"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getClass } from '../../actions/class';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
-import { getClassMessage, postClassMessage } from '../../actions/classMessage';
+import { deleteClassMessage, getClassMessage, postClassMessage } from '../../actions/classMessage';
 
 const Send = React.forwardRef((props, ref) => (
     <svg {...props} ref={ref} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paper-plane" class="svg-inline--fa fa-paper-plane " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -22,11 +24,18 @@ const Teacher = () => {
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [message, setMessage] = useState("");
+    const [deleteID, setDeleteID] = useState("");
+    const [showDialog, setShowDialog] = useState(false);
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
     useEffect(() => {
-        dispatch(getClassMessage({type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
@@ -57,6 +66,11 @@ const Teacher = () => {
         })
         dispatch(postClassMessage({ class: ClassID, message, postedBy: localStorage.getItem('id') }, navigate));
     }
+
+    const handleConfirm = () => {
+        dispatch(deleteClassMessage(deleteID));
+        setShowDialog(false);
+    };
 
     return (
         <div className="Main">
@@ -137,11 +151,14 @@ const Teacher = () => {
                                                 return false;
                                             }).map((item) => (<>
                                                 <div className='col-lg-3 Avatar'>
-                                                    <span className='Avatar-1' title={item.class.subject+" Teacher"}>You</span>
+                                                    <span className='Avatar-1' title={item.class.subject + " Teacher"}>You</span>
                                                 </div>
                                                 <div className='col-lg-8 message-content'>
-                                                    <p>{item.message}</p>
-                                                    <p className='timer'>a day ago</p>
+                                                    <p>{item.message}</p><br />
+                                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                        <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
+                                                        <span className='timer'>a day ago</span>
+                                                    </div>
                                                 </div>
                                             </>
                                             ))
@@ -155,6 +172,34 @@ const Teacher = () => {
                     </div>
                 </div>
             </div>
+            <Modal show={showDialog} onHide={() => setShowDialog(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to proceed?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDialog(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleConfirm}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

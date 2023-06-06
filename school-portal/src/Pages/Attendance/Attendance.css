@@ -826,3 +826,11 @@
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
   }
+
+  .red-color{
+    color:red;
+  }
+
+  .green-color{
+    color:green;
+  }

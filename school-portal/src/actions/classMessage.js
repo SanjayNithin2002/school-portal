@@ -22,3 +22,15 @@ export const postClassMessage = (message,navigate) => async () => {
         console.log(err)
     }
 }
+
+export const deleteClassMessage = (messageID) => async (dispatch) => {
+    try{
+        console.log(messageID)
+        const { data } = await api.deleteClassMessage(messageID)
+        console.log(data)
+        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    }
+    catch(err){
+        console.log(err)
+    }
+}

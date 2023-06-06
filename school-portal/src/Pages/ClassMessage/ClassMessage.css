@@ -72,3 +72,15 @@
     opacity: 0.8;
     font-size: 15px;
 }
+
+.class-message-delete{
+    cursor:pointer;
+    display: flex;
+    justify-content: flex-end;
+    opacity: 0.8;
+    font-size: 15px;
+}
+
+.class-message-delete:hover{
+    font-weight: 600;
+}
