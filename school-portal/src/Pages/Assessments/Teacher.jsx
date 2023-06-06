@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import * as Solid from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { TagPicker } from 'rsuite';
@@ -109,7 +109,7 @@ function Teacher() {
                         <h2>Assessments</h2>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
                             <TagPicker style={{ width: length }} data={data} onChange={handleSelect} placeholder={<><FontAwesomeIcon icons={Solid.faFilter} />Filter</>} groupBy="role" />&emsp;
-                            <div to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</div>
+                            <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
                         </div>
                     </div>
 

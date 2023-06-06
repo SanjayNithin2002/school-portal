@@ -27,11 +27,14 @@ export const viewBonafide = (request) => API1.get(request)
 /* Classes */
 export const createClass = (classData) => API.post('/classes/',classData)
 export const updateSection = (id,studentData) => API.patch(`/students/${id}`,studentData)
+export const getAllClass = () => API.get('/classes');
 export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
 
 /* TimeTables */
 
 export const postTimeTable = (classData) => API.post('/timetables/',classData)
+export const getTimeTables = () =>API.get('/timetables/');
+export const getTimeTable = (standard) => API.get(`/timetables/standard/${standard}`);
 
 /* Assessments */
 export const postAssessment = (functionData) => API.post('/assessments',functionData)

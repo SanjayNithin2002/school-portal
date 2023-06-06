@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import "./Student.css"
 import { requestClassStudents, requestStudents } from '../../actions/students'
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
-import { getClass } from '../../actions/currentUser'
+import { getClass } from '../../actions/class'
 
 function StudentList() {
     const [standard, setStandard] = useState("");
@@ -16,7 +16,7 @@ function StudentList() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const class1 = useSelector((state) => state.subjectTeacherReducer)
+    const class1 = useSelector((state) => state.singleClassReducer)
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
     useEffect(() => {

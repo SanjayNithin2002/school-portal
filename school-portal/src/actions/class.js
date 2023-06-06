@@ -16,3 +16,25 @@ export const createClass = (classData,navigate) => async (dispatch) => {
         console.log(err)
     }
 }
+
+export const getAllClass = () => async(dispatch) =>{
+    try{
+        const {data} = await api.getAllClass();
+        dispatch({type:'FETCH_ALL_CLASSES',payload:data})
+        console.log(data);
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const getClass = (userData) => async(dispatch) =>{
+    try{
+        console.log(userData)
+        const {data} = await api.getClass(userData);
+        dispatch({type:'FETCH_CLASS_DETAILS',payload:data})
+    }
+    catch(err){
+        console.log(err)
+    }
+}

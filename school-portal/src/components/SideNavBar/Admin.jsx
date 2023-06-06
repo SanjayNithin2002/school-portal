@@ -39,8 +39,8 @@ const Admin = () => {
           <a href="/StaffInfo" style={{ textDecoration: 'none', color: 'black'}}>Staff List </a></Nav.Item>
         <Nav.Item href='/AddStaff'>
           <a href="/AddStaff" style={{ textDecoration: 'none', color: 'black'}}>Add Staff </a></Nav.Item>
-        <Nav.Item href='/PostAttendance'>
-          <a href="/PostAttendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
+        <Nav.Item href='/PostTeacherAttendance'>
+          <a href="/PostTeacherAttendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
         <Nav.Item href='/Meeting'>
           <a href="/Meeting" style={{ textDecoration: 'none', color: 'black'}}>Meetings </a></Nav.Item>
       </Nav.Menu>

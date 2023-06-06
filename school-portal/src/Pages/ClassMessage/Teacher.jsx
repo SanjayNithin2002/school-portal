@@ -3,7 +3,7 @@ import { Icon } from '@rsuite/icons';
 import Attach from "@rsuite/icons/Attachment"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { getClass } from '../../actions/currentUser';
+import { getClass } from '../../actions/class';
 
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
@@ -26,16 +26,16 @@ const Teacher = () => {
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
     useEffect(() => {
+        dispatch(getClassMessage({type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
-    const class1 = useSelector((state) => state.subjectTeacherReducer)
+    const class1 = useSelector((state) => state.singleClassReducer)
     const messages = useSelector((state) => state.classmessageReducer)
     const [classes, setClasses] = useState(null)
 
-    if (class1 !== null && classes === null) {
-        const cls = class1.docs.filter((item) => {
+    if (class1 !== null && class1.classes && classes === null) {
+        const cls = class1.classes.filter((item) => {
             if (item.teacher && item.teacher !== null)
                 return item.teacher._id === localStorage.getItem('id');
             else

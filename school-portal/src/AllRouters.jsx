@@ -16,8 +16,8 @@ import Bonafide from "./Pages/Bonafide/Bonafide";
 import StudentInfo from "./Pages/Student/StudentInfo";
 import TeacherInfo from "./Pages/Teacher/TeacherInfo";
 import StudentList from "./Pages/Student/StudentList";
-import PostStudent from "./Pages/Attendance/PostStudent2";
-import PostStudent1 from "./Pages/Attendance/PostStudent1";
+import PostStudent from "./Pages/Attendance/PostStudent";
+import PostTeacher from "./Pages/Attendance/PostTeacher";
 import ClassMessage from "./Pages/ClassMessage/ClassMessage";
 import Timetable from "./Pages/Time table/timetable";
 import PostAssessment from "./Pages/Assessments/PostAssessment"
@@ -55,8 +55,8 @@ const AllRoutes = () => {
                 <Route path='/AddStudent' element={<AddStudent/>}/>
                 <Route path='/StaffInfo' element={<TeacherInfo/>}/>
                 <Route path='/StudentList' element={<StudentList/>}/>
-                <Route path='/PostAttendance' element={<PostStudent/>}/>
-                <Route path='/PostAttendance1' element={<PostStudent1/>}/>
+                <Route path='/PostStudentAttendance' element={<PostStudent/>}/>
+                <Route path='/PostTeacherAttendance' element={<PostTeacher/>}/>
                 <Route path='/ClassMessage' element={<ClassMessage/>}/>
                 <Route path='/timetable' element={<Timetable/>}/> 
                 <Route path='*' element={<Error404/>}/>

@@ -32,8 +32,8 @@ const Teacher = () => {
             <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
               <Nav.Item href='/StudentList'>
                 <a href='StudentList' style={{ textDecoration: 'none', color: 'black'}}>Student List</a></Nav.Item>
-              <Nav.Item href='/PostAttendance'>
-                <a href='PostAttendance' style={{ textDecoration: 'none', color: 'black'}}>Attendance</a></Nav.Item>
+              <Nav.Item href='/PostStudentAttendance'>
+                <a href='/PostStudentAttendance' style={{ textDecoration: 'none', color: 'black'}}>Attendance</a></Nav.Item>
               <Nav.Item href='/ClassMessage'>
                 <a href='ClassMessage' style={{ textDecoration: 'none', color: 'black'}}>Class Message</a></Nav.Item>
               <Nav.Item href='/Assessment'>

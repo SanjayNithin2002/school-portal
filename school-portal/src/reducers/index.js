@@ -4,13 +4,14 @@ import attendanceReducer from "./Attendance"
 import classmessageReducer from "./ClassMessage"
 import allStudentsReducer from "./AllStudents"
 import bonafideReducer from "./Bonafide"
-import subjectTeacherReducer from "./SubjectTeachers"
 import assessmentsReducer from "./Assessments"
 import answersReducer from "./Answers"
 import teacherReducer from "./Teacher"
 import adminReducer from "./Admin"
+import timeTableReducer from "./TimeTable"
+import allClassReducer from "./AllClass"
+import singleClassReducer from "./SingleClass"
 
 export default combineReducers({
-    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,subjectTeacherReducer
-    ,assessmentsReducer,answersReducer,teacherReducer,adminReducer
+    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,singleClassReducer
 })
