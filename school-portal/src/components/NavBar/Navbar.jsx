@@ -30,10 +30,10 @@ const Navbar = () => {
                             aria-label="Search"
                             style={{maxHeight:"46px"}}
                         />
-                        &ensp;
+                        &thinsp;
                         <Nav className="me-auto my-lg-0" >
                             <Nav.Link href="#action1"><FontAwesomeIcon style={{ fontSize: "25px" }} icon={Regular.faBell} /></Nav.Link>
-                            &emsp;
+                            &thinsp;
                             <NavDropdown title={<div style={{textDecoration:"none", display: "inline-flex", justifyContent: "center" }}><FontAwesomeIcon style={{ border: "2px solid gray", padding: "5px", borderRadius: "50%" }} icon={Solid.faUser} /><>&ensp;Kumar</></div>} id="navbarScrollingDropdown">
                                 <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
                                 <NavDropdown.Item href="/">Logout</NavDropdown.Item>

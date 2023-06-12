@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Accordion from 'react-bootstrap/Accordion'
 import { Link, useNavigate } from "react-router-dom"
 import * as Solid from "@fortawesome/free-solid-svg-icons"
@@ -83,10 +83,10 @@ function Teacher() {
     const checkDueDate = (date1) => {
         const startDate = new Date();
         const endDate = new Date(date1);
-        if(endDate.getTime()-startDate.getTime()>0)
-        return true;
+        if (endDate.getTime() - startDate.getTime() > 0)
+            return true;
         else
-        return false;
+            return false;
     }
 
     const handleClick = (aID) => {
@@ -103,83 +103,84 @@ function Teacher() {
             <SideNavBar />
             {
                 !display ?
-            <div className="Home">
-                <div class="container rounded bg-white">
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <h2>Assessments</h2>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                            <TagPicker style={{ width: length }} data={data} onChange={handleSelect} placeholder={<><FontAwesomeIcon icons={Solid.faFilter} />Filter</>} groupBy="role" />&emsp;
-                            <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
+                    <div className="Home">
+                        <div class="container rounded bg-white">
+                            <div className="btnmove" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <h2>Assessments</h2>
+                                <div className="btn-group">
+                                    <TagPicker data={data} onChange={handleSelect} placeholder={<><FontAwesomeIcon icons={Solid.faFilter} />Filter</>} groupBy="role" />&emsp;
+                                    <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
+                                </div>
+                            </div>
+
+
+                            <hr style={{ border: "1px solid gray" }} />
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header style={{ padding: "initial" }}>Upcoming/Ongoing Assessments</Accordion.Header>
+                                    <Accordion.Body>
+                                        {
+                                            assessments && assessments.assessments.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
+
+                                                <div onClick={() => handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
+                                                    <div className='Assessment-tab'>
+                                                        <div className='Assessment-tab-1'>
+                                                            <h4>{item.title}</h4>
+                                                            <h5>{item.class.subject}</h5>
+                                                        </div>
+                                                        <div className='Assessment-tab-1'>
+                                                            <div style={{ fontWeight: "800" }}>
+                                                                Class :&nbsp;
+                                                                <span style={{ color: "green" }}>
+                                                                    {
+                                                                        standardList.filter((item1) => item1.value === item.class.standard).map((standard) => (<>{standard.label}</>))
+                                                                    }
+                                                                    th Standard {item.class.section} Section
+                                                                </span>
+                                                            </div>
+                                                            <div>{handleDateFormat(item.lastDate)}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Completed Assessments</Accordion.Header>
+                                    <Accordion.Body>
+                                        {
+                                            assessments && assessments.assessments.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
+
+                                                <div onClick={() => handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
+                                                    <div className='Assessment-tab'>
+                                                        <div className='Assessment-tab-1'>
+                                                            <h4>{item.title}</h4>
+                                                            <h5>{item.class.subject}</h5>
+                                                        </div>
+                                                        <div className='Assessment-tab-1'>
+                                                            <div style={{ fontWeight: "800" }}>
+                                                                Class :&nbsp;
+                                                                <span style={{ color: "green" }}>
+                                                                    {
+                                                                        standardList.filter((item1) => item1.value === item.class.standard).map((standard) => (<>{standard.label}</>))
+                                                                    }
+                                                                    th Standard {item.class.section} Section
+                                                                </span>
+                                                            </div>
+                                                            <div>{handleDateFormat(item.lastDate)}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                         </div>
                     </div>
-
-                    <hr style={{ border: "1px solid gray" }} />
-                    <Accordion defaultActiveKey="0">
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header style={{ padding: "initial" }}>Upcoming/Ongoing Assessments</Accordion.Header>
-                            <Accordion.Body>
-                                {
-                                    assessments && assessments.assessments.filter((item)=> { return checkDueDate(item.lastDate)}).map((item) => (
-                                        
-                                        <div onClick={()=>handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
-                                            <div className='Assessment-tab'>
-                                                <div className='Assessment-tab-1'>
-                                                    <h4>{item.title}</h4>
-                                                    <h5>{item.class.subject}</h5>
-                                                </div>
-                                                <div className='Assessment-tab-1'>
-                                                    <div style={{ fontWeight: "800" }}>
-                                                        Class :&nbsp;
-                                                        <span style={{ color: "green" }}>
-                                                            {
-                                                                standardList.filter((item1) => item1.value === item.class.standard).map((standard) => (<>{standard.label}</>))
-                                                            }
-                                                            th Standard {item.class.section} Section
-                                                        </span>
-                                                    </div>
-                                                    <div>{handleDateFormat(item.lastDate)}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Completed Assessments</Accordion.Header>
-                            <Accordion.Body>
-                                {
-                                    assessments && assessments.assessments.filter((item)=> { return !checkDueDate(item.lastDate)}).map((item) => (
-                                        
-                                        <div onClick={()=>handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
-                                            <div className='Assessment-tab'>
-                                                <div className='Assessment-tab-1'>
-                                                    <h4>{item.title}</h4>
-                                                    <h5>{item.class.subject}</h5>
-                                                </div>
-                                                <div className='Assessment-tab-1'>
-                                                    <div style={{ fontWeight: "800" }}>
-                                                        Class :&nbsp;
-                                                        <span style={{ color: "green" }}>
-                                                            {
-                                                                standardList.filter((item1) => item1.value === item.class.standard).map((standard) => (<>{standard.label}</>))
-                                                            }
-                                                            th Standard {item.class.section} Section
-                                                        </span>
-                                                    </div>
-                                                    <div>{handleDateFormat(item.lastDate)}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion>
-                </div>
-            </div>
-            :
-            <PostAssessment assessments={assessments} answers={answers} assessmentID={assessmentID} close={()=>close()} />
+                    :
+                    <PostAssessment assessments={assessments} answers={answers} assessmentID={assessmentID} close={() => close()} />
             }
         </div>
     )

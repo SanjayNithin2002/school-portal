@@ -15,7 +15,7 @@ function Teacher() {
             <SideNavBar />
             <div className="Home">
                 <div class="container rounded bg-white">
-                    <div className='d-flex justify-content-between'>
+                    <div className='heading'>
                         <h2>Examination Schedule</h2>
                         <Link to="/AddSchedule" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus}/> Add Schedule</Link>
                     </div>
