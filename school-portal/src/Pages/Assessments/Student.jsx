@@ -26,6 +26,9 @@ function Student() {
     const assessments = useSelector((state) => state.assessmentsReducer)
     const answers = useSelector((state) => state.answersReducer)
 
+    console.log(answers);
+    console.log(assessments)
+
     const handleDateFormat = (date1) => {
         const date = new Date(date1);
         const options = {

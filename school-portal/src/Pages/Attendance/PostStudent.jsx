@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { Toggle } from 'rsuite';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Solid from "@fortawesome/free-solid-svg-icons";
 import * as Regular from "@fortawesome/free-regular-svg-icons";
@@ -9,7 +8,7 @@ import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getClass } from "../../actions/class";
-import { getTimeTables } from "../../actions/timetable";
+import { getTimeTable } from "../../actions/timetable";
 import { requestClassStudents } from "../../actions/students";
 import AddStudent from "./AddStudent";
 
@@ -17,6 +16,7 @@ const PostStudent = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [edit, setEdit] = useState(true);
+    const [edit1, setEdit1] = useState(true);
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [classID, setClassID] = useState(null)
@@ -29,15 +29,13 @@ const PostStudent = () => {
 
     useEffect(() => {
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        if (standard && section)
-            dispatch(getTimeTables(standard))
         if (classID)
             dispatch(requestClassStudents(classID))
     }, [dispatch, classID, section, standard])
 
-    const classes = useSelector((state) => state.singleClassReducer)
-    const timetable = useSelector((state) => state.timeTableReducer)
-    const students = useSelector((state) => state.allStudentsReducer)
+    let classes = useSelector((state) => state.singleClassReducer)
+    let timetable = useSelector((state) => state.timeTableReducer)
+    let students = useSelector((state) => state.allStudentsReducer)
 
     if (classes && classID && edit) {
         classes.classes.map((item) => {
@@ -50,7 +48,7 @@ const PostStudent = () => {
         })
     }
 
-    if (!split && edit && timetable !== null) {
+    if (!split && edit1 && timetable !== null && timetable.length>0) {
         let time = [];
         time.push(timetable[0].startTime);
         console.log(timetable[0].break);
@@ -61,22 +59,34 @@ const PostStudent = () => {
             })
             setSplit(time)
         }
+        setEdit1(false);
     }
 
     console.log(split)
     console.log(classes)
     console.log(timetable)
     console.log(students)
+    console.log(classID)
 
-    if (!classID && standard && section) {
+    if (edit && standard && section) {
         classes.classes.map((item) => {
             if (item.standard === parseInt(standard)) {
                 if (item.section === section) {
-                    setClassID(item._id)
+                    if(item.subject !== "Class Teacher"){
+                        console.log(standard);
+                        setClassID(item._id)
+                        dispatch({type:"FETCH_ALL_TIMETABLE",payload:null});
+                        dispatch({type:"STUDENT_FETCH_ATTENDANCE",payload:null});
+                        dispatch({type:'FETCH_CLASS_STUDENTS',payload:null});
+                        dispatch(getTimeTable(standard))
+                        setSplit(null);
+                    }
                 }
             }
             return true;
         })
+        setEdit(false);
+        setEdit1(true);
     }
 
     const close = () =>{
@@ -106,9 +116,27 @@ const PostStudent = () => {
     const getDate = (day1) => {
         var currentDate = new Date();
         var desiredDay = days.indexOf(day1);
-        var daysAgo = (currentDate.getDay() - desiredDay - 7) % 7;
+        var daysAgo = 0;
+        if(currentDate.getDay()>desiredDay)
+            daysAgo = -1*(currentDate.getDay()-desiredDay);
+        else
+            daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
         return handleDateFormat(desiredDate);
+    }
+
+    const getDates = (day1) => {
+        var currentDate = new Date();
+        var desiredDay = days.indexOf(day1);
+        var daysAgo = 0;
+        if(currentDate.getDay()>desiredDay)
+            daysAgo = -1*(currentDate.getDay()-desiredDay);
+        else
+            daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
+        var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
+        let date = desiredDate.getDate()<10 ? "0"+desiredDate.getDate() : desiredDate.getDate();
+        let month = desiredDate.getMonth()<10 ? "0"+desiredDate.getMonth() : desiredDate.getMonth();
+        return month+"/"+date+"/"+desiredDate.getFullYear;
     }
 
     return (
@@ -128,7 +156,7 @@ const PostStudent = () => {
                             <select
                                 className="selectPicker3"
                                 value={standard}
-                                onChange={(e) => setStandard(e.target.value)}
+                                onChange={(e) => {setStandard(e.target.value);setEdit(true);}}
                             >
                                 <option value="" disabled>
                                     Select Standard
@@ -150,7 +178,7 @@ const PostStudent = () => {
                             <select
                                 className="selectPicker3"
                                 value={section}
-                                onChange={(e) => setSection(e.target.value)}
+                                onChange={(e) => {setSection(e.target.value);setEdit(true);}}
                             >
                                 <option value="" disabled>
                                     Select Section
@@ -190,7 +218,7 @@ const PostStudent = () => {
                                                             <td>{getTimings(slot.startTime)}</td>
                                                             <td>{students.docs.length}</td>
                                                             <td>
-                                                                <div style={{ display: "contents" }} onClick={() => {setEditDisplay(true);setDay(slot.day);setTime(slot.startTime)}}>
+                                                                <div style={{ display: "contents" }} onClick={() => {setEditDisplay(true);setDay(getDates(slot.day));setTime(slot.startTime)}}>
                                                                     <FontAwesomeIcon icon={Solid.faPlus} />
                                                                 </div>
                                                                 &nbsp;/&nbsp;

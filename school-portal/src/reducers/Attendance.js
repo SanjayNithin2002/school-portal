@@ -1,7 +1,7 @@
 const attendanceReducer = (state=null,action) =>{
     switch(action.type)
     {
-        case 'FETCH_ATTENDANCE' : 
+        case 'STUDENT_FETCH_ATTENDANCE' : 
             return action.payload;
         default : 
             return state;

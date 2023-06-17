@@ -4,6 +4,7 @@ import { DatePicker, Stack } from 'rsuite'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion'
+import moment from "moment"
 
 import "./Bonafide.css"
 import { requestBonafide,viewBonafide } from '../../actions/bonafide';
@@ -100,6 +101,17 @@ function Student() {
         const paddedDay = day < 10 ? `0${day}` : day;
         const paddedMonth = month < 10 ? `0${month}` : month;
         setVisa((prev) => ({ ...prev, toDate: `${paddedDay}/${paddedMonth}/${year}` }));
+    }
+
+    const handleDateFormat = (date) => {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
+        const userLocale = navigator.language || navigator.userLanguage;
+        const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
+        return formattedDate
     }
 
     const handleFile = (request) =>{
@@ -232,6 +244,7 @@ function Student() {
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header style={{ padding: "initial" }}>Requested Bonafide Certificate</Accordion.Header>
                                     <Accordion.Body>
+                                        <div className='table-responsive'>
                                         <Table striped bordered hover>
                                             <thead>
                                                 <tr>
@@ -248,11 +261,11 @@ function Student() {
                                                     <td style={{ textAlign: "center" }} colSpan={6}>No Data</td>
                                                 </tr>  
                                                 :
-                                                bonafide.bonafides.map((item,index)=>(
+                                                bonafide.bonafides.sort((a, b) => (a.status > b.status) ? 1 : -1 ).map((item,index)=>(
                                                 <tr>
                                                     <td>{index+1}</td>
                                                     <td>{item.service}</td>
-                                                    <td>-</td>
+                                                    <td>{item.postedOn &&  handleDateFormat(new Date(item.postedOn)) }</td>
                                                     <td>
                                                         {
                                                             item.requestedFile===null ? <span style={{color:"orange"}}>Pending</span> : <span style={{color:"green"}}>Approved</span>
@@ -268,6 +281,7 @@ function Student() {
                                                 }
                                             </tbody>
                                         </Table>
+                                        </div>
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
@@ -281,3 +295,4 @@ function Student() {
 }
 
 export default Student
+

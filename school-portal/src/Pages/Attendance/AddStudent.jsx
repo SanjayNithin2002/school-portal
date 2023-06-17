@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { getClass } from "../../actions/class";
 import { getTimeTables } from "../../actions/timetable";
 import { requestClassStudents } from "../../actions/students";
+import { getStudentAttendance } from "../../actions/attendance";
 
 const AddStudent = (props) => {
 
@@ -21,12 +22,37 @@ const AddStudent = (props) => {
     const [classID, setClassID] = useState(null)
     const [split, setSplit] = useState(null);
     const [default1,setDefault1] = useState(true);
+    const [attendance,setAttendance] = useState(null); 
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
     useEffect(() => {
+        dispatch(getStudentAttendance({standard:props.standard,section:props.section,date:props.day}));
+    }, [dispatch])
 
-    }, [])
+    let attendances = useSelector((state) => state.attendanceReducer)
+
+    console.log(attendances);
+
+    if(!attendance && props.students){
+        let att = [];
+        props.students.map((item)=>{
+            att.push({student:item._id,status:default1});
+        })
+        setAttendance(att);
+    }
+
+    if(attendances && attendances.length>0 && edit){
+
+    }
+
+    const handleInputChange = (value, index) => {
+        setAttendance(prev => {
+            const updated = [...prev];
+            updated[index]["status"] = value;
+            return updated;
+        });
+    }
 
     const handleDateFormat = (date) => {
         const options = {
@@ -51,7 +77,11 @@ const AddStudent = (props) => {
     const getDate = (day1) => {
         var currentDate = new Date();
         var desiredDay = days.indexOf(day1);
-        var daysAgo = (currentDate.getDay() - desiredDay - 7) % 7;
+        var daysAgo = 0;
+        if(currentDate.getDay()>desiredDay)
+            daysAgo = -1*(currentDate.getDay()-desiredDay);
+        else
+            daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
         return handleDateFormat(desiredDate);
     }
@@ -95,7 +125,7 @@ const AddStudent = (props) => {
                                             <td>{student.firstName}</td>
                                             <td>{student.lastName}</td>
                                             <td>
-                                                <select className={default1 ? "green-color" : "red-color"} value={default1 ? "Present" : "Absent"}>
+                                                <select onChange={(e)=>handleInputChange(e.target.value,index)} className={default1 ? "green-color" : "red-color"} value={default1 ? "Present" : "Absent"}>
                                                     <option style={{color:"green"}} value="Present">Present</option>
                                                     <option style={{color:"red"}} value="Absent">Absent</option>
                                                 </select>

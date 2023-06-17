@@ -29,6 +29,8 @@ export const createClass = (classData) => API.post('/classes/',classData)
 export const updateSection = (id,studentData) => API.patch(`/students/${id}`,studentData)
 export const getAllClass = () => API.get('/classes');
 export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
+export const getStandardClass = (standard) => API.get(`/classes/standard/${standard}`)
+
 
 /* TimeTables */
 
@@ -52,5 +54,9 @@ export const getClassMessage = (userData) => API.get(`/classmessages/${userData.
 export const postClassMessage = (message) => API.post('/classmessages',message);
 export const deleteClassMessage = (messageID) => API.delete(`/classmessages/${messageID}`);
 
+/* Exams */
+export const createExam = (examData) => API.post('/exams/',examData)
+export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}/section/A`);
 
-export const getAttendance = (userid) => API.get(`${userid}`)
+
+export const getStudentAttendance = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);

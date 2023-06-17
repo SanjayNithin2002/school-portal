@@ -28,6 +28,17 @@ export const getAllClass = () => async(dispatch) =>{
     }
 }
 
+export const getStandardClass = (standard) => async(dispatch) =>{
+    try{
+        console.log(standard)
+        const {data} = await api.getStandardClass(standard);
+        dispatch({type:'FETCH_STANDARD_CLASS',payload:data})
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 export const getClass = (userData) => async(dispatch) =>{
     try{
         console.log(userData)

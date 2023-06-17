@@ -1,21 +1,22 @@
 import React from 'react'
 import Student from './student'
-import Teacher from './teacher'
+import Admin from './admin'
+import Error from "../Error404"
 
 const Assessments = () => {
   return (
     <>
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="student" &&
-        <Student/>
+        <Student />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Teacher type="teacher"/>
+        <Error />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Teacher type="admin"/>
+        <Admin />
     }
     </>
   )

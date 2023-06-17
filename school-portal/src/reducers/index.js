@@ -11,7 +11,8 @@ import adminReducer from "./Admin"
 import timeTableReducer from "./TimeTable"
 import allClassReducer from "./AllClass"
 import singleClassReducer from "./SingleClass"
+import examReducer from "./Exam"
 
 export default combineReducers({
-    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,singleClassReducer
+    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,singleClassReducer,examReducer
 })
