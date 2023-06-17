@@ -1,3 +1,23 @@
+.btnmove {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  @media (max-width: 464px) {
+    .btnmove {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+  }
+
+
 .Assessment-tab{
     display:flex;
     padding:10px;

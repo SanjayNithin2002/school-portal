@@ -1,10 +1,9 @@
 import React from "react"
-import { Popover, Whisper, Button } from 'rsuite';
+import { Popover, Whisper, Button, Header } from 'rsuite';
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Leave.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as solid from "@fortawesome/free-solid-svg-icons";
-
 function Leave() {
     const DefaultPopover = React.forwardRef(({...props}, ref) => {
         return (
@@ -35,6 +34,10 @@ function Leave() {
             <SideNavBar/>
             <div className="Home">
                 <div class="container rounded bg-white">
+                <Header>
+            <h2>Leave Request</h2>
+            <hr style={{ border: "1px solid gray" }} />
+          </Header>
                     <br/><br/>
                     <div className="row" style={{display:"flex",justifyContent: "center",alignItems:"center"}}>
                         <div className="col-lg-2 col-md-5">
@@ -87,7 +90,7 @@ function Leave() {
                         <div className="col-lg-12">
                             <h2>History</h2>
                             <br/>
-                            <table class="table table-bordered tablestyle"  cellspacing="0">
+                            <table class="table table-bordered  tablestyle"  cellspacing="0">
                                 <tr>
                                     <th>Sno</th>
                                     <th>Applied Date</th>
