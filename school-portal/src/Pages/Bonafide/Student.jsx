@@ -252,6 +252,7 @@ function Student() {
                                                     <th>Bonafide Service</th>
                                                     <th>Posted Date</th>
                                                     <th>Status</th>
+                                                    <th>Message</th>
                                                     <th>Certificate</th>
                                                 </tr>
                                             </thead>
@@ -266,11 +267,8 @@ function Student() {
                                                     <td>{index+1}</td>
                                                     <td>{item.service}</td>
                                                     <td>{item.postedOn &&  handleDateFormat(new Date(item.postedOn)) }</td>
-                                                    <td>
-                                                        {
-                                                            item.requestedFile===null ? <span style={{color:"orange"}}>Pending</span> : <span style={{color:"green"}}>Approved</span>
-                                                        }
-                                                    </td>
+                                                    <td>{item.status}</td>
+                                                    <td>{item.message ? item.message : "No Message"}</td>
                                                     <td>
                                                         {
                                                             item.requestedFile===null ? <span>no File</span> : <button type="button" className='btn btn-primary' onClick={()=>handleFile(item.requestedFile)}>Download</button>

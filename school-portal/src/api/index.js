@@ -23,6 +23,8 @@ export const StudentBonafide = (studentID) => API.get(`/bonafides/students/${stu
 export const getAllBonafide = () =>API.get('/bonafides/');
 export const postBonafideFile = (bonafideID,formData) => API.patch(`/bonafides/${bonafideID}`,formData)
 export const viewBonafide = (request) => API1.get(request) 
+export const rejectBonafide = (bonafideID,functionData) => API.patch(`/bonafides/${bonafideID}`,functionData) 
+export const deleteBonafide = (bonafideID) => API.delete(`/bonafides/${bonafideID}`)
 
 /* Classes */
 export const createClass = (classData) => API.post('/classes/',classData)
@@ -31,9 +33,7 @@ export const getAllClass = () => API.get('/classes');
 export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
 export const getStandardClass = (standard) => API.get(`/classes/standard/${standard}`)
 
-
 /* TimeTables */
-
 export const postTimeTable = (classData) => API.post('/timetables/',classData)
 export const getTimeTables = () =>API.get('/timetables/');
 export const getTimeTable = (standard) => API.get(`/timetables/standard/${standard}`);
@@ -58,5 +58,8 @@ export const deleteClassMessage = (messageID) => API.delete(`/classmessages/${me
 export const createExam = (examData) => API.post('/exams/',examData)
 export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}/section/A`);
 
-
-export const getStudentAttendance = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
+/* Student Attendance */
+export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
+export const getStudentAttendance = (userData) => API.get(`/studentattendances/${userData.type}s/${userData.id}`);
+export const postStudentAttendance = (functionData) => API.post('/studentattendances/postmany',functionData);
+export const deleteStudentAttendance = (functionID) => API.delete(`/studentattendances/${functionID}`);

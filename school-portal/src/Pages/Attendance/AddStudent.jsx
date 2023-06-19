@@ -1,58 +1,62 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Toggle } from 'rsuite';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Solid from "@fortawesome/free-solid-svg-icons";
-import * as Regular from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-import { getClass } from "../../actions/class";
-import { getTimeTables } from "../../actions/timetable";
-import { requestClassStudents } from "../../actions/students";
-import { getStudentAttendance } from "../../actions/attendance";
+import { getStudentAttendance, getStudentAttendances, postStudentAttendance } from "../../actions/attendance";
 
 const AddStudent = (props) => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [edit, setEdit] = useState(true);
-    const [standard, setStandard] = useState("");
-    const [section, setSection] = useState("");
-    const [classID, setClassID] = useState(null)
-    const [split, setSplit] = useState(null);
     const [default1,setDefault1] = useState(true);
     const [attendance,setAttendance] = useState(null); 
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
     useEffect(() => {
-        dispatch(getStudentAttendance({standard:props.standard,section:props.section,date:props.day}));
-    }, [dispatch])
+        dispatch(getStudentAttendances({standard:props.standard,section:props.section,date:props.date}));
+    }, [dispatch,props.standard,props.section,props.date])
 
     let attendances = useSelector((state) => state.attendanceReducer)
 
     console.log(attendances);
+    console.log(attendance);
+    console.log(props)
 
     if(!attendance && props.students){
         let att = [];
-        props.students.map((item)=>{
+        props.students.docs.map((item)=>{
             att.push({student:item._id,status:default1});
+            return true;
         })
         setAttendance(att);
     }
 
-    if(attendances && attendances.length>0 && edit){
-
+    if(attendances && attendances.StudentAttendances.length>0 && edit){
+        let att = [];
+        attendances.StudentAttendances.map((item)=>{
+            att.push({student:item.student._id,status:item.status==='Present'? true:false});
+            return true;
+        })
+        console.log(att);
+        setAttendance(att);
+        setEdit(false);
     }
 
     const handleInputChange = (value, index) => {
+        let values = value==='false' ? false : true; 
         setAttendance(prev => {
             const updated = [...prev];
-            updated[index]["status"] = value;
+            updated[index]["status"] = values;
             return updated;
         });
     }
+
+    const handleBack = () => {
+        dispatch({type:"STUDENT_FETCH_ATTENDANCE",payload:null})
+        props.close()
+    } 
 
     const handleDateFormat = (date) => {
         const options = {
@@ -66,7 +70,7 @@ const AddStudent = (props) => {
     }
 
     const getTimings = (time) => {
-        if (time === props.split[0]) {
+        if (time === "FN") {
             return "Morning";
         }
         else {
@@ -86,6 +90,17 @@ const AddStudent = (props) => {
         return handleDateFormat(desiredDate);
     }
 
+    const handleSubmit = ( ) => {
+        if(attendance){
+            let att = [];
+            attendance.map((item)=>{
+                att.push({student:item.student,status:item.status ? "Present" : "Absent" })
+                return true;
+            })
+            dispatch(postStudentAttendance({date:props.date,time:props.time,attendances:att}))
+        }
+    }
+
     return (
             <div className="Home">
                 <div className="container rounded bg-white">
@@ -96,7 +111,7 @@ const AddStudent = (props) => {
                     <div className="row poststudent-container">
                         <div className="col-lg-3" style={{ margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
                             <h5>Default Value : </h5>
-                            <Toggle checked={default1} onChange={()=>setDefault1(!default1)} size="lg" checkedChildren="Present" unCheckedChildren="Absent" />
+                            <Toggle checked={default1} onChange={()=>setDefault1(!default1)} size="lg" checkedChildren="Present" unCheckedChildren="Absent" disabled={attendances && attendances.StudentAttendances.length>0 ? true : false} />
                         </div>
                     </div>
                     <br />
@@ -125,10 +140,15 @@ const AddStudent = (props) => {
                                             <td>{student.firstName}</td>
                                             <td>{student.lastName}</td>
                                             <td>
-                                                <select onChange={(e)=>handleInputChange(e.target.value,index)} className={default1 ? "green-color" : "red-color"} value={default1 ? "Present" : "Absent"}>
-                                                    <option style={{color:"green"}} value="Present">Present</option>
-                                                    <option style={{color:"red"}} value="Absent">Absent</option>
-                                                </select>
+                                                {
+                                                    attendance && attendance.filter((item)=>item.student===student._id).map((item)=>(
+                                                        <select onChange={(e)=>handleInputChange(e.target.value,index)} className={ item.status ? "green-color" : "red-color"} value={ item.status ? 'true' : 'false'}>
+                                                            <option style={{color:"green"}} value={true}>Present</option>
+                                                            <option style={{color:"red"}} value={false}>Absent</option>
+                                                        </select>
+                                                    ))
+                                                }
+                                                
                                             </td>
                                         </tr>
                                         ))
@@ -140,8 +160,8 @@ const AddStudent = (props) => {
                     </div>
                     <div className="row poststudent-container" style={{justifyContent:'center'}}>
                         <div className="col-lg-6" style={{ margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
-                            <button className="btn btn-danger" onClick={()=>props.close()}>Back</button>
-                            <button className="btn btn-success">Post</button>
+                            <button className="btn btn-danger" onClick={()=>handleBack()}>Back</button>
+                            <button className="btn btn-success" onClick={()=>handleSubmit()}>Post</button>
                         </div>
                     </div>
                 </div>

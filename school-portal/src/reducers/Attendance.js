@@ -3,6 +3,8 @@ const attendanceReducer = (state=null,action) =>{
     {
         case 'STUDENT_FETCH_ATTENDANCE' : 
             return action.payload;
+        case 'ALL_STUDENT_FETCH_ATTENDANCE' : 
+            return action.payload;
         default : 
             return state;
     }

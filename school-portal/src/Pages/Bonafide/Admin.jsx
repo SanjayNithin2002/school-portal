@@ -69,15 +69,15 @@ function AdminBonafide() {
                                 <td style={{ textAlign: "center" }} colSpan={7}>No Data</td>
                             </tr> 
                             : 
-                            allBonafides.bonafides.sort((a,b)=>(a.status > b.status) ? 1 : -1).map((bonafide,index) => (
+                            allBonafides.bonafides.sort((a, b) => a.postedOn > b.postedOn ? -1 : 1 ).map((bonafide,index) => (
                             allStudents && allStudents.docs.filter((item)=>item._id===bonafide.student).map((student)=>(
                             <tr>
                                 <td>{index+1}</td>
                                 <td>{student.firstName+" "+student.lastName}</td>
                                 <td>{standardList[student.standard-1].label+" "+student.section}</td>
                                 <td>{bonafide.service}</td>
-                                <td>{ handleDateFormat(new Date(bonafide.postedOn)) }</td>
-                                <td>{bonafide.requestedFile!==null ? <>Uploaded</>  : <>Not Uploaded</> }</td>
+                                <td>{handleDateFormat(new Date(bonafide.postedOn))}</td>
+                                <td>{bonafide.status}</td>
                                 <td><button className='btn btn-primary' onClick={()=>handleView(student._id,bonafide._id)}>View</button></td>
                             </tr>
                             ))

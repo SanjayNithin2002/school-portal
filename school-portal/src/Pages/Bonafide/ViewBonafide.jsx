@@ -6,10 +6,11 @@ import "./Bonafide.css"
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { postBonafideFile,viewBonafide } from '../../actions/bonafide'
+import { deleteBonafide, postBonafideFile,rejectBonafide,viewBonafide } from '../../actions/bonafide'
 const ViewBonafide = () => {
 
     const [data, setData] = useState(true)
+    const [message,setMessage] = useState(null);
     const [selectedFile,setSelectedFile] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,6 +38,8 @@ const ViewBonafide = () => {
       if (selectedFile) {
         const formData = new FormData();
         formData.append('bonafide', selectedFile, selectedFile.name);
+        formData.append('status', "Approved");
+        formData.append('message', message ? message : "No Message");
         console.log(formData);
         dispatch(postBonafideFile(bonafide[0]._id,formData,navigate))
       }
@@ -47,6 +50,19 @@ const ViewBonafide = () => {
 
     const handleFile = (request) =>{
         dispatch(viewBonafide(request));
+    }
+
+    const handleReject = () =>{
+        if(message){
+            dispatch(rejectBonafide({status:"Rejected",message},bonafide[0]._id))
+        }
+        else{
+            alert("Message box is to be filled while rejecting the bonafide request");
+        }
+    }
+
+    const handleDelete = () =>{
+            dispatch(deleteBonafide(bonafide[0]._id))
     }
 
     return (
@@ -135,23 +151,45 @@ const ViewBonafide = () => {
                                                 </tr>
                                             }
                                             { 
-                                            item.requestedFile===null ?
+                                            item.status==="Pending" ?
                                             <>
                                             <tr>
                                                 <td>Upload Certificate</td>
                                                 <td><input name="bonafide" type="file" onChange={(e)=>handleFileChange(e)} /></td>
                                             </tr>
                                             <tr>
+                                                <td>Message<br/><span style={{fontSize:"14px",fontWeight:"600"}}>(To reject this request, reason should be filed in the message box)</span></td>
+                                                <td><textarea value={message} onChange={(e)=>setMessage(e.target.value)} rows={4} cols={30}></textarea></td>
+                                            </tr>
+                                            <tr>
                                                 <td style={{textAlign:"center"}} colSpan={2}>
                                                     <button className='btn btn-success' type="submit">Submit</button>
+                                                    &emsp;
+                                                    <button className='btn btn-danger' onClick={()=>handleReject()} type="button">Reject</button>
                                                 </td>
                                             </tr>
                                             </>
                                             :
+                                            <>
+                                            <tr>
+                                                <td>Posted Message</td>
+                                                <td>{item.message ? item.message : "No Message"}</td>
+                                            </tr>
                                             <tr>
                                                 <td>View Certificate</td>
-                                                <td><button type="button" className='btn btn-primary' onClick={()=>handleFile(item.requestedFile)}>View</button></td>
+                                                <td>
+                                                   {item.requestedFile!==null ? <button type="button" className='btn btn-primary' onClick={()=>handleFile(item.requestedFile)}>View</button>
+                                                   :
+                                                   <>No File</>
+                                                    }
+                                                </td>
                                             </tr>
+                                            <tr>
+                                                <td colSpan={2} style={{textAlign:"center"}}>
+                                                    <button className='btn btn-danger' onClick={()=>handleDelete()} type="button">Delete</button>
+                                                </td>
+                                            </tr>
+                                            </>
                                             }
                                         </tbody>
                                     </Table>

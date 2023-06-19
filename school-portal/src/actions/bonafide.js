@@ -63,3 +63,28 @@ export const viewBonafide = (request) => async (dispatch) => {
         console.log(err)
     }
 }
+
+export const rejectBonafide = (functionData,bonafideID) => async (dispatch) => {
+    try{
+        console.log(bonafideID,functionData)
+        const {data} = await api.rejectBonafide(bonafideID,functionData)
+        dispatch(getAllBonafide())
+        console.log(data)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const deleteBonafide = (bonafideID) => async (dispatch) => {
+    try{
+        console.log(bonafideID)
+        const {data} = await api.deleteBonafide(bonafideID)
+        dispatch(getAllBonafide())
+        console.log(data)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+

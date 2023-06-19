@@ -3,18 +3,18 @@ import Table from "react-bootstrap/Table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Solid from "@fortawesome/free-solid-svg-icons";
 import * as Regular from "@fortawesome/free-regular-svg-icons";
+import * as api from "../../api"
 
 import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getClass } from "../../actions/class";
 import { getTimeTable } from "../../actions/timetable";
 import { requestClassStudents } from "../../actions/students";
 import AddStudent from "./AddStudent";
+import { deleteStudentAttendance } from "../../actions/attendance";
 
 const PostStudent = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [edit, setEdit] = useState(true);
     const [edit1, setEdit1] = useState(true);
     const [standard, setStandard] = useState("");
@@ -23,6 +23,7 @@ const PostStudent = () => {
     const [split, setSplit] = useState(null);
     const [editDisplay, setEditDisplay] = useState(false);
     const [day,setDay] = useState(null);
+    const [date,setDate] = useState(null);
     const [time,setTime] = useState(null);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
@@ -103,6 +104,16 @@ const PostStudent = () => {
         const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
         return formattedDate
     }
+    
+    const handleDelete = async(date) => {
+        const { data } = await api.getStudentAttendances({standard,section,date});
+        let request = [];
+        data.StudentAttendances.map((item)=>{
+            request.push(item._id);
+            return true;
+        })
+        dispatch(deleteStudentAttendance(request));
+    }
 
     const getTimings = (time) => {
         if (time === split[0]) {
@@ -135,8 +146,8 @@ const PostStudent = () => {
             daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
         let date = desiredDate.getDate()<10 ? "0"+desiredDate.getDate() : desiredDate.getDate();
-        let month = desiredDate.getMonth()<10 ? "0"+desiredDate.getMonth() : desiredDate.getMonth();
-        return month+"/"+date+"/"+desiredDate.getFullYear;
+        let month = desiredDate.getMonth()<10 ? "0"+(desiredDate.getMonth()+1) : (desiredDate.getMonth()+1);
+        return month+"-"+date+"-"+desiredDate.getFullYear();
     }
 
     return (
@@ -218,13 +229,13 @@ const PostStudent = () => {
                                                             <td>{getTimings(slot.startTime)}</td>
                                                             <td>{students.docs.length}</td>
                                                             <td>
-                                                                <div style={{ display: "contents" }} onClick={() => {setEditDisplay(true);setDay(getDates(slot.day));setTime(slot.startTime)}}>
-                                                                    <FontAwesomeIcon icon={Solid.faPlus} />
+                                                                <div style={{ display: "contents" }} onClick={() => {setEditDisplay(true);setDate(getDates(slot.day));setDay(slot.day);setTime(getTimings(slot.startTime)==="Morning"? "FN" : "AN" )}}>
+                                                                    <FontAwesomeIcon icon={Regular.faPenToSquare} />
                                                                 </div>
                                                                 &nbsp;/&nbsp;
-                                                                <FontAwesomeIcon icon={Regular.faPenToSquare} />
-                                                                &nbsp;/&nbsp;
-                                                                <FontAwesomeIcon icon={Solid.faTrashAlt} />
+                                                                <div style={{ display: "contents" }} onClick={() => handleDelete(getDates(slot.day))}>
+                                                                    <FontAwesomeIcon icon={Solid.faTrashAlt} />
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -239,7 +250,7 @@ const PostStudent = () => {
                 </div>
             </div>
             :
-            <AddStudent standard={standard} section={section} students={students} close={()=>close()} day={day} time={time} split={split}/>
+            <AddStudent standard={standard} section={section} students={students} close={()=>close()} day={day} date={date} time={time} split={split}/>
             }
         </div>
     );
