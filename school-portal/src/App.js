@@ -1,9 +1,35 @@
 import React, { useState } from "react";
 import "./App.css";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "rsuite";
+import { Nav, Navbar } from "rsuite";
 import { useDispatch, useSelector } from "react-redux";
-import { StudentlogIn,TeacherlogIn,AdminlogIn } from "./actions/auth";
+import { StudentlogIn, TeacherlogIn, AdminlogIn } from "./actions/auth";
+const data = [
+  {
+    "id": 1,
+    "name": "School re-open data has been postponed to 16th of July for students of Grade 1 to 5."
+  },
+  {
+    "id": 2,
+    "name": "Last date for tution fees payment for the acamadic year 2023-24 is 25th of July."
+  },
+  {
+    "id": 3,
+    "name": "Hostel registration link is available in the hostel details section."
+  },
+  {
+    "id": 4,
+    "name": "Results of the passing grade 10 students have been declared on the official ISCE website."
+  },
+  {
+    "id": 5,
+    "name": "19th of July has been delclared as a public holiday by the state government of Tamil Nadu."
+  },
+  {
+    "id": 6,
+    "name": "asdfasdf asdf asdf asdf asdf asdf."
+  }
+];
 
 function App() {
   const [Studentuserid, setStudentUserid] = useState("");
@@ -27,18 +53,21 @@ function App() {
       dispatch(
         AdminlogIn({ userID: Adminuserid, password: Adminpassword }, navigate)
       );
+
   };
   return (
     <div className="App">
-      <div class="card">
+      <div class="cards">
         <Navbar>
-          <Navbar.Brand href="#">SCHOOL NAME</Navbar.Brand>
+          <Navbar.Brand href="#"><h4>SCHOOL NAME</h4></Navbar.Brand>
+          <Nav>
+            <Nav.Item style={{ float: "right", letterSpacing: "1px" }}><h5> Nurturing Minds, Shaping Futures...</h5> </Nav.Item>
+          </Nav>
         </Navbar>
       </div>
-      <br></br>
-      <br></br>
-      <div class="row">
-        <div class="col-sm-4">
+
+      <div class="container-fluid1">
+        <div class="login">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Student Login</h5>
@@ -75,7 +104,7 @@ function App() {
           </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="login">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Teacher Login</h5>
@@ -111,7 +140,8 @@ function App() {
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
+
+        <div class="login">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Admin Login</h5>
@@ -147,6 +177,16 @@ function App() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="container1" >
+        <h5>Spotlight Announcements</h5>
+        <hr style={{ border: "1px solid gray" }} />
+        <ul>
+          {data.map((item) => (
+            <li style={{ marginBottom: "10px" }} key={item.id}><h6>{item.name}</h6></li>
+          ))}
+        </ul>
       </div>
     </div>
   );

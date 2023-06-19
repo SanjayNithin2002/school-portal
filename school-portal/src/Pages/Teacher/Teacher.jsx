@@ -29,7 +29,7 @@ function Teacher() {
             setHandleSubject(true);
         })
         setClassTeacher(id);
-        set
+        
         setEdit(false);
     }
 
