@@ -90,6 +90,7 @@ function Leave() {
                         <div className="col-lg-12">
                             <h2>History</h2>
                             <br/>
+                            <div className="table-responsive">
                             <table class="table table-bordered  tablestyle"  cellspacing="0">
                                 <tr>
                                     <th>Sno</th>
@@ -104,6 +105,7 @@ function Leave() {
                                     <td style={{textAlign:"center",fontSize:"20px"}} colSpan={7}>No Data</td>
                                 </tr>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>

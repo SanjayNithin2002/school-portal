@@ -135,8 +135,8 @@ const MarksTeacher = () => {
               <br />
               {stardard && section && subject && <>
                 <div className="row studentlist-container">
-                  <div className="col-lg-8">
-                    <Table striped className="tablestyle4">
+                  <div className="col-lg-8 table-responsive">
+                    <Table striped className="tablestyle4 ">
                       <thead>
                         <tr>
                           <th>Roll No</th>
