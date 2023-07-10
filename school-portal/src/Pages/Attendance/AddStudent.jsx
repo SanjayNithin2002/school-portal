@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 import { Toggle } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getStudentAttendance, getStudentAttendances, postStudentAttendance } from "../../actions/attendance";
+import { getStudentAttendances, postStudentAttendance } from "../../actions/attendance";
 
 const AddStudent = (props) => {
 
@@ -33,9 +33,9 @@ const AddStudent = (props) => {
         setAttendance(att);
     }
 
-    if(attendances && attendances.StudentAttendances.length>0 && edit){
+    if(attendances && attendances.docs.length>0 && edit){
         let att = [];
-        attendances.StudentAttendances.map((item)=>{
+        attendances.docs.map((item)=>{
             att.push({student:item.student._id,status:item.status==='Present'? true:false});
             return true;
         })
@@ -111,7 +111,7 @@ const AddStudent = (props) => {
                     <div className="row poststudent-container">
                         <div className="col-lg-3" style={{ margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
                             <h5>Default Value : </h5>
-                            <Toggle checked={default1} onChange={()=>setDefault1(!default1)} size="lg" checkedChildren="Present" unCheckedChildren="Absent" disabled={attendances && attendances.StudentAttendances.length>0 ? true : false} />
+                            <Toggle checked={default1} onChange={()=>{setDefault1(!default1);setAttendance(null);}} size="lg" checkedChildren="Present" unCheckedChildren="Absent" disabled={attendances && attendances.docs.length>0 ? true : false} />
                         </div>
                     </div>
                     <br />

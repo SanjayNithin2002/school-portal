@@ -27,25 +27,27 @@ const localizer = dateFnsLocalizer({
 function Attendance() {
 
     const dispatch = useDispatch();
-    const [events,setEvents] = useState(null);
+    const [events, setEvents] = useState(null);
 
-    useEffect(()=>{
-        dispatch(getStudentAttendance({id:localStorage.getItem('id'),type:localStorage.getItem('type')}))
-    },[dispatch])
+    useEffect(() => {
+        dispatch(getStudentAttendance({ id: localStorage.getItem('id'), type: localStorage.getItem('type') }))
+    }, [dispatch])
 
     const event = useSelector(state => state.attendanceReducer)
     console.log(event)
 
-    if(!events && event){
+    if (!events && event) {
         let result = []
-        event.results.map((item)=>{
-            result.push({
-                title1:item.count!==0 ? "Present" : "Absent",
-                count:item.count,
-                start:item.date,
-                end:item.date
+        if (event.docs && event.docs.length > 0) {
+            event.docs.map((item) => {
+                result.push({
+                    title1: item.count !== 0 ? "Present" : "Absent",
+                    count: item.count,
+                    start: item.date,
+                    end: item.date
+                })
             })
-        })
+        }
         console.log(result);
         setEvents(result);
     }
@@ -70,39 +72,39 @@ function Attendance() {
     const CustomEvent = ({ event }) => {
         return (
             <>{
-                event.count===0 &&
-                <div className="attendance-status-view" style={{backgroundColor:"red"}}>{event.title1}</div>
+                event.count === 0 &&
+                <div className="attendance-status-view" style={{ backgroundColor: "red" }}>{event.title1}</div>
             }
-            {
-                event.count===1 &&
-                <div className="attendance-status-view" style={{backgroundColor:"orange"}}>{event.title1}</div>
-            }
-            {
-                event.count===2 &&
-                <div className="attendance-status-view" style={{backgroundColor:"green"}}>{event.title1}</div>
-            }</>
+                {
+                    event.count === 1 &&
+                    <div className="attendance-status-view" style={{ backgroundColor: "orange" }}>{event.title1}</div>
+                }
+                {
+                    event.count === 2 &&
+                    <div className="attendance-status-view" style={{ backgroundColor: "green" }}>{event.title1}</div>
+                }</>
         )
     }
 
     return (
         <div className="Main">
-            <SideNavBar/>
+            <SideNavBar />
             <div className="Home">
                 <div class="container rounded bg-white">
                     <h2>Attendance</h2>
-                    <hr style={{border:"1px solid gray"}}/>
+                    <hr style={{ border: "1px solid gray" }} />
                     <div className="">
                         Total No of Working Days : {events ? events.length : 0}
                         &emsp;
-                        No of Present Days : {events!==null ? events.filter((item)=>item.count===2).length : 0}
+                        No of Present Days : {events !== null ? events.filter((item) => item.count === 2).length : 0}
                         &emsp;
-                        No of Half Day Present : {events!==null ? events.filter((item)=>item.count===1).length : 0}
+                        No of Half Day Present : {events !== null ? events.filter((item) => item.count === 1).length : 0}
                         &emsp;
-                        No of Absent Days : {events!==null ? events.filter((item)=>item.count===0).length : 0}
+                        No of Absent Days : {events !== null ? events.filter((item) => item.count === 0).length : 0}
                     </div>
                     {events &&
-                    <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
-}                   
+                        <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
+                    }
                 </div>
             </div >
         </div>

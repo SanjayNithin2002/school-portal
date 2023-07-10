@@ -60,6 +60,15 @@ const ViewAssessment = (props) => {
         }
     }
 
+    const checkDueDate = (date1) => {
+        const startDate = new Date();
+        const endDate = new Date(date1);
+        if (endDate.getTime() - startDate.getTime() > 0)
+            return true;
+        else
+            return false;
+    }
+
     const handleDelete = (answerID) => {
         dispatch(deleteAnswers(answerID));
     }
@@ -71,7 +80,7 @@ const ViewAssessment = (props) => {
     return (
         <div className="Home">
             {
-                allAssessments && allAssessments.assessments.map((item) => (
+                allAssessments && allAssessments.assessments.filter((item) => item._id === props.assessmentID).map((item) => (
                     <div class="container rounded bg-white">
                         <div className='Assessment-tab-1'>
                             <h2>{item.title}</h2>
@@ -89,26 +98,37 @@ const ViewAssessment = (props) => {
                                                 <button className='btn btn-primary' onClick={() => handleFile(item1.answerFile)}>View Answer</button>
                                             </div>
                                             :
-                                            <div style={{ display: "flex", alignItems: "center" }}>
-                                                <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
-                                            </div>
+                                            <>
+                                                {checkDueDate(item.lastDate) &&
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
+                                                    </div>
+                                                }
+                                            </>
+
                                     ))
                                         :
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                            <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
-                                        </div>
+                                        <>
+                                            {checkDueDate(item.lastDate) &&
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
+                                                </div>
+                                            }
+                                        </>
                                 }
 
                             </div>
                             <div className='col-lg-3' style={{ borderLeft: "1px solid gray" }}>
                                 <table className='tablestyle2'>
                                     <tr>
-                                        <td>Posted By</td>
-                                        <td>:</td>
+                                        <td style={{width:"40%"}}>Posted By</td>
+                                        <td style={{width:"4%"}}>:</td>
+                                        <td style={{width:"59%"}}>
                                         {
-                                            teacher && teacher !== null &&
-                                            <td>{teacher.docs.firstName + " " + teacher.docs.lastName}</td>
+                                            teacher && teacher !== null && <>
+                                            {teacher.docs.firstName + " " + teacher.docs.lastName}</>
                                         }
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Posted on</td>
@@ -139,7 +159,11 @@ const ViewAssessment = (props) => {
                                             item1.answersFile === null ?
                                                 <tr>
                                                     <td>
-                                                        <button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>
+                                                        {
+                                                            checkDueDate(item.lastDate) &&
+                                                            <button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>
+                                                        }
+
                                                     </td>
                                                     <td></td>
                                                     <td>
@@ -159,9 +183,11 @@ const ViewAssessment = (props) => {
                                         ))
                                             :
                                             <tr>
-                                                <td>
+                                                {
+                                                    checkDueDate(item.lastDate) &&
                                                     <button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>
-                                                </td>
+                                                }
+
                                                 <td></td>
                                                 <td>
                                                     <button className='btn btn-danger' onClick={() => close1()}>Back</button>

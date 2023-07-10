@@ -56,10 +56,22 @@ export const deleteClassMessage = (messageID) => API.delete(`/classmessages/${me
 
 /* Exams */
 export const createExam = (examData) => API.post('/exams/',examData)
-export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}/section/A`);
+export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}`);
+export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${userData.id}`)
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
-export const getStudentAttendance = (userData) => API.get(`/studentattendances/${userData.type}s/${userData.id}`);
+export const getStudentAttendance = (userData) => 
+    userData.type==="student" ? API.get(`/studentattendances/${userData.type}s/${userData.id}`) :
+    userData.type==="teacher" ? API.get(`/teacherattendances/${userData.type}s/${userData.id}`) : 
+    API.get(`/adminattendances/${userData.type}s/${userData.id}`)
 export const postStudentAttendance = (functionData) => API.post('/studentattendances/postmany',functionData);
 export const deleteStudentAttendance = (functionID) => API.delete(`/studentattendances/${functionID}`);
+
+
+/* Leaves */
+export const getLeave = (userData) => API.get(`/leaves/${userData.type}s/${userData.id}`);
+export const getAllLeave = () => API.get('/leaves');
+export const postLeave = (leaveData) => API.post('/leaves',leaveData);
+export const deleteLeave = (leaveData) => API.delete(`/leaves`,leaveData);
+export const updateStatusLeave = (leaveData) => API.patch(`/leaves`,leaveData);

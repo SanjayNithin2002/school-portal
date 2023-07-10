@@ -12,7 +12,7 @@ const Assessments = () => {
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Error />
+        <Admin />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&

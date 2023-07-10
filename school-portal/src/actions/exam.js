@@ -27,3 +27,14 @@ export const getExam = (examData) => async(dispatch) =>{
         console.log(err)
     }
 }
+
+export const getStudentExam = (userData) => async(dispatch) => {
+    try{
+        console.log(userData)
+        const {data} = await api.getStudentExam(userData);
+        dispatch({type:"FETCH_STUDENT_EXAM",payload:data})
+    }
+    catch(err){
+        console.log(err)
+    }
+}

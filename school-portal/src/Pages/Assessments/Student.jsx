@@ -145,7 +145,13 @@ function Student() {
                                                                             File Not Uploaded
                                                                         </span>
                                                                 ))
-                                                            }
+                                                            }{
+                                                                answers && answers.answers.filter((item1) => item1.assessment._id === item._id).length===0 &&
+                                                                <span style={{ color: "red" }}>
+                                                                            File Not Uploaded
+                                                                        </span>
+                                                                }
+                                                            
                                                         </div>
                                                         <div>{handleDateFormat(item.lastDate)}</div>
                                                     </div>

@@ -12,7 +12,9 @@ import timeTableReducer from "./TimeTable"
 import allClassReducer from "./AllClass"
 import singleClassReducer from "./SingleClass"
 import examReducer from "./Exam"
+import userLeaveReducer from "./UserLeave"
+import allLeaveReducer from "./AllLeave"
 
 export default combineReducers({
-    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,singleClassReducer,examReducer
+    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,singleClassReducer,examReducer,allLeaveReducer,userLeaveReducer
 })

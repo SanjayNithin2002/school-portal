@@ -1,12 +1,12 @@
 import React from "react";
 import { Nav } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
 import Attendance from '@rsuite/icons/legacy/CalendarCheckO';
 import HR from "@rsuite/icons/legacy/UserInfo";
 import Class from "@rsuite/icons/legacy/Book";
 import Fees from "@rsuite/icons/legacy/Money"
 import Setting from "@rsuite/icons/legacy/Setting";
+import Meet from "@rsuite/icons/legacy/Meetup";
 
 const Admin = () => {
   return (
@@ -16,41 +16,44 @@ const Admin = () => {
       </Nav.Item>
       <Nav.Menu placement="rightStart" title="Attendance" icon={<Attendance />}>
         <Nav.Item href='/Attendance'>
-          <a href="/Attendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
+          <a href="/Attendance" style={{ textDecoration: 'none', color: 'black' }}>Attendance </a></Nav.Item>
         <Nav.Item href='/Leave'>
-          <a href="/Leave" style={{ textDecoration: 'none', color: 'black'}}>Leave </a></Nav.Item>
+          <a href="/Leave" style={{ textDecoration: 'none', color: 'black' }}>Leave </a></Nav.Item>
       </Nav.Menu>
       <Nav.Menu placement="rightStart" title="HR" icon={<HR />}>
         <Nav.Item divider />
-        <Nav.Item panel style={{ padding: '15px 20px',color: '#aaa'}}>
+        <Nav.Item panel style={{ padding: '15px 20px', color: '#aaa' }}>
           Student
         </Nav.Item>
         <Nav.Item href='/StudentInfo'>
-          <a href="/StudentInfo" style={{ textDecoration: 'none', color: 'black'}}>Student Info </a></Nav.Item>
+          <a href="/StudentInfo" style={{ textDecoration: 'none', color: 'black' }}>Student Info </a></Nav.Item>
         <Nav.Item href='/AddStudent'>
-          <a href="/AddStudent" style={{ textDecoration: 'none', color: 'black'}}>Add Student </a></Nav.Item>
+          <a href="/AddStudent" style={{ textDecoration: 'none', color: 'black' }}>Add Student </a></Nav.Item>
         <Nav.Item href='/Bonafide'>
-          <a href="/Bonafide" style={{ textDecoration: 'none', color: 'black'}}>Student Bonafide </a></Nav.Item>
+          <a href="/Bonafide" style={{ textDecoration: 'none', color: 'black' }}>Student Bonafide </a></Nav.Item>
         <Nav.Item divider />
-        <Nav.Item panel style={{ padding: '15px 20px',color: '#aaa'}}>
+        <Nav.Item panel style={{ padding: '15px 20px', color: '#aaa' }}>
           Staff
         </Nav.Item>
         <Nav.Item href='/StaffInfo'>
-          <a href="/StaffInfo" style={{ textDecoration: 'none', color: 'black'}}>Staff List </a></Nav.Item>
+          <a href="/StaffInfo" style={{ textDecoration: 'none', color: 'black' }}>Staff List </a></Nav.Item>
         <Nav.Item href='/AddStaff'>
-          <a href="/AddStaff" style={{ textDecoration: 'none', color: 'black'}}>Add Staff </a></Nav.Item>
+          <a href="/AddStaff" style={{ textDecoration: 'none', color: 'black' }}>Add Staff </a></Nav.Item>
         <Nav.Item href='/PostTeacherAttendance'>
-          <a href="/PostTeacherAttendance" style={{ textDecoration: 'none', color: 'black'}}>Attendance </a></Nav.Item>
-        <Nav.Item href='/Meeting'>
-          <a href="/Meeting" style={{ textDecoration: 'none', color: 'black'}}>Meetings </a></Nav.Item>
+          <a href="/PostTeacherAttendance" style={{ textDecoration: 'none', color: 'black' }}>Attendance </a></Nav.Item>
+        <Nav.Item href='/PostLeave'>
+          <a href="/PostLeave" style={{ textDecoration: 'none', color: 'black' }}>Leave Request </a></Nav.Item>
       </Nav.Menu>
+      <Nav.Item href='/Meeting' icon={<Meet />}>
+        Meetings
+      </Nav.Item>
       <Nav.Menu placement="rightStart" title="Class" icon={<Class />}>
         <Nav.Item href='/ClassInfo'>
-          <a href="/ClassInfo" style={{ textDecoration: 'none', color: 'black'}}>Class Info </a></Nav.Item>
+          <a href="/ClassInfo" style={{ textDecoration: 'none', color: 'black' }}>Class Info </a></Nav.Item>
         <Nav.Item href='/Exam'>
-          <a href="/Exam" style={{ textDecoration: 'none', color: 'black'}}>Exams </a></Nav.Item>
+          <a href="/Exam" style={{ textDecoration: 'none', color: 'black' }}>Exams </a></Nav.Item>
         <Nav.Item href='/TimeTable'>
-          <a href="/TimeTable" style={{ textDecoration: 'none', color: 'black'}}>TimeTable </a></Nav.Item>
+          <a href="/TimeTable" style={{ textDecoration: 'none', color: 'black' }}>TimeTable </a></Nav.Item>
       </Nav.Menu>
       <Nav.Item href='/payment' icon={<Fees />}>
         Fees Stucture

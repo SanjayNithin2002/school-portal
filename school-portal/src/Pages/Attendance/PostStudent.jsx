@@ -108,11 +108,16 @@ const PostStudent = () => {
     const handleDelete = async(date) => {
         const { data } = await api.getStudentAttendances({standard,section,date});
         let request = [];
-        data.StudentAttendances.map((item)=>{
+        if(data){
+        data.docs.map((item)=>{
             request.push(item._id);
             return true;
         })
         dispatch(deleteStudentAttendance(request));
+        }
+        else{
+            console.log("error");
+        }
     }
 
     const getTimings = (time) => {
@@ -149,7 +154,7 @@ const PostStudent = () => {
         let month = desiredDate.getMonth()<10 ? "0"+(desiredDate.getMonth()+1) : (desiredDate.getMonth()+1);
         return month+"-"+date+"-"+desiredDate.getFullYear();
     }
-
+        
     return (
         <div className="Main">
             <SideNavBar />
@@ -174,8 +179,8 @@ const PostStudent = () => {
                                 </option>
                                 {
                                     classes !== null &&
-                                    classes.classes.map((item) => (
-                                        standardList.filter((class1) => class1.value === item.standard).map((class1) => (
+                                    Array.from(new Set(classes.classes.map((element)=>element.standard))).map((item) => (
+                                        standardList.filter((class1) => class1.value === item).map((class1) => (
                                             <option value={class1.value}>{class1.label}</option>
                                         ))
                                     ))
@@ -196,8 +201,8 @@ const PostStudent = () => {
                                 </option>
                                 {
                                     classes !== null &&
-                                    classes.classes.filter((item) => parseInt(standard) === item.standard).map((item) => (
-                                        <option value={item.section}>{item.section}</option>
+                                    Array.from(new Set(classes.classes.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
+                                        <option value={item}>{item}</option>
                                     ))
                                 }
                             </select>
