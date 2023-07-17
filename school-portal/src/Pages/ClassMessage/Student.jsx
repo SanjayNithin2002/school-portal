@@ -34,7 +34,7 @@ const Student = () => {
                                                 <span className='Avatar-1' title='Teacher Name'>{item.class.subject} Teacher</span>
                                             </div>
                                             <div className='col-lg-8 message-content'>
-                                                <p>{item.message}</p>
+                                                <p className='Avatar-2'>{item.message}</p>
                                                 <p className='timer'>a day ago</p>
                                             </div>
                                         </div>

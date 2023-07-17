@@ -3,13 +3,20 @@
     justify-content: center;
 }
 
+.msg-textarea{
+    height: 150px; 
+    width: 625px;
+    resize: both; 
+    box-sizing: border-box;
+    
+}
 .classmessage-container-2{
+    align-items: center;
     justify-content: center;
 }
 
 .chat-container{
     border:none;
-    border-radius: 10px;
     height:60vh;
     padding:0px;
     overflow-y: auto;
@@ -29,7 +36,6 @@
 }
 
 .chat-container-2{
-    
     display: flex;
     margin-top:7px;
     align-items: center;
@@ -46,39 +52,63 @@
 
 .Avatar{
     display: flex;
-    font-size: 25px;
-    padding:0px;
-    height:8vh;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
 }
+
 .Avatar-1{
-    padding:5px;
     cursor: pointer;
-    border-radius: 20px;
-    background-color: orange;
-    min-width: 100px;
+    border-radius: 15px;
+    background-color: aqua;
+    max-width: 300px;
+    font-size: 20px;
     text-align: center;
-}
-.message-content{    
-    box-shadow: 0px 0px 10px lightgray;
     height: fit-content;
-    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.message-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    box-shadow: 0px 0px 10px lightgray;
+    background-color: aqua;
+    padding: 5px;
+    margin-left: 5px;
     border-radius: 20px;
     font-size:18px;
-}
-
-.timer{
-    display: flex;
-    justify-content: flex-end;
-    opacity: 0.8;
+    min-height: 100px;
+    /* height: fit-content; */
+  }
+  
+  .Avatar-2 {
+    margin: 0;
+    border-radius: 10px;
+    width: 100%;
+    min-width: 100px;
+  }
+  
+  .timer {
     font-size: 15px;
-}
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  
 
 .class-message-delete{
+    padding:10px;
     cursor:pointer;
     display: flex;
     justify-content: flex-end;
     opacity: 0.8;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .class-message-delete:hover{

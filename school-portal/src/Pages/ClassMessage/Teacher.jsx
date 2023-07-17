@@ -119,14 +119,15 @@ const Teacher = () => {
                         <br />
                         <br />
                         {standard && section && <>
-                            <div className="row classmessage-container-2">
-                                <div className='col-lg-2 message-box'>
-                                    <h4>Message : </h4>
-                                </div>
-                                <div className='col-lg-8'>
-                                    <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} cols={83}></textarea>
-                                </div>
+                        <div className="row classmessage-container-2">
+                            <div className='col-lg-2 message-box'>
+                                <h4>Message : </h4>
                             </div>
+
+                            <div className='col-lg-8'>
+                                <textarea className="msg-textarea" value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
+                            </div>
+                        </div>
                             <div className="row classmessage-container-2">
                                 <div className='col-lg-2'></div>
                                 <div className='col-lg-3' style={{ display: "flex", alignItems: "center" }}>
@@ -137,36 +138,35 @@ const Teacher = () => {
                                     <button className='btn btn-success' onClick={() => handleSubmit()}><Icon as={Send} style={{ color: "white", fontSize: '20px' }} />send</button>
                                 </div>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                                <hr style={{ display: "flex", justifyContent: "center", width: "80%", border: "1px solid gray" }} />
-                            </div>
-                            <div className="row classmessage-container-2">
 
+                            <hr style={{ display: "flex", justifyContent: "center", width: "100%", border: "1px solid gray" }} />
+
+                            <div className="row classmessage-container-2">
                                 <div className='col-lg-10 chat-container'>
-                                    <div className='row chat-container-1'>
-                                        {
-                                            messages && messages.docs.filter((item) => {
-                                                if (item.class.standard === parseInt(standard) && item.class.section === section)
-                                                    return true;
-                                                return false;
-                                            }).map((item) => (<>
-                                                <div className='col-lg-3 Avatar'>
+                                    {
+                                        messages && messages.docs.filter((item) => {
+                                            if (item.class.standard === parseInt(standard) && item.class.section === section)
+                                                return true;
+                                            return false;
+                                        }).map((item) => (<>
+                                            <div className="Row chat-container-2">
+                                                <div className='col-lg-2 Avatar'>
                                                     <span className='Avatar-1' title={item.class.subject + " Teacher"}>You</span>
                                                 </div>
+
                                                 <div className='col-lg-8 message-content'>
-                                                    <p>{item.message}</p><br />
-                                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                                        <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
-                                                        <span className='timer'>a day ago</span>
-                                                    </div>
+                                                    <p className='Avatar-2'>{item.message}</p>
+                                                    <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
+                                                    <p className='timer'>a day ago</p>
                                                 </div>
-                                            </>
-                                            ))
-                                        }
-                                    </div>
+                                            </div>
+                                        </>
+                                        ))
+                                    }
                                 </div>
 
                             </div>
+
                         </>
                         }
                     </div>

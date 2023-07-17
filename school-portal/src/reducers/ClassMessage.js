@@ -4,7 +4,7 @@ const classmessageReducer = (state=null,action) =>{
         case 'FETCH_CLASS_MESSAGE' : 
             return action.payload;
         default : 
-            return state;
+            return state;   
     }
 }
 export default classmessageReducer
