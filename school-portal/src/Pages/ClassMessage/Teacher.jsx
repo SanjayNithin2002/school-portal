@@ -39,22 +39,17 @@ const Teacher = () => {
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
-    const class1 = useSelector((state) => state.singleClassReducer)
+    const class1 = useSelector((state) => state.allClassReducer)
     const messages = useSelector((state) => state.classmessageReducer)
     const [classes, setClasses] = useState(null)
 
-    if (class1 !== null && class1.classes && classes === null) {
-        const cls = class1.classes.filter((item) => {
-            if (item.teacher && item.teacher !== null)
-                return item.teacher._id === localStorage.getItem('id');
-            else
-                return false
-        });
-        setClasses(cls)
-    }
-
+    console.log(class1);
     console.log(classes)
     console.log(messages)
+
+    if (class1 && class1.docs && classes === null) {
+        setClasses(class1.docs)
+    }
 
     const handleSubmit = () => {
         let ClassID = null;
@@ -71,6 +66,8 @@ const Teacher = () => {
         dispatch(deleteClassMessage(deleteID));
         setShowDialog(false);
     };
+    if(classes)
+    console.log(Array.from(new Set(classes.map((obj)=>obj.standard))));
 
     return (
         <div className="Main">
@@ -91,8 +88,8 @@ const Teacher = () => {
                                     </option>
                                     {
                                         classes !== null &&
-                                        classes.map((item) => (
-                                            standardList.filter((class1) => class1.value === item.standard).map((class1) => (
+                                        Array.from(new Set(classes.map((obj)=>obj.standard))).map((item) => (
+                                            standardList.filter((class1) => class1.value === item).map((class1) => (
                                                 <option value={class1.value}>{class1.label}</option>
                                             ))
                                         ))
@@ -109,8 +106,8 @@ const Teacher = () => {
                                     </option>
                                     {
                                         classes !== null &&
-                                        classes.filter((item) => parseInt(standard) === item.standard).map((item) => (
-                                            <option value={item.section}>{item.section}</option>
+                                        Array.from(new Set(classes.filter((item) => parseInt(standard) === item.standard).map((obj)=>obj.section))).map((item) => (
+                                            <option value={item}>{item}</option>
                                         ))
                                     }
                                 </select>
@@ -143,12 +140,9 @@ const Teacher = () => {
 
                             <div className="row classmessage-container-2">
                                 <div className='col-lg-10 chat-container'>
+                                    hi
                                     {
-                                        messages && messages.docs.filter((item) => {
-                                            if (item.class.standard === parseInt(standard) && item.class.section === section)
-                                                return true;
-                                            return false;
-                                        }).map((item) => (<>
+                                        messages && messages.docs.filter((item) => item.class.standard === parseInt(standard) && item.class.section === section).map((item) => <>
                                             <div className="Row chat-container-2">
                                                 <div className='col-lg-2 Avatar'>
                                                     <span className='Avatar-1' title={item.class.subject + " Teacher"}>You</span>
@@ -161,8 +155,7 @@ const Teacher = () => {
                                                 </div>
                                             </div>
                                         </>
-                                        ))
-                                    }
+                                        )}
                                 </div>
 
                             </div>
@@ -183,20 +176,6 @@ const Teacher = () => {
                     </Button>
                     <Button variant="primary" onClick={handleConfirm}>
                         Confirm
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
                     </Button>
                 </Modal.Footer>
             </Modal>

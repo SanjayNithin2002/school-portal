@@ -178,16 +178,6 @@ function App() {
           </div>
         </div>
       </div>
-
-      <div class="container1" >
-        <h5>Spotlight Announcements</h5>
-        <hr style={{ border: "1px solid gray" }} />
-        <ul>
-          {data.map((item) => (
-            <li style={{ marginBottom: "10px" }} key={item.id}><h6>{item.name}</h6></li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

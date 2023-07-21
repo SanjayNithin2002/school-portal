@@ -76,11 +76,11 @@ function Student() {
                                 <Accordion.Header style={{ padding: "initial" }}>Ongoing Assessments</Accordion.Header>
                                 <Accordion.Body>
                                     {
-                                        assessments && assessments.assessments.filter((item1) => { return checkDueDate(item1.lastDate) }).length === 0 &&
+                                        assessments && assessments.docs.filter((item1) => { return checkDueDate(item1.lastDate) }).length === 0 &&
                                         <div>No data</div>
                                     }
                                     {
-                                        assessments && assessments.assessments.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
+                                        assessments && assessments.docs.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
 
                                             <div onClick={() => handleClick(item._id, item.class.teacher)} style={{ color: 'inherit', textDecoration: "none" }}>
                                                 <div className='Assessment-tab'>
@@ -92,7 +92,7 @@ function Student() {
                                                         <div style={{ fontWeight: "800" }}>
                                                             Status :&nbsp;
                                                             {
-                                                                answers && answers.answers.length !== 0 ? answers.answers.filter((item1) => item1.assessment._id === item._id).map((item1) => (
+                                                                answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === item._id).map((item1) => (
                                                                     item1.answerFile !== null ?
                                                                         <span style={{ color: "green" }}>
                                                                             File Uploaded
@@ -120,11 +120,11 @@ function Student() {
                                 <Accordion.Header>Completed Assessments</Accordion.Header>
                                 <Accordion.Body>
                                     {
-                                        assessments && assessments.assessments.filter((item1) => { return !checkDueDate(item1.lastDate) }).length === 0 &&
+                                        assessments && assessments.docs.filter((item1) => { return !checkDueDate(item1.lastDate) }).length === 0 &&
                                         <div>No data</div>
                                     }
                                     {
-                                        assessments && assessments.assessments.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
+                                        assessments && assessments.docs.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
                                             <div onClick={() => handleClick(item._id, item.class.teacher)} style={{ color: 'inherit', textDecoration: "none" }}>
                                                 <div className='Assessment-tab'>
                                                     <div className='Assessment-tab-1'>
@@ -135,7 +135,7 @@ function Student() {
                                                         <div style={{ fontWeight: "800" }}>
                                                             Status :&nbsp;
                                                             {
-                                                                answers && answers.answers.filter((item1) => item1.assessment._id === item._id).map((item1) => (
+                                                                answers && answers.docs.filter((item1) => item1.assessment._id === item._id).map((item1) => (
                                                                     item1.answerFile !== null ?
                                                                         <span style={{ color: "green" }}>
                                                                             File Uploaded
@@ -146,7 +146,7 @@ function Student() {
                                                                         </span>
                                                                 ))
                                                             }{
-                                                                answers && answers.answers.filter((item1) => item1.assessment._id === item._id).length===0 &&
+                                                                answers && answers.docs.filter((item1) => item1.assessment._id === item._id).length===0 &&
                                                                 <span style={{ color: "red" }}>
                                                                             File Not Uploaded
                                                                         </span>

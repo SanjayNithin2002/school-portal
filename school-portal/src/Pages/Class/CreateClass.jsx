@@ -236,7 +236,6 @@ function CreateClass() {
             updatedSubjects[index] = value;
             return updatedSubjects;
         });
-        setEdit2(true);
     }
 
     const getCount = (gender) => {
@@ -258,8 +257,8 @@ function CreateClass() {
         console.log(request1)
         console.log(request2)
         console.log(request3)
-        //dispatch(createClass(request1,navigate))
-        //dispatch(updateSection(request2,navigate))
+        dispatch(createClass(request1,navigate))
+        dispatch(updateSection(request2,navigate))
         dispatch(postTimeTable(request3,navigate))
     }
 

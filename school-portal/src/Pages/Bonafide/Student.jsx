@@ -84,25 +84,6 @@ function Student() {
         dispatch(requestBonafide(req, navigate));
     }
 
-    const handleFromDate = date => {
-        let from = new Date(date)
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        const paddedDay = day < 10 ? `0${day}` : day;
-        const paddedMonth = month < 10 ? `0${month}` : month;
-        setVisa((prev) => ({ ...prev, fromDate: `${paddedDay}/${paddedMonth}/${year}` }));
-    }
-    const handleToDate = date => {
-        let from = new Date(date)
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        const paddedDay = day < 10 ? `0${day}` : day;
-        const paddedMonth = month < 10 ? `0${month}` : month;
-        setVisa((prev) => ({ ...prev, toDate: `${paddedDay}/${paddedMonth}/${year}` }));
-    }
-
     const handleDateFormat = (date) => {
         const options = {
             year: 'numeric',
@@ -175,17 +156,13 @@ function Student() {
                                                 <tr>
                                                     <td>From Date{visa.fromDate}<span style={{ color: "red" }}>*</span></td>
                                                     <td>
-                                                        <Stack direction="column" alignItems="flex-start" spacing={6}>
-                                                            <DatePicker defaultValue={visa.fromDate} onChange={handleFromDate} editable={false} />
-                                                        </Stack>
+                                                        <input type="date" value={visa.fromDate} onChange={(e)=>setVisa((prev) => ({ ...prev, fromDate: e.target.value }))}/>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>To Date<span style={{ color: "red" }}>*</span></td>
                                                     <td>
-                                                        <Stack direction="column" alignItems="flex-start" spacing={6}>
-                                                            <DatePicker defaultValue={visa.toDate} onChange={handleToDate} editable={false} />
-                                                        </Stack>
+                                                        <input type="date" value={visa.toDate} onChange={(e)=>setVisa((prev) => ({ ...prev, toDate: e.target.value }))}/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -257,12 +234,12 @@ function Student() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                { (!bonafide || bonafide.bonafides.length===0) ?
+                                                { (!bonafide || bonafide.docs.length===0) ?
                                                 <tr>
                                                     <td style={{ textAlign: "center" }} colSpan={6}>No Data</td>
                                                 </tr>  
                                                 :
-                                                bonafide.bonafides.sort((a, b) => (a.status > b.status) ? 1 : -1 ).map((item,index)=>(
+                                                bonafide.docs.sort((a, b) => (a.status > b.status) ? 1 : -1 ).map((item,index)=>(
                                                 <tr>
                                                     <td>{index+1}</td>
                                                     <td>{item.service}</td>

@@ -33,6 +33,7 @@ import CreateClass from "./Pages/Class/CreateClass";
 import ClassInfo from "./Pages/Class/ClassInfo";
 import ViewBonafide from "./Pages/Bonafide/ViewBonafide";
 import UpdateLeave from "./Pages/Leave/UpdateLeave";
+import AddTimeTable from "./Pages/Time table/AddTimeTable";
 
 const AllRoutes = () => {
     return(
@@ -71,6 +72,7 @@ const AllRoutes = () => {
                 <Route path='/ClassInfo' element={<ClassInfo/>} />
                 <Route path='/ViewBonafide' element={<ViewBonafide/>} />
                 <Route path='/PostLeave' element={<UpdateLeave/>}/>
+                <Route path='/AddTimeTable' element={<AddTimeTable/>}/>
                 
             </Routes>
         </BrowserRouter>

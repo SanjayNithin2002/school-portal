@@ -1093,17 +1093,6 @@ input[type='number']::-webkit-outer-spin-button {
 textarea {
   overflow: auto;
 }
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-td,
-th {
-  padding: 0;
-}
-[tabindex='-1'] {
-  outline: none;
-}
 input[type='button'],
 input[type='submit'],
 input[type='reset'],

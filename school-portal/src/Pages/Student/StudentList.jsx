@@ -16,7 +16,7 @@ function StudentList() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const class1 = useSelector((state) => state.singleClassReducer)
+    const class1 = useSelector((state) => state.allClassReducer)
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
     useEffect(() => {
@@ -35,7 +35,7 @@ function StudentList() {
         let std = field === "standard" ? value : standard;
         let sec = field === "section" ? value : section;
         if (std !== null && sec !== null) {
-            class1.classes.map((item) => {
+            class1.docs.map((item) => {
                 if (item.standard === parseInt(std) && item.section === sec) {
                     setClassID(item._id);
                 }
@@ -69,7 +69,7 @@ function StudentList() {
                                     </option>
                                     {
                                         class1 &&
-                                        class1.classes.map((item) => (
+                                        class1.docs.map((item) => (
                                             standardList.filter((class1) => class1.value === item.standard).map((class1) => (
                                                 <option value={class1.value}>{class1.label}</option>
                                             ))
@@ -87,7 +87,7 @@ function StudentList() {
                                     </option>
                                     {
                                         class1 &&
-                                        class1.classes.filter((item) => parseInt(standard) === item.standard).map((item) => (
+                                        class1.docs.filter((item) => parseInt(standard) === item.standard).map((item) => (
                                             <option value={item.section}>{item.section}</option>
                                         ))
                                     }

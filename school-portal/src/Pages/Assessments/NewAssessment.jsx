@@ -28,26 +28,20 @@ function NewAssessment() {
     },[dispatch])
 
     const currentUser = useSelector((state)=>state.currentUserReducer)
-    const class1 = useSelector((state)=>state.singleClassReducer)
+    const class1 = useSelector((state)=>state.allClassReducer)
     const [classes,setClasses] = useState(null)
 
     console.log(class1);
 
-    if(class1!==null && class1.classes && currentUser!==null && classes===null )
+    if(class1!==null && class1.docs && currentUser!==null && classes===null )
     {
-        const cls = class1.classes.filter((item)=>
-        {
-            if(item.teacher && item.teacher!==null)
-                return item.teacher._id===currentUser.docs._id
-            else
-                return false
-        });
+        const cls = class1.docs;
         setClasses(cls)
     }
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-      };
+    };
     
       const handleSubmit = () => {
         if (selectedFile && title && description && standard && section && lastDate) {

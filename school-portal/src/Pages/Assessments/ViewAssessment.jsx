@@ -80,7 +80,7 @@ const ViewAssessment = (props) => {
     return (
         <div className="Home">
             {
-                allAssessments && allAssessments.assessments.filter((item) => item._id === props.assessmentID).map((item) => (
+                allAssessments && allAssessments.docs.filter((item) => item._id === props.assessmentID).map((item) => (
                     <div class="container rounded bg-white">
                         <div className='Assessment-tab-1'>
                             <h2>{item.title}</h2>
@@ -92,7 +92,7 @@ const ViewAssessment = (props) => {
                                 <div style={{ fontSize: "18px" }}>{item.description}</div>
                                 <br />
                                 {
-                                    answers && answers.answers.length !== 0 ? answers.answers.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                    answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                         item1.answerFile !== null ?
                                             <div style={{ display: "flex", alignItems: "center" }}>
                                                 <button className='btn btn-primary' onClick={() => handleFile(item1.answerFile)}>View Answer</button>
@@ -144,7 +144,7 @@ const ViewAssessment = (props) => {
                                         <td>Uploaded On</td>
                                         <td>:</td>
                                         {
-                                            answers.answers.length !== 0 ? answers.answers.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                            answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                                 item1.answersFile !== null ?
                                                     <td>date</td>
                                                     :
@@ -155,7 +155,7 @@ const ViewAssessment = (props) => {
                                         }
                                     </tr>
                                     {
-                                        answers.answers.length !== 0 ? answers.answers.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                        answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                             item1.answersFile === null ?
                                                 <tr>
                                                     <td>

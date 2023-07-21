@@ -4,6 +4,7 @@ export const getClassMessage = (userData) => async (dispatch) => {
     try{
         console.log(userData)
         const { data } = await api.getClassMessage(userData)
+        console.log(data);
         dispatch({type:"FETCH_CLASS_MESSAGE",payload:data})
     }
     catch(err){

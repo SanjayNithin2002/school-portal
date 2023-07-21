@@ -34,27 +34,16 @@ const PostStudent = () => {
             dispatch(requestClassStudents(classID))
     }, [dispatch, classID, section, standard])
 
-    let classes = useSelector((state) => state.singleClassReducer)
+    let classes = useSelector((state) => state.allClassReducer)
     let timetable = useSelector((state) => state.timeTableReducer)
     let students = useSelector((state) => state.allStudentsReducer)
 
-    if (classes && classID && edit) {
-        classes.classes.map((item) => {
-            if (item._id === classID) {
-                item.timings.map((slot) => {
-                    return true;
-                })
-            }
-            return true;
-        })
-    }
-
-    if (!split && edit1 && timetable !== null && timetable.length>0) {
+    if (!split && edit1 && timetable !== null && timetable.docs.length>0) {
         let time = [];
-        time.push(timetable[0].startTime);
-        console.log(timetable[0].break);
-        if (timetable[0].break) {
-            timetable[0].break.filter((slot) => slot.title === "Lunch").map((slot) => {
+        time.push(timetable.docs[0].startTime);
+        console.log(timetable.docs[0].break);
+        if (timetable.docs[0].break) {
+            timetable.docs[0].break.filter((slot) => slot.title === "Lunch").map((slot) => {
                 time.push(slot.endTime);
                 return true;
             })
@@ -70,7 +59,7 @@ const PostStudent = () => {
     console.log(classID)
 
     if (edit && standard && section) {
-        classes.classes.map((item) => {
+        classes.docs.map((item) => {
             if (item.standard === parseInt(standard)) {
                 if (item.section === section) {
                     if(item.subject !== "Class Teacher"){
@@ -178,8 +167,8 @@ const PostStudent = () => {
                                     Select Standard
                                 </option>
                                 {
-                                    classes !== null &&
-                                    Array.from(new Set(classes.classes.map((element)=>element.standard))).map((item) => (
+                                    classes &&
+                                    Array.from(new Set(classes.docs.map((element)=>element.standard))).map((item) => (
                                         standardList.filter((class1) => class1.value === item).map((class1) => (
                                             <option value={class1.value}>{class1.label}</option>
                                         ))
@@ -200,8 +189,8 @@ const PostStudent = () => {
                                     Select Section
                                 </option>
                                 {
-                                    classes !== null &&
-                                    Array.from(new Set(classes.classes.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
+                                    classes &&
+                                    Array.from(new Set(classes.docs.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
                                         <option value={item}>{item}</option>
                                     ))
                                 }
@@ -226,7 +215,7 @@ const PostStudent = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                classes.classes.filter((item) => item._id === classID).map((item) => (
+                                                classes.docs.filter((item) => item._id === classID).map((item) => (
                                                     students && split && item.timings.filter((slot) => split.includes(slot.startTime)).map((slot, index) => (
                                                         <tr>
                                                             <td>{index + 1}</td>

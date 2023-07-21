@@ -221,8 +221,8 @@ const AddExam = () => {
                                                         <td>
                                                             <select value={item.time} onChange={(e)=>handleInputChange(e.target.value,index,"time")} >
                                                                 <option value=''>Select Time Slot</option>
-                                                                <option value={timetable[0].startTime}>Morning {timetable[0].startTime}</option>
-                                                                <option value={timetable[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}>Afternoon {timetable[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}</option>
+                                                                <option value={timetable.docs[0].startTime}>Morning {timetable.docs[0].startTime}</option>
+                                                                <option value={timetable.docs[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}>Afternoon {timetable.docs[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}</option>
                                                             </select>
                                                         </td>
                                                     </tr>

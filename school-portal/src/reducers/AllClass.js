@@ -5,6 +5,8 @@ const allClassReducer = (state=null,action) =>{
             return action.payload;
         case 'FETCH_STANDARD_CLASS': 
             return action.payload;
+        case 'FETCH_CLASS_DETAILS':
+            return action.payload;
         default : 
             return state;
     }

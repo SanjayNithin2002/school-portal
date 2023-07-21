@@ -120,7 +120,7 @@ function Teacher() {
                                     <Accordion.Header style={{ padding: "initial" }}>Upcoming/Ongoing Assessments</Accordion.Header>
                                     <Accordion.Body>
                                         {
-                                            assessments && assessments.assessments.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
+                                            assessments && assessments.docs.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
 
                                                 <div onClick={() => handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
                                                     <div className='Assessment-tab'>
@@ -150,7 +150,7 @@ function Teacher() {
                                     <Accordion.Header>Completed Assessments</Accordion.Header>
                                     <Accordion.Body>
                                         {
-                                            assessments && assessments.assessments.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
+                                            assessments && assessments.docs.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
 
                                                 <div onClick={() => handleClick(item._id)} style={{ color: 'inherit', textDecoration: "none" }}>
                                                     <div className='Assessment-tab'>

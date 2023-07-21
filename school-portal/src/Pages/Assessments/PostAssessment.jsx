@@ -54,6 +54,7 @@ const PostAssessment = (props) => {
     }
 
     const handleFile = (request) => {
+        console.log(request);
         dispatch(viewBonafide(request));
     }
 
@@ -61,7 +62,7 @@ const PostAssessment = (props) => {
             <>
             <div className="Home">
                 {
-                    assessments.assessments.filter((item)=>item._id===props.assessmentID).map((item)=>(
+                    assessments.docs.filter((item)=>item._id===props.assessmentID).map((item)=>(
                 
                 <div class="container rounded bg-white">
                     <div className='Assessment-tab-1'>

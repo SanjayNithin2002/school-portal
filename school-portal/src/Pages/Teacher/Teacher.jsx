@@ -17,20 +17,20 @@ function Teacher() {
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
-    const class1 = useSelector((state) => state.singleClassReducer);
+    const class1 = useSelector((state) => state.allClassReducer);
     console.log(class1);
     console.log(teacherList);
 
     if (class1 && !teacherList && edit) {
         let id = null;
         let teachers = [];
-        class1.classes.filter((item) => item.subject === "Class Teacher").map((item) => {
+        class1.docs.filter((item) => item.subject === "Class Teacher").map((item) => {
             id = item.teacher._id;
             return true;
         })
-        if (class1.classes.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject !== "Class Teacher").length === 0) {
+        if (class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject !== "Class Teacher").length === 0) {
             let empID, name, email
-            class1.classes.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject === "Class Teacher").map((item) => {
+            class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject === "Class Teacher").map((item) => {
                 empID = item.teacher.empID
                 name = item.teacher.firstName + " " + item.teacher.lastName
                 email = item.teacher.email
@@ -42,7 +42,7 @@ function Teacher() {
                 email,
             })
         }
-        class1.classes.filter((item) => item.teacher !== null && item.subject !== "Class Teacher").map((item) => {
+        class1.docs.filter((item) => item.teacher !== null && item.subject !== "Class Teacher").map((item) => {
             teachers.push({
                 subject: item.teacher._id === id ? "Class Teacher$" + item.subject : item.subject,
                 empID: item.teacher.empID,

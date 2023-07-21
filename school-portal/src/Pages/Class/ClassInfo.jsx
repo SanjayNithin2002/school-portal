@@ -88,17 +88,17 @@ function ClassInfo() {
                                             <td>Standard</td>
                                             <td>{standard}</td>
                                             <td>No of Working Days</td>
-                                            <td>{timetable[0].workingDays[0]}</td>
+                                            <td>{timetable.docs[0].workingDays[0]}</td>
                                         </tr>
                                         <tr>
                                             <td>Day Start Time</td>
-                                            <td>{timetable[0].startTime}</td>
+                                            <td>{timetable.docs[0].startTime}</td>
                                             <td>Day End Time</td>
-                                            <td>{timetable[0].endTime}</td>
+                                            <td>{timetable.docs[0].endTime}</td>
                                         </tr>
                                         <tr>
                                             <td>Duration</td>
-                                            <td>{timetable[0].duration} min</td>
+                                            <td>{timetable.docs[0].duration} min</td>
                                             <td>No of Classes per Day</td>
                                             <td>8 classes</td>
                                         </tr>
@@ -107,9 +107,9 @@ function ClassInfo() {
                                         </tr>
                                         <tr>
                                             <td colSpan={2}>No of Break or Lunch per Day ?</td>
-                                            <td colSpan={2}>{timetable[0].break.length}</td>
+                                            <td colSpan={2}>{timetable.docs[0].break.length}</td>
                                         </tr>
-                                        {timetable[0].break.map((item) => (
+                                        {timetable.docs[0].break.map((item) => (
                                             <>
                                                 <tr>
                                                     <td>Break Name</td>
@@ -193,13 +193,11 @@ function ClassInfo() {
                                                     </div>
                                                 </td>
                                             </tr>
-                                        
                                     </tbody>
                                 </Table>
                             </div>
                         </div>
                     }
-
                 </div>
             </div>
         </div>

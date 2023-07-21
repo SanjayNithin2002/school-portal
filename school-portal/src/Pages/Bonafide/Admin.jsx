@@ -26,7 +26,7 @@ function AdminBonafide() {
 
     const handleView = (studentID,bonafideID) =>{
         const stu = allStudents.docs.filter((item)=>item._id===studentID)
-        const bon = allBonafides.bonafides.filter((item)=>item._id===bonafideID)
+        const bon = allBonafides.docs.filter((item)=>item._id===bonafideID)
         navigate('/ViewBonafide',{state:{student:stu,bonafide:bon}})
     }
 
@@ -64,12 +64,12 @@ function AdminBonafide() {
                         </thead>
                         <tbody>
                             {
-                            (!allBonafides || allBonafides.bonafides.length===0) ? 
+                            (!allBonafides || allBonafides.docs.length===0) ? 
                             <tr>
                                 <td style={{ textAlign: "center" }} colSpan={7}>No Data</td>
                             </tr> 
                             : 
-                            allBonafides.bonafides.sort((a, b) => a.postedOn > b.postedOn ? -1 : 1 ).map((bonafide,index) => (
+                            allBonafides.docs.sort((a, b) => a.postedOn > b.postedOn ? -1 : 1 ).map((bonafide,index) => (
                             allStudents && allStudents.docs.filter((item)=>item._id===bonafide.student).map((student)=>(
                             <tr>
                                 <td>{index+1}</td>
