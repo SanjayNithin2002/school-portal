@@ -18,7 +18,7 @@ function Student() {
     console.log(exam)
 
     if(exam && !examList){
-        setExamList(Array.from(new Set(exam.exams.map(obj => obj.examName))));
+        setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName))));
     }
 
     const handleDateFormat = (date1) => {
@@ -89,7 +89,7 @@ function Student() {
                                     <td style={{backgroundColor:"lightgray"}} colSpan={5} align='center'>{examName}</td>
                                 </tr>
                                 {
-                                exam.exams.filter((item) => item.examName === examName).map((item,index)=>(
+                                exam.docs.filter((item) => item.examName === examName).map((item,index)=>(
                                     <tr>
                                         <td>{index+1}</td>
                                         <td>{item.subject}</td>
