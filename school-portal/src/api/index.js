@@ -59,6 +59,9 @@ export const createExam = (examData) => API.post('/exams/',examData)
 export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}`);
 export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${userData.id}`)
 
+/* Marks */
+export const getMarks = () => API.get(`/marks/exams/6480b73c1bf0e5c33b443414`);
+
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
 export const getStudentAttendance = (userData) => 
