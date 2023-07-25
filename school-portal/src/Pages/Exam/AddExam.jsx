@@ -50,6 +50,7 @@ const AddExam = () => {
                 date:'',
                 time:'',
             };
+            console.log(item)
             updatedList.push(subjects);
             return true;
         })
