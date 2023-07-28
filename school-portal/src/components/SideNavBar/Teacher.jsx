@@ -39,7 +39,7 @@ const Teacher = () => {
               <Nav.Item href='/Assessment'>
                 <a href='Assessment' style={{ textDecoration: 'none', color: 'black'}}>Assessments</a></Nav.Item>
               <Nav.Item href='/Marks'>
-                <a href='Marks' style={{ textDecoration: 'none', color: 'black'}}>Marks Analysis</a></Nav.Item>
+                <a href='Marks' style={{ textDecoration: 'none', color: 'black'}}>Marks View</a></Nav.Item>
               <Nav.Item href='/Exam'>
                 <a href='Exam' style={{ textDecoration: 'none', color: 'black'}}>Exam</a></Nav.Item>
             </Nav.Menu>

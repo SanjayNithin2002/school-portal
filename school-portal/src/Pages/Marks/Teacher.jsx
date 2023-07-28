@@ -5,50 +5,50 @@ import Table from "react-bootstrap/Table";
 import { TagGroup, Tag } from 'rsuite';
 import { getMarks } from '../../actions/marks';
 import matchers from '@testing-library/jest-dom/matchers';
-const data = [
-  {
-    rollno: 5,
-    fname: "Arvind",
-    lname: "M M",
-    marks: 89,
-    grade: "B"
-  },
-  {
-    rollno: 5,
-    fname: "Dharan",
-    lname: "Kumar",
-    marks: 66,
-    grade: 'B'
-  },
-  {
-    rollno: 3,
-    fname: "Keerthy",
-    lname: "Suresh",
-    marks: 87,
-    grade: 'B'
-  },
-  {
-    rollno: 4,
-    fname: "Muthu",
-    lname: "Kumar",
-    marks: 56,
-    grade: 'B'
-  },
-  {
-    rollno: 5,
-    fname: "Ramya",
-    lname: "Pandian",
-    marks: 43,
-    grade: 'B'
-  },
-  {
-    rollno: 6,
-    fname: "Yeshwanth",
-    lname: "J D",
-    marks: 92,
-    grade: 'B'
-  },
-];
+// const data = [
+//   {
+//     rollno: 5,
+//     fname: "Arvind",
+//     lname: "M M",
+//     marks: 89,
+//     grade: "B"
+//   },
+//   {
+//     rollno: 5,
+//     fname: "Dharan",
+//     lname: "Kumar",
+//     marks: 66,
+//     grade: 'B'
+//   },
+//   {
+//     rollno: 3,
+//     fname: "Keerthy",
+//     lname: "Suresh",
+//     marks: 87,
+//     grade: 'B'
+//   },
+//   {
+//     rollno: 4,
+//     fname: "Muthu",
+//     lname: "Kumar",
+//     marks: 56,
+//     grade: 'B'
+//   },
+//   {
+//     rollno: 5,
+//     fname: "Ramya",
+//     lname: "Pandian",
+//     marks: 43,
+//     grade: 'B'
+//   },
+//   {
+//     rollno: 6,
+//     fname: "Yeshwanth",
+//     lname: "J D",
+//     marks: 92,
+//     grade: 'B'
+//   },
+// ];
 
 const MarksTeacher = () => {
 
@@ -63,7 +63,7 @@ const MarksTeacher = () => {
 
   const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
   const m = useSelector((state) => state.marksReducer)
-  console.log(m)
+console.log(m)
 
   // let sum = 0;
   // for (let i = 0; i < data.length; i++) {
@@ -78,6 +78,18 @@ const MarksTeacher = () => {
   //   if (hmark < data[i].marks)
   //     hmark = data[i].marks;
   // }
+  {/* <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Class Average</Tag>
+                    <Tag size="lg">{avg}</Tag>
+                  </TagGroup>
+                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Highest Mark</Tag>
+                    <Tag size="lg">{hmark}</Tag>
+                  </TagGroup>
+                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
+                    <Tag size="lg">Lowest Mark</Tag>
+                    <Tag size="lg">{lmark}</Tag>
+                  </TagGroup> */}
 
   if (!m)
     return <div>Loading...</div>
@@ -88,11 +100,10 @@ const MarksTeacher = () => {
         <SideNavBar />
         <div className="Home">
           <div className="container rounded bg-white">
-            <h2>Marks Analysis</h2>
+            <h2>Marks View</h2>
             <hr style={{ border: "1px solid gray" }} />
             <div>
               <div className="row classmessage-container-1">
-
                 <div className="col-lg-3">
                   <h4>Select Class : </h4>
                 </div>
@@ -105,7 +116,7 @@ const MarksTeacher = () => {
                     <option value="" disabled>
                       Select Class
                     </option>
-                    {Array.from(new Set(m.docs.map((i) => i.exam.class.standard))).map((i) => {
+                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
                       const item = standardList.find(item => item.value === 5);
                       return <option value={i}>{item.label}</option>
                     })}
@@ -124,7 +135,7 @@ const MarksTeacher = () => {
                     <option value="" disabled>
                       Select Section
                     </option>
-                    {Array.from(new Set(m.docs.map((i) => i.exam.class.section))).map((i) => {
+                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
                       return <option value={i}>{i}</option>
                     })}
                   </select>
@@ -142,7 +153,7 @@ const MarksTeacher = () => {
                     <option value="" disabled>
                       Select Subject
                     </option>
-                    {Array.from(new Set(m.docs.map((i) => i.exam.class.subject))).map((i) => {
+                    {Array.from(new Set(m.docs.examMarks.map((i) => i.subject))).map((i) => {
                       return <option value={i}>{i}</option>
                     })}
                   </select>
@@ -159,27 +170,15 @@ const MarksTeacher = () => {
                     <option value="" disabled>
                       Select Exam
                     </option>
-                    {Array.from(new Set(m.docs.map((i) => i.exam.examName))).map((i) => {
+                    {Array.from(new Set(m.docs.examMarks.map((i) => i.examName))).map((i) => {
                       return <option value={i}>{i}</option>
                     })}
                   </select>
                 </div>
-
               </div>
               <br />
               <br />
-              {/* <TagGroup style={{ display: 'inline', margin: '10px' }}>
-                    <Tag size="lg">Class Average</Tag>
-                    <Tag size="lg">{avg}</Tag>
-                  </TagGroup>
-                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
-                    <Tag size="lg">Highest Mark</Tag>
-                    <Tag size="lg">{hmark}</Tag>
-                  </TagGroup>
-                  <TagGroup style={{ display: 'inline', margin: '10px' }}>
-                    <Tag size="lg">Lowest Mark</Tag>
-                    <Tag size="lg">{lmark}</Tag>
-                  </TagGroup> */}
+
 
               <Table striped bordered responsive hover>
                 <thead>
@@ -195,29 +194,29 @@ const MarksTeacher = () => {
                 </thead>
                 <tbody>
                   {
-                    standard && section && subject && exam ?
+                    standard && section ?
                       <>
-                        {m.docs
+                        {m.docs.examMarks
                           .filter((item) => {
                             return (
-                              item.exam.class.standard === parseInt(standard) &&
-                              item.exam.class.section === section &&
-                              item.exam.class.subject === subject &&
-                              item.exam.examName === exam
+                              item.student.standard === parseInt(standard) &&
+                              item.student.section === section 
+                              // item.subject === subject &&
+                              // item.examName === exam
                             );
-                          })
-                          .map((item, index) => (
-                            <tr key={index}>
-                              <td>{index + 1}</td>
-                              <td>{item.student.firstName}</td>
-                              <td>{item.scoredMarks}</td>
-                              <td>{item.exam.maxMarks}</td>
-                              <td>{item.weightageScoredMarks}</td>
-                              <td>{item.exam.weightageMarks}</td>
-                              <td>{item.remarks}</td>
-                            </tr>
-                          ))}
-
+                          }).map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.student.firstName}</td>
+                                <td>{item.scoredMarks}</td>
+                                {/* <td>{item.exam.maxMarks}</td> */}
+                                <td>{item.weightageScoredMarks}</td>
+                                {/* <td>{item.exam.weightageMarks}</td> */}
+                                <td>{item.remarks}</td>
+                              </tr>
+                            )
+                          })}
                       </>
                       :
                       <tr>
