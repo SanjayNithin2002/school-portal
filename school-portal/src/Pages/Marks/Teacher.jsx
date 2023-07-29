@@ -5,6 +5,10 @@ import Table from "react-bootstrap/Table";
 import { TagGroup, Tag } from 'rsuite';
 import { getMarks } from '../../actions/marks';
 import matchers from '@testing-library/jest-dom/matchers';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import * as solid from "@fortawesome/free-solid-svg-icons"
+import { Link } from 'react-router-dom'
+
 // const data = [
 //   {
 //     rollno: 5,
@@ -63,7 +67,7 @@ const MarksTeacher = () => {
 
   const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
   const m = useSelector((state) => state.marksReducer)
-console.log(m)
+  // console.log(m)
 
   // let sum = 0;
   // for (let i = 0; i < data.length; i++) {
@@ -91,8 +95,6 @@ console.log(m)
                     <Tag size="lg">{lmark}</Tag>
                   </TagGroup> */}
 
-  if (!m)
-    return <div>Loading...</div>
 
   return (
     <>
@@ -100,82 +102,89 @@ console.log(m)
         <SideNavBar />
         <div className="Home">
           <div className="container rounded bg-white">
-            <h2>Marks View</h2>
+            <div className='d-flex justify-content-between'>
+              <h2>Marks View</h2>
+              <Link to="/UploadMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Upload Marks</Link>
+            </div>
             <hr style={{ border: "1px solid gray" }} />
             <div>
-              <div className="row classmessage-container-1">
-                <div className="col-lg-3">
-                  <h4>Select Class : </h4>
-                </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={standard}
-                    onChange={(e) => setStandard(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Class
-                    </option>
-                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
-                      const item = standardList.find(item => item.value === 5);
-                      return <option value={i}>{item.label}</option>
-                    })}
-                  </select>
-                </div>
+              {m ?
+                <div className="row classmessage-container-1">
 
-                <div className="col-lg-3">
-                  <h4>Select Section : </h4>
-                </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={section}
-                    onChange={(e) => setSection(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Section
-                    </option>
-                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
-                      return <option value={i}>{i}</option>
-                    })}
-                  </select>
-                </div>
+                  <div className="col-lg-3">
+                    <h4>Select Class : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={standard}
+                      onChange={(e) => setStandard(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Class
+                      </option>
+                      {Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
+                        const item = standardList.find(item => item.value === 5);
+                        return <option value={i}>{item.label}</option>
+                      })}
+                    </select>
+                  </div>
 
-                <div className="col-lg-3">
-                  <h4>Select Subject : </h4>
+                  <div className="col-lg-3">
+                    <h4>Select Section : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={section}
+                      onChange={(e) => setSection(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Section
+                      </option>
+                      {Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })}
+                    </select>
+                  </div>
+
+                  <div className="col-lg-3">
+                    <h4>Select Subject : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Subject
+                      </option>
+                      {Array.from(new Set(m.docs.examMarks.map((i) => i.exam.class.subject))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })}
+                    </select>
+                  </div>
+                  <div className="col-lg-3">
+                    <h4>Select Exam : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={exam}
+                      onChange={(e) => setExam(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Exam
+                      </option>
+                      {Array.from(new Set(m.docs.examMarks.map((i) => i.exam.examName))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })}
+                    </select>
+                  </div>
                 </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Subject
-                    </option>
-                    {Array.from(new Set(m.docs.examMarks.map((i) => i.subject))).map((i) => {
-                      return <option value={i}>{i}</option>
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-3">
-                  <h4>Select Exam : </h4>
-                </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={exam}
-                    onChange={(e) => setExam(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Exam
-                    </option>
-                    {Array.from(new Set(m.docs.examMarks.map((i) => i.examName))).map((i) => {
-                      return <option value={i}>{i}</option>
-                    })}
-                  </select>
-                </div>
-              </div>
+                : <></>
+              }
               <br />
               <br />
 
@@ -184,7 +193,8 @@ console.log(m)
                 <thead>
                   <tr>
                     <th>S.No.</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Marks Scored</th>
                     <th>Max Marks</th>
                     <th>Weightage Scored Marks</th>
@@ -194,25 +204,26 @@ console.log(m)
                 </thead>
                 <tbody>
                   {
-                    standard && section ?
+                    standard && section && subject && exam?
                       <>
                         {m.docs.examMarks
                           .filter((item) => {
                             return (
                               item.student.standard === parseInt(standard) &&
-                              item.student.section === section 
-                              // item.subject === subject &&
-                              // item.examName === exam
+                              item.student.section === section &&
+                              item.exam.class.subject === subject &&
+                              item.exam.examName === exam
                             );
                           }).map((item, index) => {
                             return (
                               <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.student.firstName}</td>
+                                <td>{item.student.lastName}</td>
                                 <td>{item.scoredMarks}</td>
-                                {/* <td>{item.exam.maxMarks}</td> */}
+                                <td>{item.exam.maxMarks}</td>
                                 <td>{item.weightageScoredMarks}</td>
-                                {/* <td>{item.exam.weightageMarks}</td> */}
+                                <td>{item.exam.weightageMarks}</td>
                                 <td>{item.remarks}</td>
                               </tr>
                             )
@@ -220,7 +231,7 @@ console.log(m)
                       </>
                       :
                       <tr>
-                        <td style={{ textAlign: "center" }} colSpan={5}>No Data</td>
+                        <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
                       </tr>
                   }
                 </tbody>

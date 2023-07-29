@@ -14,10 +14,7 @@ const MarksStudent = () => {
   }, [dispatch])
 
   const m = useSelector((state) => state.studentMarksReducer)
-  console.log(m)
-
-  if (!m)
-    return <div>Loading...</div>
+  // console.log(m)
 
   return (
     <>
@@ -29,52 +26,103 @@ const MarksStudent = () => {
             <h2>Marks/Grade</h2>
             <hr style={{ border: "1px solid gray" }} />
             <div>
-              <div className="row classmessage-container-1">
+              {m ?
+                <div className="row classmessage-container-1">
+                  <div className="col-lg-3">
+                    <h4>Select Assessment : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={assessment}
+                      onChange={(e) => setAssessment(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Section
+                      </option>
+                      {Array.from(new Set(m.docs.assessmentMarks.map((i) => i.assessment.title))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })}
+                    </select>
+                  </div>
 
-                <div className="col-lg-3">
-                  <h4>Select Assessment : </h4>
-                </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={assessment}
-                    onChange={(e) => setAssessment(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Section
-                    </option>
-                    {Array.from(new Set(m.docs.assessmentMarks.map((i) => i.assessment.title))).map((i) => {
-                      return <option value={i}>{i}</option>
-                    })}
-                  </select>
+
+                  <div className="col-lg-3">
+                    <h4>Select Exam : </h4>
+                  </div>
+                  <div className="col-lg-3">
+                    <select
+                      className="selectPicker3"
+                      value={exam}
+                      onChange={(e) => setExam(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Exam
+                      </option>
+                      {Array.from(new Set(m.docs.examMarks.map((i) => i.exam.examName))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })}
+                    </select>
+                  </div>
                 </div>
 
-
-                <div className="col-lg-3">
-                  <h4>Select Exam : </h4>
-                </div>
-                <div className="col-lg-3">
-                  <select
-                    className="selectPicker3"
-                    value={exam}
-                    onChange={(e) => setExam(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Select Exam
-                    </option>
-                    {Array.from(new Set(m.docs.examMarks.map((i) => i.exam))).map((i) => {
-                      return <option value={i}>{i}</option>
-                    })}
-                  </select>
-                </div>
-              </div>
+                :
+                <></>
+              }
               <br />
               <br />
+
 
               <Table striped bordered responsive hover>
                 <thead>
                   <tr>
                     <th>S.No.</th>
+                    <th>Subject</th>
+                    <th>Marks Scored</th>
+                    <th>Max Marks</th>
+                    <th>Weightage Scored Marks</th>
+                    <th>Weightage Marks</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {
+                    assessment ?
+                      <>
+                        {m.docs.assessmentMarks
+                          .filter((item) => {
+                            return (
+                              item.assessment.title === assessment
+                            );
+                          }).map((item, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.assessment.class.subject}</td>
+                                <td>{item.scoredMarks}</td>
+                                <td>{item.assessment.maxMarks}</td>
+                                <td>{item.weightageScoredMarks}</td>
+                                <td>{item.assessment.weightageMarks}</td>
+                                <td>{item.remarks}</td>
+                              </tr>
+                            )
+                          })}
+                      </>
+                      :
+                      <tr>
+                        <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
+                      </tr>
+                  }
+                </tbody>
+              </Table>
+
+
+              <Table striped bordered responsive hover>
+                <thead>
+                  <tr>
+                    <th>S.No.</th>
+                    <th>Subject</th>
                     <th>Marks Scored</th>
                     <th>Max Marks</th>
                     <th>Weightage Scored Marks</th>
@@ -90,17 +138,17 @@ const MarksStudent = () => {
                         {m.docs.examMarks
                           .filter((item) => {
                             return (
-                              item.exam === exam
+                              item.exam.examName === exam
                             );
                           }).map((item, index) => {
                             return (
                               <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>{item.student.firstName}</td>
+                                <td>{item.exam.class.subject}</td>
                                 <td>{item.scoredMarks}</td>
-                                {/* <td>{item.exam.maxMarks}</td> */}
+                                <td>{item.exam.maxMarks}</td>
                                 <td>{item.weightageScoredMarks}</td>
-                                {/* <td>{item.exam.weightageMarks}</td> */}
+                                <td>{item.exam.weightageMarks}</td>
                                 <td>{item.remarks}</td>
                               </tr>
                             )
@@ -108,54 +156,11 @@ const MarksStudent = () => {
                       </>
                       :
                       <tr>
-                        <td style={{ textAlign: "center" }} colSpan={5}>No Data</td>
+                        <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
                       </tr>
                   }
                 </tbody>
               </Table>
-              <Table striped bordered responsive hover>
-                <thead>
-                  <tr>
-                    <th>S.No.</th>
-                    <th>Marks Scored</th>
-                    <th>Max Marks</th>
-                    <th>Weightage Scored Marks</th>
-                    <th>Weightage Marks</th>
-                    <th>Remarks</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                {
-                    assessment ?
-                      <>
-                        {m.docs.assessmentMarks
-                          .filter((item) => {
-                            return (
-                              item.assessment.title === assessment
-                            );
-                          }).map((item, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.assessment.title}</td>
-                                <td>{item.scoredMarks}</td>
-                                {/* <td>{item.exam.maxMarks}</td> */}
-                                <td>{item.weightageScoredMarks}</td>
-                                {/* <td>{item.exam.weightageMarks}</td> */}
-                                <td>{item.remarks}</td>
-                              </tr>
-                            )
-                          })}
-                      </>
-                      :
-                      <tr>
-                        <td style={{ textAlign: "center" }} colSpan={5}>No Data</td>
-                      </tr>
-                  }
-                </tbody>
-              </Table>
-
             </div>
           </div>
         </div>

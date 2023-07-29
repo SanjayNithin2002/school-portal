@@ -1,9 +1,9 @@
 import * as api from "../api"
 
-export const getMarks = (examData) => async (dispatch) => {
+export const getMarks = (userData) => async (dispatch) => {
     try{
-        const { data } = await api.getMarks()
-        // console.log(data);
+        const { data } = await api.getMarks(userData)
+        // console.log(data);   
         dispatch({type:"FETCH_MARKS",payload:data})
     }
     catch(err){

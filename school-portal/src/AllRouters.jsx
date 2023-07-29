@@ -27,6 +27,7 @@ import AddStudent from "./Pages/Student/AddStudent";
 import AddTeacher from "./Pages/Teacher/AddTeacher";
 import Fees from "./Pages/Fees/Fees";
 import AddExam from "./Pages/Exam/AddExam";
+import UploadMarks from "./Pages/Marks/UploadMarks";
 import Meeting from "./Pages/Meeting/Meeting";
 import AddMeeting from "./Pages/Meeting/AddMeeting";
 import CreateClass from "./Pages/Class/CreateClass";
@@ -66,6 +67,7 @@ const AllRoutes = () => {
                 <Route path='/AddStaff' element={<AddTeacher/>}/>
                 <Route path='/Payment' element={<Fees/>}/>
                 <Route path='/AddSchedule' element={<AddExam/>} />
+                <Route path='/UploadMarks' element={<UploadMarks/>} />
                 <Route path='/Meeting' element={<Meeting/>} />
                 <Route path='/AddMeeting' element={<AddMeeting/>} />
                 <Route path='/CreateClass' element={<CreateClass/>} />
