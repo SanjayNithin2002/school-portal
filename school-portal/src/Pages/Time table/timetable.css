@@ -15,3 +15,98 @@
     text-align: center;
     padding:5px;
 }
+.timetable-main-content{
+    padding:20px;
+    border-radius: 15px;
+    border: 1px solid gray;
+}
+.timetable-main-content-1{
+    display:flex;
+    padding:10px 5px 0 5px;
+    justify-content:center;
+    border-radius: 20px 20px 0 0;
+    background-color:gray;
+}
+.timetable-main-content-2{
+    display:flex;
+    justify-content:center;
+    border-radius: 0px 0px 20px 20px;
+    border:1px solid gray;
+    border-top:none;
+}
+.timetable-main-content-1 button{
+    font-size:16px;
+    padding:10px;
+    background-color: darkgray;
+}
+.timetable-main-content-1 button:hover{
+    font-size:16px;
+    padding:10px;
+    background-color: lightgray;
+}
+.timetable-main-content-2 table{
+    width:90%;
+    font-size: 15px;
+    text-align: center;
+    border-collapse: collapse;
+    border-color:gray;
+}
+.timetable-main-content-1 .active{
+    color:gray;
+    background-color: white;
+}
+.timetable-main-content-2 table .rs-picker-select{
+    width:100%;
+}
+.custom-rs-select{
+    width:150px;
+    z-index: 10;
+}
+
+.rs-picker-select-menu{
+    z-index: 2000;
+}
+
+.timetable-preview{
+    border-collapse: collapse;
+    border:1px solid black;
+    text-align: center;
+    font-size: 14px;
+    margin:0 auto;
+
+}
+
+.timetable-preview td{
+    border:1px solid black;
+    padding:5px;
+}
+
+.table-preview{
+    height:40vh;
+}
+
+.timetable-preview tr:nth-child(1),
+.timetable-preview tr:nth-child(2),
+.preview-sideHeader{
+    background-color: darkgray;
+    font-weight: bold;
+}
+
+
+.Subject-Table-List{
+    width:100%;
+    font-size: 20px;
+    justify-content: center;
+}
+
+.Subject-Table-List tr:nth-child(odd) td:nth-child(odd){
+    background-color: gray;
+    font-style: italic;
+    font-weight: 700;
+}
+
+.Subject-Table-List tr:nth-child(even) td:nth-child(odd){
+    background-color: lightgray;
+    font-style: italic;
+    font-weight: 700;
+}

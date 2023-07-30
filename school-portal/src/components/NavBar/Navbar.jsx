@@ -1,48 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar1 from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useLocation } from "react-router-dom";
-import * as Regular from "@fortawesome/free-regular-svg-icons"
-import * as Solid from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Link, NavLink } from "react-router-dom";
+import { Dropdown } from 'rsuite';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import * as solid from "@fortawesome/free-solid-svg-icons"
+import * as regular from "@fortawesome/free-regular-svg-icons"
 
 import "./Navbar.css"
 
 const Navbar = () => {
     const location = useLocation();
+    const [menuOpen, setMenuOpen] = useState(false);
     return (
         location.pathname !== "/" &&
-        <Navbar1 className="customNavbar" bg="light" expand="lg">
-            <Container fluid>
-                <Navbar1.Brand href="#">SCHOOL NAME</Navbar1.Brand>
-                <Navbar1.Toggle aria-controls="navbarScroll" />
-                <Navbar1.Collapse className="customNavbarCollapse" id="navbarScroll">
-
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                            style={{maxHeight:"46px"}}
-                        />
-                        &thinsp;
-                        <Nav className="me-auto my-lg-0" >
-                            <Nav.Link href="#action1"><FontAwesomeIcon style={{ fontSize: "25px" }} icon={Regular.faBell} /></Nav.Link>
-                            &thinsp;
-                            <NavDropdown title={<div style={{textDecoration:"none", display: "inline-flex", justifyContent: "center" }}><FontAwesomeIcon style={{ border: "2px solid gray", padding: "5px", borderRadius: "50%" }} icon={Solid.faUser} /><>&ensp;Kumar</></div>} id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
-                                <NavDropdown.Item href="/">Logout</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                    </Form>
-                </Navbar1.Collapse>
-            </Container>
-        </Navbar1>
+        <nav className="top-navbar">
+                <Link to="/" className="title">
+                    Website
+                </Link>
+                <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
+                    <i class='bx bx-menu' ></i>
+                </div>
+                <ul className={menuOpen ? "top-navbar-ul open" : "top-navbar-ul"}>
+                    <li >
+                        <div className="search-bar">
+                        <i className="bx bx-search"></i>
+                        <input type="search" placeholder="Search"/>
+                        </div>
+                    </li>
+                    <li>
+                        <NavLink><FontAwesomeIcon icon={regular.faBell} style={{fontSize:"22px"}}/></NavLink>
+                    </li>
+                    <li>
+                        <Dropdown title="Kumar" placement="bottomEnd">
+                            <Dropdown.Item key={1}><NavLink to='/Profile'><FontAwesomeIcon icon={solid.faUser} />&emsp;Profile</NavLink></Dropdown.Item>
+                            <Dropdown.Item key={2}><NavLink to='/Logout'><FontAwesomeIcon icon={solid.faSignOutAlt} />&emsp;Logout</NavLink></Dropdown.Item>
+                        </Dropdown>
+                    </li>
+                </ul>
+        </nav >
     )
 }
 

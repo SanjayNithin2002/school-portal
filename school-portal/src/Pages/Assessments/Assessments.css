@@ -38,6 +38,18 @@
     justify-content: space-between;
 }
 
+@media (max-width:650px) {
+    .Assessment-tab-1{
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}
+
+.Assessment-tab-1 .h4{
+ text-align: right;
+}
+
 .Assessment-tab-2{
     justify-content: flex-start;
 }

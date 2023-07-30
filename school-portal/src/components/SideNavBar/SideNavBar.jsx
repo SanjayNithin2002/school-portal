@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { Sidenav } from 'rsuite';
 import './SideNavBar.css';
 import Student from './Student';
 import Teacher from './Teacher';
 import Admin from './Admin';
+import { useLocation } from 'react-router-dom';
 
 const SideNavBar = () => {
   const [expanded, setExpanded] = React.useState(true);
+  const location = useLocation();
   
   function handleResize() {
     if(window.innerWidth<900 && expanded) setExpanded(false)
@@ -17,9 +18,8 @@ const SideNavBar = () => {
   })
   handleResize();
   return (
-    <div style={{height:"90vh",backgroundColor:"#f7f7fa"}}>
-      <Sidenav expanded={expanded}>
-        <Sidenav.Body>
+    location.pathname !== "/" &&
+    <>
           {
             localStorage.getItem("type")==="student" &&
             <Student/>
@@ -32,10 +32,7 @@ const SideNavBar = () => {
             localStorage.getItem("type")==="admin" &&
             <Admin/>
           }
-          
-        </Sidenav.Body>
-      </Sidenav>
-    </div>
+          </>
   );
 };
 

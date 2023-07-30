@@ -9,7 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import "./Attendance.css"
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentAttendance } from "../../actions/attendance";
 
@@ -46,6 +45,7 @@ function Attendance() {
                     start: item.date,
                     end: item.date
                 })
+                return true;
             })
         }
         console.log(result);
@@ -88,12 +88,11 @@ function Attendance() {
 
     return (
         <div className="Main">
-            <SideNavBar />
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Attendance</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className="">
+                    {/* <div className="">
                         Total No of Working Days : {events ? events.length : 0}
                         &emsp;
                         No of Present Days : {events !== null ? events.filter((item) => item.count === 2).length : 0}
@@ -101,10 +100,12 @@ function Attendance() {
                         No of Half Day Present : {events !== null ? events.filter((item) => item.count === 1).length : 0}
                         &emsp;
                         No of Absent Days : {events !== null ? events.filter((item) => item.count === 0).length : 0}
+                    </div> */}
+                    <div className="Attendance-Container">
+                        {events &&
+                            <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
+                        }
                     </div>
-                    {events &&
-                        <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
-                    }
                 </div>
             </div >
         </div>

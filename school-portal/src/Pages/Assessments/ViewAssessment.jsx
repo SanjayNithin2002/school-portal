@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteAnswers, postAnswers } from '../../actions/assessments'
 import { requestTeacher } from '../../actions/teachers';
 import { viewBonafide } from '../../actions/bonafide';
+import Table from "react-bootstrap/Table"
 
 const ViewAssessment = (props) => {
     const dispatch = useDispatch()
@@ -78,17 +79,15 @@ const ViewAssessment = (props) => {
     }
 
     return (
-        <div className="Home">
-            {
                 allAssessments && allAssessments.docs.filter((item) => item._id === props.assessmentID).map((item) => (
-                    <div class="container rounded bg-white">
-                        <div className='Assessment-tab-1'>
-                            <h2>{item.title}</h2>
-                            <h4>{item.class.subject}</h4>
+                    <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
+                        <div className='row Assessment-tab-1'>
+                            <h2 className='col-lg-9 col-md-7 col-sm-6'>{item.title}</h2>
+                            <h4 className='col-lg-3 col-md-5 col-sm-6 h4'>{item.class.subject}</h4>
                         </div>
                         <hr style={{ border: "1px solid gray" }} />
                         <div className='row'>
-                            <div className='col-lg-9'>
+                            <div className='col-xl-9 col-lg-8 col-md-7' >
                                 <div style={{ fontSize: "18px" }}>{item.description}</div>
                                 <br />
                                 {
@@ -118,8 +117,8 @@ const ViewAssessment = (props) => {
                                 }
 
                             </div>
-                            <div className='col-lg-3' style={{ borderLeft: "1px solid gray" }}>
-                                <table className='tablestyle2'>
+                            <div className='col-xl-3 col-lg-4 col-md-5 table-responsive' style={{ borderLeft: "1px solid gray" }}>
+                                <Table className='tablestyle2'>
                                     <tr>
                                         <td style={{width:"40%"}}>Posted By</td>
                                         <td style={{width:"4%"}}>:</td>
@@ -155,7 +154,8 @@ const ViewAssessment = (props) => {
                                         }
                                     </tr>
                                     {
-                                        answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                        answers.docs.length !== 0 ? 
+                                            answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                             item1.answersFile === null ?
                                                 <tr>
                                                     <td>
@@ -163,11 +163,10 @@ const ViewAssessment = (props) => {
                                                             checkDueDate(item.lastDate) &&
                                                             <button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>
                                                         }
-
                                                     </td>
                                                     <td></td>
                                                     <td>
-                                                        <button className='btn btn-danger' onClick={() => close1()}>Back</button>
+                                                        <button className='btn btn-danger' onClick={() => close1()}>Back1</button>
                                                     </td>
                                                 </tr>
                                                 :
@@ -177,30 +176,29 @@ const ViewAssessment = (props) => {
                                                     </td>
                                                     <td></td>
                                                     <td>
-                                                        <button className='btn btn-warning' onClick={() => close1()}>Back</button>
+                                                        <button className='btn btn-warning' onClick={() => close1()}>Back3</button>
                                                     </td>
                                                 </tr>
                                         ))
                                             :
                                             <tr>
+                                                <td>
                                                 {
                                                     checkDueDate(item.lastDate) &&
                                                     <button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>
                                                 }
-
+                                                </td>
                                                 <td></td>
                                                 <td>
-                                                    <button className='btn btn-danger' onClick={() => close1()}>Back</button>
+                                                    <button style={{backgroundColor:"#dc3545"}} className='btn btn-danger' onClick={() => close1()}>Back2</button>
                                                 </td>
                                             </tr>
                                     }
-                                </table>
+                                </Table>
                             </div>
                         </div>
                     </div>
                 ))
-            }
-        </div>
     )
 }
 

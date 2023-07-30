@@ -63,7 +63,19 @@ function Student() {
         return (edate.getTime() - sdate.getTime())/(1000*60)
 
     }
-
+    const compareTime = (a, b) => {
+        const date1 = new Date();
+        date1.setHours(parseInt(a.StartTime.split(":")[0]));
+        date1.setMinutes(parseInt(a.StartTime.split(":")[1]));
+        date1.setSeconds(0);
+        date1.setMilliseconds(0);
+        const date2 = new Date();
+        date2.setHours(parseInt(b.StartTime.split(":")[0]));
+        date2.setMinutes(parseInt(b.StartTime.split(":")[1]));
+        date2.setSeconds(0);
+        date2.setMilliseconds(0);
+        return date1.getTime() - date2.getTime();
+    }
     return (
         <div className='Main'>
             <SideNavBar />
@@ -89,7 +101,7 @@ function Student() {
                                     <td style={{backgroundColor:"lightgray"}} colSpan={5} align='center'>{examName}</td>
                                 </tr>
                                 {
-                                exam.docs.filter((item) => item.examName === examName).map((item,index)=>(
+                                exam.docs.filter((item) => item.examName === examName).sort((a, b) => (new Date(a.date).getTime()) === (new Date(b.date).getTime()) ? compareTime(a, b) : (new Date(a.date).getTime()) - (new Date(b.date).getTime())).map((item,index)=>(
                                     <tr>
                                         <td>{index+1}</td>
                                         <td>{item.subject}</td>

@@ -27,11 +27,10 @@ function ContactUsStudent() {
 
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-      <SideNavBar />
 
-      <Container style={{ margin: "10px" }}>
-        <div className="container rounded bg-white">
+    <div className='Main'>
+    <div className="Home">
+        <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
           <Header>
             <h2>Contact Us</h2>
             <hr style={{ border: "1px solid gray" }} />
@@ -97,7 +96,7 @@ function ContactUsStudent() {
             <iframe width="100%" height="500" borderRadius="20px" frameborder="1" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=VIT%20Vellore+(Vellore%20Institute%20of%20Techonlogy)&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.maps.ie/distance-area-calculator.html">measure acres/hectares on map</a></iframe>
           </Container>
         </div>
-      </Container>
+      </div>
     </div>
   )
 }

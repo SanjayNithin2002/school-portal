@@ -35,11 +35,13 @@ import ClassInfo from "./Pages/Class/ClassInfo";
 import ViewBonafide from "./Pages/Bonafide/ViewBonafide";
 import UpdateLeave from "./Pages/Leave/UpdateLeave";
 import AddTimeTable from "./Pages/Time table/AddTimeTable";
+import SideNavBar from "./components/SideNavBar/SideNavBar";
 
 const AllRoutes = () => {
     return(
         <BrowserRouter>
             <Navbar/>
+            <SideNavBar/>
             <Routes>
                 <Route path='/' element={<App/>}/>
                 <Route path='/Home' element={<Home/>}/>

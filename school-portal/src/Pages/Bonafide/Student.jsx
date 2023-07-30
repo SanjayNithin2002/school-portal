@@ -8,7 +8,6 @@ import moment from "moment"
 
 import "./Bonafide.css"
 import { requestBonafide,viewBonafide } from '../../actions/bonafide';
-import SideNavBar from '../../components/SideNavBar/SideNavBar';
 import { setCurrentUser } from '../../actions/currentUser';
 import { StudentBonafide } from "../../actions/bonafide";
 
@@ -101,9 +100,8 @@ function Student() {
 
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Bonafide Application</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='container bonafide-content'>

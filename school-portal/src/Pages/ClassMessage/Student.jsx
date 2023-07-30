@@ -19,9 +19,8 @@ const Student = () => {
 
     return (
         <div className="Main">
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Class Message</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div>
@@ -39,6 +38,13 @@ const Student = () => {
                                             </div>
                                         </div>
                                     ))
+
+                                }
+                                {
+                                    messages && messages!==null && messages.docs.length===0 &&
+                                    <div>
+                                        You have not received any message so far
+                                    </div>
                                 }
                             </div>
                         </div>

@@ -54,11 +54,7 @@ function CreateClass() {
                         standard,
                         section,
                         subject,
-                        timings: [{
-                            startTime: new Date(),
-                            endTime: new Date(),
-                            day: ""
-                        }]
+                        timings: []
                     })
                     return true
                 })
