@@ -3,6 +3,8 @@ const marksReducer = (state=null,action) =>{
     {
         case 'FETCH_MARKS' : 
             return action.payload;
+        case 'FETCH_STUDENT_MARKS' : 
+            return action.payload;
         default : 
             return state;
     }

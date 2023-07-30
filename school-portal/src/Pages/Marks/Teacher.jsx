@@ -61,6 +61,7 @@ const MarksTeacher = () => {
   const [section, setSection] = useState("");
   const [subject, setSubject] = useState("");
   const [exam, setExam] = useState("");
+  const [assessment, setAssessment] = useState("");
   useEffect(() => {
     dispatch(getMarks({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
   }, [dispatch])
@@ -108,135 +109,212 @@ const MarksTeacher = () => {
             </div>
             <hr style={{ border: "1px solid gray" }} />
             <div>
-              {m ?
-                <div className="row classmessage-container-1">
+              <div className="row">
 
-                  <div className="col-lg-3">
-                    <h4>Select Class : </h4>
-                  </div>
-                  <div className="col-lg-3">
-                    <select
-                      className="selectPicker3"
-                      value={standard}
-                      onChange={(e) => setStandard(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select Class
-                      </option>
-                      {Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
+                <div className="col-lg-3">
+                  <h4>Select Class : </h4>
+                </div>
+                <div className="col-lg-3">
+                  <select
+                    className="selectPicker3"
+                    value={standard}
+                    onChange={(e) => setStandard(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Select Class
+                    </option>
+                    {m ?
+                      Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
                         const item = standardList.find(item => item.value === 5);
                         return <option value={i}>{item.label}</option>
-                      })}
-                    </select>
-                  </div>
-
-                  <div className="col-lg-3">
-                    <h4>Select Section : </h4>
-                  </div>
-                  <div className="col-lg-3">
-                    <select
-                      className="selectPicker3"
-                      value={section}
-                      onChange={(e) => setSection(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select Section
-                      </option>
-                      {Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
-                        return <option value={i}>{i}</option>
-                      })}
-                    </select>
-                  </div>
-
-                  <div className="col-lg-3">
-                    <h4>Select Subject : </h4>
-                  </div>
-                  <div className="col-lg-3">
-                    <select
-                      className="selectPicker3"
-                      value={subject}
-                      onChange={(e) => setSubject(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select Subject
-                      </option>
-                      {Array.from(new Set(m.docs.examMarks.map((i) => i.exam.class.subject))).map((i) => {
-                        return <option value={i}>{i}</option>
-                      })}
-                    </select>
-                  </div>
-                  <div className="col-lg-3">
-                    <h4>Select Exam : </h4>
-                  </div>
-                  <div className="col-lg-3">
-                    <select
-                      className="selectPicker3"
-                      value={exam}
-                      onChange={(e) => setExam(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Select Exam
-                      </option>
-                      {Array.from(new Set(m.docs.examMarks.map((i) => i.exam.examName))).map((i) => {
-                        return <option value={i}>{i}</option>
-                      })}
-                    </select>
-                  </div>
+                      })
+                      : <></>}
+                  </select>
                 </div>
-                : <></>
-              }
+
+                <div className="col-lg-3">
+                  <h4>Select Section : </h4>
+                </div>
+                <div className="col-lg-3">
+                  <select
+                    className="selectPicker3"
+                    value={section}
+                    onChange={(e) => setSection(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Select Section
+                    </option>
+                    {m ?
+                      Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })
+                      : <></>}
+                  </select>
+                </div>
+
+                <div className="col-lg-3">
+                  <h4>Select Subject : </h4>
+                </div>
+                <div className="col-lg-3">
+                  <select
+                    className="selectPicker3"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Select Subject
+                    </option>
+                    {m ?
+                      Array.from(new Set(m.docs.examMarks.map((i) => i.exam.class.subject))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })
+                      : <></>}
+                  </select>
+                </div>
+                <div className="col-lg-3">
+                  <h4>Select Exam : </h4>
+                </div>
+                <div className="col-lg-3">
+                  <select
+                    className="selectPicker3"
+                    value={exam}
+                    onChange={(e) => { setExam(e.target.value); setAssessment(""); }}
+                  >
+                    <option value="" disabled>
+                      Select Exam
+                    </option>
+                    {m ?
+                      Array.from(new Set(m.docs.examMarks.map((i) => i.exam.examName))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })
+                      : <></>}
+                  </select>
+                </div>
+
+                <div className="col-lg-3">
+                  <h4>Select Assessment : </h4>
+                </div>
+                <div className="col-lg-3">
+                  <select
+                    className="selectPicker3"
+                    value={assessment}
+                    onChange={(e) => { setAssessment(e.target.value); setExam(""); }}
+                  >
+                    <option value="" disabled>
+                      Select Assessment
+                    </option>
+                    {m ?
+                      Array.from(new Set(m.docs.assessmentMarks.map((i) => i.assessment.title))).map((i) => {
+                        return <option value={i}>{i}</option>
+                      })
+                      : <></>}
+                  </select>
+                </div>
+
+
+              </div>
+
               <br />
               <br />
 
-
-              <Table striped bordered responsive hover>
-                <thead>
-                  <tr>
-                    <th>S.No.</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Marks Scored</th>
-                    <th>Max Marks</th>
-                    <th>Weightage Scored Marks</th>
-                    <th>Weightage Marks</th>
-                    <th>Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    standard && section && subject && exam?
-                      <>
-                        {m.docs.examMarks
-                          .filter((item) => {
-                            return (
-                              item.student.standard === parseInt(standard) &&
-                              item.student.section === section &&
-                              item.exam.class.subject === subject &&
-                              item.exam.examName === exam
-                            );
-                          }).map((item, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.student.firstName}</td>
-                                <td>{item.student.lastName}</td>
-                                <td>{item.scoredMarks}</td>
-                                <td>{item.exam.maxMarks}</td>
-                                <td>{item.weightageScoredMarks}</td>
-                                <td>{item.exam.weightageMarks}</td>
-                                <td>{item.remarks}</td>
-                              </tr>
-                            )
-                          })}
-                      </>
-                      :
-                      <tr>
-                        <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
-                      </tr>
-                  }
-                </tbody>
-              </Table>
-
+              {exam ?
+                <Table striped bordered responsive hover>
+                  <thead>
+                    <tr>
+                      <th>S.No.</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Marks Scored</th>
+                      <th>Max Marks</th>
+                      <th>Weightage Scored Marks</th>
+                      <th>Weightage Marks</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      standard && section && subject ?
+                        <>
+                          {m.docs.examMarks
+                            .filter((item) => {
+                              return (
+                                item.student.standard === parseInt(standard) &&
+                                item.student.section === section &&
+                                item.exam.class.subject === subject &&
+                                item.exam.examName === exam
+                              );
+                            }).map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{item.student.firstName}</td>
+                                  <td>{item.student.lastName}</td>
+                                  <td>{item.scoredMarks}</td>
+                                  <td>{item.exam.maxMarks}</td>
+                                  <td>{item.weightageScoredMarks}</td>
+                                  <td>{item.exam.weightageMarks}</td>
+                                  <td>{item.remarks}</td>
+                                </tr>
+                              )
+                            })}
+                        </>
+                        :
+                        <tr>
+                          <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
+                        </tr>
+                    }
+                  </tbody>
+                </Table>
+                : <></>}
+              {assessment ?
+                <Table striped bordered responsive hover>
+                  <thead>
+                    <tr>
+                      <th>S.No.</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Marks Scored</th>
+                      <th>Max Marks</th>
+                      <th>Weightage Scored Marks</th>
+                      <th>Weightage Marks</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      standard && section && subject ?
+                        <>
+                          {m.docs.assessmentMarks
+                            .filter((item) => {
+                              return (
+                                item.assessment.class.standard === parseInt(standard) &&
+                                item.assessment.class.section === section &&
+                                item.assessment.class.subject === subject &&
+                                item.assessment.title === assessment
+                              );
+                            }).map((item, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{item.student.firstName}</td>
+                                  <td>{item.student.lastName}</td>
+                                  <td>{item.scoredMarks}</td>
+                                  <td>{item.assessment.maxMarks}</td>
+                                  <td>{item.weightageScoredMarks}</td>
+                                  <td>{item.assessment.weightageMarks}</td>
+                                  <td>{item.remarks}</td>
+                                </tr>
+                              )
+                            })}
+                        </>
+                        :
+                        <tr>
+                          <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
+                        </tr>
+                    }
+                  </tbody>
+                </Table>
+                : <></>}
             </div>
           </div>
         </div>

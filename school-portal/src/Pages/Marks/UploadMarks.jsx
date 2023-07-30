@@ -1,106 +1,173 @@
 import React, { useEffect, useState } from 'react'
+import { Steps, ButtonGroup, Button } from 'rsuite';
+import Table from 'react-bootstrap/Table'
+
+import "./Marks.css"
+import { getAllClass } from '../../actions/class';
 import { useDispatch, useSelector } from 'react-redux';
+import { getTimeTable } from '../../actions/timetable';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { createExam } from '../../actions/exam';
+import { useNavigate } from 'react-router-dom';
 
 
 const UploadMarks = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [subject, setSubject] = useState("");
     const [exam, setExam] = useState("");
+    const [assessment, setAssessment] = useState("");
+    const [step, setStep] = useState(0);
     useEffect(() => {
         // dispatch(getMarks({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
     }, [dispatch])
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
     const m = useSelector((state) => state.marksReducer)
-    console.log(m)
+    // console.log(m)
+    const handleSubmit = () => {
+        console.log("asd")
+    }
+    const onNext = () => onChange(step + 1);
+    const onPrevious = () => onChange(step - 1);
+    const onChange = nextStep => {
+        setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
+    };
 
+    
     return (
         <div className="Main">
             <SideNavBar />
             <div className="Home">
                 <div className="container rounded bg-white">
-                        <h2>Marks Upload</h2>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <h2>Upload Marks</h2>
+                        {step === 2 ? <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button> : <></>}
+                    </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div>
-                        <div className="row classmessage-container-1">
+                        <Steps current={step}>
+                            <Steps.Item title="General" />
+                            <Steps.Item title="Subjects" />
+                            <Steps.Item title="Review" />
+                        </Steps>
+                        <br /><br />
+                        {step === 0 &&
+                            <div className='row'>
+                                <div className='col-lg-7 justify-content-center'>
+                                    <Table className='AddStudent-Table-List-1'>
+                                        <tbody>
+                                            <tr>
+                                                <td>Assessment Title</td>
+                                                <td>
+                                                    <select className="selectPicker3" value={exam} onChange={(e) => {setAssessment(e.target.value); setExam("")}}>
+                                                        <option value="" disabled>Select Assessment</option>
+                                                        {/* {
+                                                            examTitle.map((item) => (
+                                                                <option value={item}>{item}</option>
+                                                            ))
+                                                        } */}
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                        }
+                        {step === 1 &&
+                            <div className='row'>
+                                <div className='col-lg-8 justify-content-center'>
+                                    <Table className='AddStudent-Table-List-1'>
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Subject</th>
+                                                <th>Exam Date</th>
+                                                <th>Start Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {/* {
+                                                timetable.length>0 && subjectList && subjectList.map((item,index)=>(
+                                                    <tr>
+                                                        <td>{item.Sno}</td>
+                                                        <td>{item.subject}</td>
+                                                        <td><input type='date' value={item.date} onChange={(e)=>handleInputChange(e.target.value,index,"date")}/></td>
+                                                        <td>
+                                                            <select value={item.time} onChange={(e)=>handleInputChange(e.target.value,index,"time")} >
+                                                                <option value=''>Select Time Slot</option>
+                                                                <option value={timetable.docs[0].startTime}>Morning {timetable.docs[0].startTime}</option>
+                                                                <option value={timetable.docs[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}>Afternoon {timetable.docs[0].break.filter((item)=>item.title==="Lunch").map((item)=>(item.endTime))}</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            } */}
 
-                            <div className="col-lg-3">
-                                <h4>Select Class : </h4>
+                                        </tbody>
+                                    </Table>
+                                </div>
                             </div>
-                            <div className="col-lg-3">
-                                <select
-                                    className="selectPicker3"
-                                    value={standard}
-                                    onChange={(e) => setStandard(e.target.value)}
-                                >
-                                    <option value="" disabled>
-                                        Select Class
-                                    </option>
-                                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.standard))).map((i) => {
-                                        const item = standardList.find(item => item.value === 5);
-                                        return <option value={i}>{item.label}</option>
-                                    })}
-                                </select>
-                            </div>
+                        }
+                        {step === 2 &&
+                            <div className='row'>
+                                <div className='col-lg-8 justify-content-center'>
+                                    <Table className='AddStudent-Table-List-1'>
+                                        <tbody>
+                                            <tr>
+                                                <td colSpan={2} style={{ textAlign: "center", fontWeight: "bold" }}>
+                                                    Exam Details
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Exam Title</td>
+                                                <td>{exam}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Duration</td>
+                                                <td>{} min</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Class</td>
+                                                <td>{standardList[standard - 1]} th</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Do student have class during exam ?</td>
+                                                <td>{}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan={2} style={{ textAlign: "center", fontWeight: "bold" }}>
+                                                    Subject Details
+                                                </td>
+                                            </tr>
+                                            {/* {
+                                                subjectList && subjectList.map((item)=>(
+                                                    <tr>
+                                                        <td>{item.subject}</td>
+                                                        <td>{handleDateFormat(item.date,item.time)}</td>
+                                                    </tr>
+                                                ))
+                                            } */}
 
-                            <div className="col-lg-3">
-                                <h4>Select Section : </h4>
+                                        </tbody>
+                                    </Table>
+                                </div>
                             </div>
-                            <div className="col-lg-3">
-                                <select
-                                    className="selectPicker3"
-                                    value={section}
-                                    onChange={(e) => setSection(e.target.value)}
-                                >
-                                    <option value="" disabled>
-                                        Select Section
-                                    </option>
-                                    {Array.from(new Set(m.docs.examMarks.map((i) => i.student.section))).map((i) => {
-                                        return <option value={i}>{i}</option>
-                                    })}
-                                </select>
-                            </div>
+                        }
 
-                            <div className="col-lg-3">
-                                <h4>Select Subject : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select
-                                    className="selectPicker3"
-                                    value={subject}
-                                    onChange={(e) => setSubject(e.target.value)}
-                                >
-                                    <option value="" disabled>
-                                        Select Subject
-                                    </option>
-                                    {Array.from(new Set(m.docs.examMarks.map((i) => i.subject))).map((i) => {
-                                        return <option value={i}>{i}</option>
-                                    })}
-                                </select>
-                            </div>
-                            <div className="col-lg-3">
-                                <h4>Select Exam : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select
-                                    className="selectPicker3"
-                                    value={exam}
-                                    onChange={(e) => setExam(e.target.value)}
-                                >
-                                    <option value="" disabled>
-                                        Select Exam
-                                    </option>
-                                    {Array.from(new Set(m.docs.examMarks.map((i) => i.examName))).map((i) => {
-                                        return <option value={i}>{i}</option>
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                        <br />
-                        <br />
+                        <br /><br />
+                        <ButtonGroup>
+                            <Button onClick={onPrevious} disabled={step === 0}>
+                                Previous
+                            </Button>
+                            <Button onClick={onNext} disabled={step === 2}>
+                                Next
+                            </Button>
+                        </ButtonGroup>
                     </div>
                 </div>
             </div>

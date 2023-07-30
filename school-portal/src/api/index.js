@@ -60,8 +60,8 @@ export const getExam = (examData) => API.get(`/exams/standard/${examData.standar
 export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${userData.id}`)
 
 /* Marks */
-export const getMarks = (userData) => API.get(`https://schoolportalbackend.onrender.com/marks/teachers/${userData.id}`);
-export const getMarksForStudent = (userData) => API.get(`https://schoolportalbackend.onrender.com/marks/students/${userData.id}`);
+export const getMarks = (userData) => API.get(`/marks/teachers/${userData.id}`);
+export const getMarksForStudent = (userData) => API.get(`/marks/students/${userData.id}`);
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
