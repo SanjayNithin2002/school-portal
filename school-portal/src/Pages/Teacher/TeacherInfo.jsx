@@ -34,10 +34,9 @@ function TeacherInfo() {
     }
 
     return (
-        <div className='Main'>
-            <SideNavBar />
+        <div className="Main">
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <h2>Staff Info</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='studentinfo-container'>

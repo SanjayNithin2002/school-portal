@@ -101,10 +101,9 @@ function Admin() {
     }
 
     return (
-        <div className='Main'>
-            <SideNavBar />
+        <div className="Main">
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Examination Schedule</h2>
                         <Link to="/AddSchedule" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Add Schedule</Link>

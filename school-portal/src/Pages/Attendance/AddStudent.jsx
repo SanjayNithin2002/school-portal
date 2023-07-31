@@ -102,8 +102,8 @@ const AddStudent = (props) => {
     }
 
     return (
-            <div className="Home">
-                <div className="container rounded bg-white">
+        <div className="Home">
+            <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <h2>{standardList[props.standard-1].label} {props.section} Class Attendance</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     

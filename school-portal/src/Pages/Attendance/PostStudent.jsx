@@ -146,11 +146,10 @@ const PostStudent = () => {
         
     return (
         <div className="Main">
-            <SideNavBar />
             {
             editDisplay===false ? 
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <h2>Students Attendance</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className=""><div className="row poststudent-container">
