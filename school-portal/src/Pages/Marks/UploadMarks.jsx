@@ -3,11 +3,9 @@ import { Steps, ButtonGroup, Button } from 'rsuite';
 import Table from 'react-bootstrap/Table'
 
 import "./Marks.css"
-import { getAllClass } from '../../actions/class';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTimeTable } from '../../actions/timetable';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
-import { createExam } from '../../actions/exam';
+import { getMarks } from '../../actions/marks';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -21,12 +19,12 @@ const UploadMarks = () => {
     const [assessment, setAssessment] = useState("");
     const [step, setStep] = useState(0);
     useEffect(() => {
-        // dispatch(getMarks({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
+        dispatch(getMarks({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
     }, [dispatch])
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
     const m = useSelector((state) => state.marksReducer)
-    // console.log(m)
+    console.log(m)
     const handleSubmit = () => {
         console.log("asd")
     }
@@ -57,24 +55,26 @@ const UploadMarks = () => {
                         {step === 0 &&
                             <div className='row'>
                                 <div className='col-lg-7 justify-content-center'>
+                                    {m?
                                     <Table className='AddStudent-Table-List-1'>
                                         <tbody>
                                             <tr>
                                                 <td>Assessment Title</td>
                                                 <td>
-                                                    <select className="selectPicker3" value={exam} onChange={(e) => {setAssessment(e.target.value); setExam("")}}>
+                                                    <select className="selectPicker3" value={assessment} onChange={(e) => {setAssessment(e.target.value); setExam("")}}>
                                                         <option value="" disabled>Select Assessment</option>
-                                                        {/* {
-                                                            examTitle.map((item) => (
-                                                                <option value={item}>{item}</option>
-                                                            ))
-                                                        } */}
+                                                        {
+                                                            Array.from(new Set(m.docs.assessmentMarks.map((i) => i.assessment.title))).map((i) => {
+                                                                return <option value={i}>{i}</option>
+                                                              })
+                                                        }
                                                     </select>
                                                 </td>
                                             </tr>
                                             
                                         </tbody>
                                     </Table>
+                                    :<></>}
                                 </div>
                             </div>
                         }
