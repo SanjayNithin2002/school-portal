@@ -100,11 +100,10 @@ function Teacher() {
 
     return (
         <div className='Main'>
-            <SideNavBar />
             {
                 !display ?
-                    <div className="Home">
-                        <div class="container rounded bg-white">
+                <div className="Home">
+                    <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                             <div className="btnmove" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <h2>Assessments</h2>
                                 <div className="btn-group">

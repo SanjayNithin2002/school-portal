@@ -63,8 +63,7 @@ const PostAssessment = (props) => {
             <div className="Home">
                 {
                     assessments.docs.filter((item)=>item._id===props.assessmentID).map((item)=>(
-                
-                <div class="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <div className='Assessment-tab-1'>
                         <h2>{item.title}</h2>
                         <h4>{item.class.subject}</h4>

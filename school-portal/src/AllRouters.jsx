@@ -2,7 +2,7 @@ import React from "react";
 import { Routes,Route,BrowserRouter} from "react-router-dom"
 import App from "./App"
 import Navbar from "./components/NavBar/Navbar";
-import Home from "./Pages/Dashboard/Student";
+import Home from "./Pages/Dashboard/Home";
 import Attendance from "./Pages/Attendance/Attendance"
 import Error404 from "./Pages/Error404";
 import ContactUs from "./Pages/ContactUs/ContactUs";

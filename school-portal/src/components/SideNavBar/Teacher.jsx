@@ -1,16 +1,117 @@
 import React from "react";
-import { Nav } from 'rsuite';
-import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
-import Upload from '@rsuite/icons/legacy/FileUpload';
-import Calendar from '@rsuite/icons/legacy/Calendar';
-import HR from "@rsuite/icons/legacy/UserInfo";
-import Class from "@rsuite/icons/legacy/Book";
-import Setting from "@rsuite/icons/legacy/Setting"
+import {Link } from "react-router-dom"
 
 const Teacher = () => {
-    return(
-        <Nav>
+    function subMenu(target1) {
+        let subList = document.querySelectorAll(".iocn-link");
+        let openList = document.querySelectorAll(".active");
+        for (var i = 0; i < openList.length; i++) {
+            if (openList[i] !== subList[target1]) {
+                openList[i].classList.toggle("active");
+                openList[i].parentElement.classList.toggle("showMenu");
+            }
+        }
+        subList[target1].classList.toggle("active")
+        subList[target1].parentElement.classList.toggle("showMenu");
+    }
+    return (
+        <div class="sidebar">
+            <div class="logo-details">
+                <i class='bx bxl-c-plus-plus'></i>
+                <span class="logo_name">School Name</span>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <Link to='/Home' >
+                        <i class='bx bx-grid-alt'></i>
+                        <span class="link_name">Dashboard</span>
+                    </Link>
+                    <ul class="sub-menu blank">
+                        <li><Link to='/Home' class="link_name">Dashboard</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link" onClick={() => subMenu(0)}>
+                        <Link>
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Attendance Info</span>
+                        </Link>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><Link class="link_name">Attendance Info</Link></li>
+                        <li><Link to='/Attendance'>Attendance</Link></li>
+                        <li><Link to='/Leave'>Leave</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <Link to='/TimeTable'>
+                        <i class='bx bx-table'></i>
+                        <span class="link_name">TimeTable</span>
+                    </Link>
+                    <ul class="sub-menu blank">
+                        <li><Link to='/TimeTable' class="link_name">TimeTable</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link" onClick={() => subMenu(1)}>
+                        <Link>
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">HR</span>
+                        </Link>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><Link class="link_name">HR</Link></li>
+                        <li><Link to='/StudentInfo'>Student Info</Link></li>
+                        <li><Link to='/StaffInfo'>Staff Info</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link" onClick={() => subMenu(2)}>
+                        <Link>
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Class Info</span>
+                        </Link>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><Link class="link_name">Class Info</Link></li>
+                        <li><Link to='/StudentList'>Student List</Link></li>
+                        <li><Link to='/PostStudentAttendance'>Attendance</Link></li>
+                        <li><Link to='/ClassMessage'>Class Message</Link></li>
+                        <li><Link to='/Assessment'>Assessments</Link></li>
+                        <li><Link to='/Marks'>Marks</Link></li>
+                        <li><Link to='/Exam'>Exams</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <Link to='/Setting'>
+                        <i class='bx bx-cog'></i>
+                        <span class="link_name">Settings</span>
+                    </Link>
+                    <ul class="sub-menu blank">
+                        <li><Link to='/Setting' class="link_name">Settings</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <Link to='/ContactUs'>
+                        <i class='bx bxs-contact'></i>
+                        <span class="link_name">Contacts</span>
+                    </Link>
+                    <ul class="sub-menu blank">
+                        <li><Link to='/ContactUs' class="link_name">Contacts</Link></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    )
+}
+
+export default Teacher;
+
+
+{/* <Nav>
             <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
               Dashboard
             </Nav.Item>
@@ -49,28 +150,4 @@ const Teacher = () => {
             <Nav.Item href='/ContactUs' icon={<GroupIcon />}>
               Contact
             </Nav.Item>
-            {/*<Nav.Menu placement="rightStart" eventKey="3" title="Advanced" icon={<MagicIcon />}>
-              <Nav.Item eventKey="3-1">Geo</Nav.Item>
-              <Nav.Item eventKey="3-2">Devices</Nav.Item>
-              <Nav.Item eventKey="3-3">Loyalty</Nav.Item>
-              <Nav.Item eventKey="3-4">Visit Depth</Nav.Item>
-  </Nav.Menu>
-            <Nav.Menu
-              placement="rightStart"
-              eventKey="4"
-              title="Settings"
-              icon={<GearCircleIcon />}
-            >
-              <Nav.Item eventKey="4-1">Applications</Nav.Item>
-              <Nav.Item eventKey="4-2">Channels</Nav.Item>
-              <Nav.Item eventKey="4-3">Versions</Nav.Item>
-              <Nav.Menu eventKey="4-5" title="Custom Action">
-                <Nav.Item eventKey="4-5-1">Action Name</Nav.Item>
-                <Nav.Item eventKey="4-5-2">Action Params</Nav.Item>
-              </Nav.Menu>
-            </Nav.Menu>*/}
-          </Nav>
-    )
-}
-
-export default Teacher;
+          </Nav> */}

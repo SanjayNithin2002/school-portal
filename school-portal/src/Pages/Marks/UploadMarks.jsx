@@ -37,9 +37,8 @@ const UploadMarks = () => {
     
     return (
         <div className="Main">
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <h2>Upload Marks</h2>
                         {step === 2 ? <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button> : <></>}

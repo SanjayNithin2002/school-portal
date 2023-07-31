@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link, NavLink } from "react-router-dom";
 import { Dropdown } from 'rsuite';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -11,7 +11,14 @@ import "./Navbar.css"
 
 const Navbar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const logout = () => {
+        localStorage.clear();
+        navigate('/');
+    }
+
     return (
         location.pathname !== "/" &&
         <nav className="top-navbar">
@@ -34,7 +41,7 @@ const Navbar = () => {
                     <li>
                         <Dropdown title="Kumar" placement="bottomEnd">
                             <Dropdown.Item key={1}><NavLink to='/Profile'><FontAwesomeIcon icon={solid.faUser} />&emsp;Profile</NavLink></Dropdown.Item>
-                            <Dropdown.Item key={2}><NavLink to='/Logout'><FontAwesomeIcon icon={solid.faSignOutAlt} />&emsp;Logout</NavLink></Dropdown.Item>
+                            <Dropdown.Item key={2}><a onClick={()=>logout()}><FontAwesomeIcon icon={solid.faSignOutAlt} />&emsp;Logout</a></Dropdown.Item>
                         </Dropdown>
                     </li>
                 </ul>

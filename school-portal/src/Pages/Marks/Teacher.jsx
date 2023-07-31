@@ -99,10 +99,9 @@ const MarksTeacher = () => {
 
   return (
     <>
-      <div className="Main">
-        <SideNavBar />
-        <div className="Home">
-          <div className="container rounded bg-white">
+          <div className="Main">
+            <div className="Home">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
             <div className='d-flex justify-content-between'>
               <h2>Marks View</h2>
               <Link to="/UploadMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Upload Marks</Link>
