@@ -65,13 +65,14 @@ function Teacher() {
                     {
                         teacherList && teacherList.length > 0 ?
                             teacherList.map((item) => (
+                                <div className='table-responsive'>
                                 <Table bordered className='tablestyle1'>
                                     <tbody>
                                         {console.log(item.subject.split("$")[0])}
                                         {
                                             item.subject.split("$")[0] === "Class Teacher" ?
                                                 <tr>
-                                                    <td style={{ backgroundColor: "lightgrey", textAlign: "center", fontWeight: "600", fontSize: "18px" }} colSpan={3}>Class Teacher</td>
+                                                    <td style={{ backgroundColor: "#9bd4e4", textAlign: "center", fontWeight: "600", fontSize: "18px" }} colSpan={3}>Class Teacher</td>
                                                 </tr>
                                                 :
                                                 <></>
@@ -100,10 +101,11 @@ function Teacher() {
                                         </tr>
                                     </tbody>
                                 </Table>
+                                </div>
                             ))
                             :
                             <div className='row' style={{ justifyContent: 'center' }}>
-                                <div className='col-lg-10' style={{ backgroundColor: "lightgray", padding:"5px", fontSize:"18px", justifyContent: "center", display: "flex" }}>
+                                <div className='col-lg-10' style={{ backgroundColor: "rgb(155, 212, 228)", padding:"5px", fontSize:"18px", fontWeight:"bolder", justifyContent: "center", display: "flex" }}>
                                     No Data
                                 </div>
                             </div>

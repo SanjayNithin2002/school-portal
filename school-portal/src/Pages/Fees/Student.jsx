@@ -27,8 +27,8 @@ const Admin = () => {
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header style={{ padding: "initial" }}>Pending/Request Payment</Accordion.Header>
                                 <Accordion.Body>
-                                    <Table bordered striped hover>
-                                        <thead>
+                                    <div className='table-responsive'>
+                                        <Table className='Payment-content-table-1'>
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Title</th>
@@ -36,33 +36,29 @@ const Admin = () => {
                                                 <th>Amount</th>
                                                 <th>Action</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
                                             <tr>
-                                                <td style={{textAlign:"center"}} colSpan={5}>No data</td>
+                                                <td style={{ textAlign: "center" }} colSpan={5}>No data</td>
                                             </tr>
-                                        </tbody>
-                                    </Table>
+                                        </Table>
+                                    </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header style={{ padding: "initial" }}>Payment Receipts</Accordion.Header>
                                 <Accordion.Body>
-                                    <Table bordered striped hover>
-                                        <thead>
+                                    <div className='table-responsive'>
+                                        <Table className='Payment-content-table-2'>
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Title</th>
                                                 <th>Amount</th>
                                                 <th>Action</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
                                             <tr>
-                                                <td style={{textAlign:"center"}} colSpan={4}>No data</td>
+                                                <td style={{ textAlign: "center" }} colSpan={4}>No data</td>
                                             </tr>
-                                        </tbody>
-                                    </Table>
+                                        </Table>
+                                    </div>
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>

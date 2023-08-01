@@ -16794,12 +16794,21 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .sidebar{
   position: fixed;
+  height:100vh;
+  overflow-y:auto;
   top: 0;
   left: 0;
   width: 200px;
   background: #0784b5;
   z-index: 100;
   transition: all 0.5s ease;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar .logo-details{
@@ -16825,8 +16834,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 
 .sidebar .nav-links{
-  height: 100%;
-  padding: 30px 0 150px 0;
+  padding: 30px 0 0px 0;
   overflow: auto;
 }
 

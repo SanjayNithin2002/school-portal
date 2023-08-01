@@ -1,0 +1,20 @@
+.Contact-Container-1,
+.Contact-Container-2{
+    padding-bottom:50px;
+}
+
+.Contact-Container-1 div{
+    padding:10px;
+}
+
+.Contact-Container-2 div{
+    padding:3px;
+}
+
+.Contact-Container-3 div{
+    min-width: 500px;
+}
+
+.Contact-Container-3 {
+    overflow: auto;
+}
