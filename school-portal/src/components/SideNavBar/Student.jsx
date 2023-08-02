@@ -61,7 +61,7 @@ const Student = () => {
                     <li><Link to='/Assessment'>Assessment</Link></li>
                     <li><Link to='/ClassMessage'>Messages</Link></li>
                     <li><Link to='/Exam'>Exams</Link></li>
-                    <li><Link to='/Home'>Marks</Link></li>
+                    <li><Link to='/Marks'>Marks</Link></li>
                 </ul>
             </li>
             <li>
@@ -116,45 +116,3 @@ const Student = () => {
 }
 
 export default Student;
-
-// <Nav style={{width:"100%"}}>
-        //     <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
-        //       Dashboard
-        //     </Nav.Item>
-        //     <Nav.Item href='/Attendance' icon={<Upload />}>
-        //       Attendance
-        //     </Nav.Item>
-        //     <Nav.Item href='/Timetable' icon={<Calendar />}>
-        //       TimeTable
-        //     </Nav.Item>
-        //     <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
-        //     <Nav.Item href='/Assessment'>
-        //       <Link to='/Home' href="/Assessment" style={{ textDecoration: 'none', color: 'black'}}>Assessment</Link> 
-        //     </Nav.Item>
-        //     <Nav.Item href='/ClassMessage'>
-        //     <Link to='/Home' href="/ClassMessage" style={{ textDecoration: 'none', color: 'black'}}>Class Messages</Link>
-        //     </Nav.Item>
-        //     <Nav.Item href='/Exam'>
-        //     <Link to='/Home' href="/Exam" style={{ textDecoration: 'none', color: 'black'}}>Exam Schedule</Link>
-        //     </Nav.Item>
-        //     <Nav.Item href='/Marks'>
-        //     <Link to='/Home' href="/Marks" style={{ textDecoration: 'none', color: 'black'}}>Marks/Grade</Link>
-        //     </Nav.Item>
-        //     </Nav.Menu>
-        //     <Nav.Item href='/Teachers' icon={<User />}>
-        //       Teachers
-        //     </Nav.Item>
-        //     <Nav.Item href='/Bonafide' icon={<Bonafide/>}>
-        //       Bonafide
-        //     </Nav.Item>
-        //     <Nav.Item href='/Payment' icon={<Payment />}>
-        //       Payment
-        //     </Nav.Item>
-        //     <Nav.Item href='/Setting' icon={<Setting />}>
-        //       Settings
-        //     </Nav.Item>
-        //     <Nav.Item href='/ContactUs' icon={<GroupIcon />}>
-        //       Contact
-        //     </Nav.Item>
-        
-        //   </Nav>

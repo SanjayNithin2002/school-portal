@@ -2,12 +2,15 @@
     width:80%;
     margin:10px auto;
     transition: all 0.3s;
-    box-shadow:0 0 2px gray;
+    box-shadow:0 0 2px 	#cadeef;
+    border: 1px solid #cadeef;
+
 }
 
 .tablestyle1:hover{
     transform: scale(1.01);
 }
+
 
 .AddTeacher-Table-List{
     width:100%;

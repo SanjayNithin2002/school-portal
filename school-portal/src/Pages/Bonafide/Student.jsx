@@ -124,6 +124,7 @@ function Student() {
                         <div className='bonafide-content-2'>
                             <br /><br />
                             {certificate !== 'select' &&
+                            <div className='table-responsive'>
                                 <Table className='tablestyle3'>
                                     <thead>
                                         <tr>
@@ -210,6 +211,7 @@ function Student() {
                                         </tr>
                                     </tbody>
                                 </Table>
+                                </div>
                             }
                         </div>
 
@@ -220,7 +222,7 @@ function Student() {
                                     <Accordion.Header style={{ padding: "initial" }}>Requested Bonafide Certificate</Accordion.Header>
                                     <Accordion.Body>
                                         <div className='table-responsive'>
-                                        <Table striped bordered hover>
+                                        <Table className='Bonafide-content-table'>
                                             <thead>
                                                 <tr>
                                                     <th>S.No.</th>

@@ -25,28 +25,33 @@ const Student = () => {
                     <hr style={{ border: "1px solid gray" }} />
                     <div>
                         <div className="row classmessage-container-2">
-                            <div className='col-lg-10 chat-container'>
-                                {
-                                    messages && messages!=null && messages.docs.map((item) => (
-                                        <div className='row chat-container-1'>
-                                            <div className='col-lg-3 Avatar'>
-                                                <span className='Avatar-1' title='Teacher Name'>{item.class.subject} Teacher</span>
-                                            </div>
-                                            <div className='col-lg-8 message-content'>
-                                                <p className='Avatar-2'>{item.message}</p>
-                                                <p className='timer'>a day ago</p>
-                                            </div>
-                                        </div>
-                                    ))
-
-                                }
-                                {
-                                    messages && messages!==null && messages.docs.length===0 &&
-                                    <div>
+                            {
+                                messages && messages !== null && messages.docs.length === 0 &&
+                                <div className='row' style={{ justifyContent: 'center' }}>
+                                    <div className='col-lg-10' style={{ backgroundColor: "rgb(155, 212, 228)", padding: "5px", fontSize: "18px", fontWeight: "bolder", justifyContent: "center", display: "flex" }}>
                                         You have not received any message so far
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
+                            {
+                                messages && messages != null &&
+                                <div className='col-lg-10 chat-container'>
+                                    {
+                                        messages.docs.map((item) => (
+                                            <div className='row chat-container-1'>
+                                                <div className='col-lg-3 Avatar'>
+                                                    <span className='Avatar-1' title='Teacher Name'>{item.class.subject} Teacher</span>
+                                                </div>
+                                                <div className='col-lg-8 message-content'>
+                                                    <p className='Avatar-2'>{item.message}</p>
+                                                    <p className='timer'>a day ago</p>
+                                                </div>
+                                            </div>
+                                        ))
+
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
