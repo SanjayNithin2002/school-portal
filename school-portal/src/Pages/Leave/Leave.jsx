@@ -7,6 +7,7 @@ import * as solid from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../../actions/currentUser";
 import { deleteLeave, getLeave, postLeave } from "../../actions/leave";
+import Table from "react-bootstrap/Table"
 function Leave() {
 
     const dispatch = useDispatch();
@@ -72,25 +73,25 @@ function Leave() {
     });
     return (
         <div className="Main">
-            <SideNavBar />
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <Header>
                         <h2>Leave Request</h2>
                         <hr style={{ border: "1px solid gray" }} />
                     </Header>
                     <br /><br />
-                    <div className="row" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <div className="col-lg-2 col-md-5">
+                    <div className="Leave-Container">
+                    <div className="row Leave-Container-1">
+                        <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>Reason</h3>
                         </div>
-                        <div className="col-lg-3 col-md-7">
-                            <input value={reason} onChange={(e) => setReason(e.target.value)} style={{ width: "90%" }} type="text" name="reason" />
+                        <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
+                            <input value={reason} onChange={(e) => setReason(e.target.value)} type="text" name="reason" />
                         </div>
-                        <div className="col-lg-2 col-md-5">
+                        <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>Type</h3>
                         </div>
-                        <div className="col-lg-3 col-md-7">
+                        <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
                             <select value={type} onChange={(e) => setType(e.target.value)}>
                                 <option value='' disabled>Select Type</option>
                                 <option value="casualLeave">CL</option>
@@ -105,22 +106,22 @@ function Leave() {
                         </div>
                     </div>
                     <br />
-                    <div className="row" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <div className="col-lg-2 col-md-5">
+                    <div className="row Leave-Container-1">
+                        <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>Start Date</h3>
                         </div>
-                        <div className="col-lg-3 col-md-7">
+                        <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
                             <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" name="start" />
                         </div>
-                        <div className="col-lg-2 col-md-5">
+                        <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>End Date</h3>
                         </div>
-                        <div className="col-lg-3 col-md-7">
+                        <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
                             <input value={endDate} onChange={(e) => setEndDate(e.target.value)} type="date" name="end" />
                         </div>
                     </div>
                     <br />
-                    <div className="row" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div className="row Leave-Container-1">
                         <div className="col-lg-6"></div>
                         <div style={{ textAlign: "center" }} className="col-lg-1">
                             <button onClick={() => handleSubmit()} className="btn btn-primary">Apply</button>
@@ -132,7 +133,7 @@ function Leave() {
                             <h2>History</h2>
                             <br />
                             <div className="table-responsive">
-                                <table class="table table-bordered tablestyle" cellspacing="0">
+                                <Table className='Leave-content-table'>
                                     <tr>
                                         <th>Sno</th>
                                         <th>Applied Date</th>
@@ -163,8 +164,9 @@ function Leave() {
                                             </tr>
                                     }
 
-                                </table>
+                                </Table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

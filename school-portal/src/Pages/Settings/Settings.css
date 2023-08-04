@@ -1,0 +1,13 @@
+.Setting-Container-1{
+    min-width: 350px;
+}
+
+.Setting-Container{
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;  
+}
+
+.Setting-Container::-webkit-scrollbar{
+  display: none;
+}

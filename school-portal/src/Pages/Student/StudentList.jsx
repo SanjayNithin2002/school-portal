@@ -49,56 +49,59 @@ function StudentList() {
     return (
         <div className="Main">
             <div className="Home">
-                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Student List</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="">
                         <div className="row studentlist-container">
-                            <div className="col-lg-2">
-                                <h4>Select Standard : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select
-                                    className="selectPicker3"
-                                    value={standard}
-                                    onChange={(e) => handleClass("standard", e.target.value)}
-                                >
-                                    <option value="" disabled>
-                                        Select Standard
-                                    </option>
-                                    {
-                                        class1 &&
-                                        class1.docs.map((item) => (
-                                            standardList.filter((class1) => class1.value === item.standard).map((class1) => (
-                                                <option value={class1.value}>{class1.label}</option>
+                            <div className='col-lg-6 row' style={{ justifyContent: "center" }}>
+                                <div className="col-lg-7 col-md-5 col-sm-6 studentlist-filter">
+                                    <h4>Select Standard : </h4>
+                                </div>
+                                <div className="col-lg-5 col-md-7 col-sm-6">
+                                    <select
+                                        className="selectPicker3"
+                                        value={standard}
+                                        onChange={(e) => handleClass("standard", e.target.value)}
+                                    >
+                                        <option value="" disabled>
+                                            Select Standard
+                                        </option>
+                                        {
+                                            class1 &&
+                                            class1.docs.map((item) => (
+                                                standardList.filter((class1) => class1.value === item.standard).map((class1) => (
+                                                    <option value={class1.value}>{class1.label}</option>
+                                                ))
                                             ))
-                                        ))
-                                    }
-                                </select>
+                                        }
+                                    </select>
+                                </div>
                             </div>
-                            <div className="col-lg-2">
-                                <h4>Select Section : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select className="selectPicker3" value={section} onChange={(e) => { handleClass("section", e.target.value); }} >
-                                    <option value="" disabled>
-                                        Select Section
-                                    </option>
-                                    {
-                                        class1 &&
-                                        class1.docs.filter((item) => parseInt(standard) === item.standard).map((item) => (
-                                            <option value={item.section}>{item.section}</option>
-                                        ))
-                                    }
-                                </select>
+                            <div className='col-lg-6 row' style={{ justifyContent: "center" }}>
+                                <div className="col-lg-7 col-md-5 col-sm-6 studentlist-filter">
+                                    <h4>Select Section : </h4>
+                                </div>
+                                <div className="col-lg-5 col-md-7 col-sm-6">
+                                    <select className="selectPicker3" value={section} onChange={(e) => { handleClass("section", e.target.value); }} >
+                                        <option value="" disabled>
+                                            Select Section
+                                        </option>
+                                        {
+                                            class1 &&
+                                            class1.docs.filter((item) => parseInt(standard) === item.standard).map((item) => (
+                                                <option value={item.section}>{item.section}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <br />
                         <br />
-                        <div className="row studentlist-container">
-                            <div className="col-lg-8">
-                                <Table striped className="tablestyle4">
-                                    <thead>
+                        <div className="row" style={{justifyContent:"center"}}>
+                            <div className="col-lg-12 table-responsive">
+                                <Table className='StudentList-content-table'>
                                         <tr>
                                             <th>Roll No</th>
                                             <th>First Name</th>
@@ -106,8 +109,6 @@ function StudentList() {
                                             <th>Gender</th>
                                             <th>Action</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
                                         {standard !== "" && section !== "" ? (
                                             students && students.map((item, index) => (
                                                 <tr key={item}>
@@ -127,7 +128,6 @@ function StudentList() {
                                                 </td>
                                             </tr>
                                         )}
-                                    </tbody>
                                 </Table>
                             </div>
                         </div>

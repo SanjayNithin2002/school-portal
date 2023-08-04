@@ -8,7 +8,7 @@ import { getAllClass } from '../../actions/class';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTimeTable } from '../../actions/timetable';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
-import { createExam } from '../../actions/exam';
+import { createExam, getExam } from '../../actions/exam';
 import { useNavigate } from 'react-router-dom';
 
 const AddExam = () => {
@@ -34,6 +34,7 @@ const AddExam = () => {
 
     const class1 = useSelector((state)=>state.allClassReducer);
     const timetable = useSelector((state)=>state.timeTableReducer);
+    const exams = useSelector((state)=>state.examReducer);
     
     if(standard && edit1){
         dispatch(getTimeTable(standard));
@@ -43,7 +44,7 @@ const AddExam = () => {
 
     if(class1 && !subjectList && standard){
         const updatedList = []
-        Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard).map(obj => obj.subject))).map((item,index)=>{
+        Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard && item.subject!=="Class Teacher").map(obj => obj.subject))).map((item,index)=>{
             let subjects = {
                 Sno:index+1,
                 subject:item,
@@ -86,6 +87,17 @@ const AddExam = () => {
 
     const handleSubmit = () => {
         let request = [];
+
+        let max = 0;
+        if(exams!==null){
+            Array.from(new Set(exams.docs.filter((item)=>item.class.standard===parseInt(standard) && item.examName.name===title).map((item)=>item.examName.sequence))).map((seq)=>{
+                if(max<seq){
+                    max=seq;
+                }
+                return 0;
+            })
+        }
+        console.log(max);
         subjectList.map((item)=>{
 
             let date1 = new Date(item.date);
@@ -100,7 +112,10 @@ const AddExam = () => {
 
             class1.docs.filter((item1)=>item1.standard===parseInt(standard) && item.subject===item1.subject).map((item1)=>{
                 let list = {
-                    examName:title,
+                    examName:{
+                        name:title,
+                        sequence:max+1
+                    },
                     maxMarks:maxMark,
                     date:item.date,
                     startTime:item.time,
@@ -112,20 +127,28 @@ const AddExam = () => {
             })
             return true;            
         })
+        console.log(request);
         dispatch(createExam(request,navigate));
     }
 
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
     };
-    const onNext = () => onChange(step + 1);
+    const onNext = () =>{
+        if(step==1){
+            dispatch(getExam(standard));
+        }
+        onChange(step + 1);
+    } 
     const onPrevious = () => onChange(step - 1);
+
+    console.log(subjectList)
+    console.log(timetable)
     
     return (
-        <div className='Main'>
-            <SideNavBar />
+        <div className="Main">
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                         <h2>Add Examination Schedule</h2>
                         { step===2 ? <button className='btn btn-primary' onClick={()=>handleSubmit()}>Submit</button> : <></> }
@@ -214,7 +237,7 @@ const AddExam = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                timetable.length>0 && subjectList && subjectList.map((item,index)=>(
+                                                timetable.docs.length>0 && subjectList && subjectList.map((item,index)=>(
                                                     <tr>
                                                         <td>{item.Sno}</td>
                                                         <td>{item.subject}</td>

@@ -2,6 +2,13 @@ import React from "react";
 import {Link } from "react-router-dom"
 
 const Teacher = () => {
+
+    let openList = document.querySelectorAll(".active");
+    for (var i = 0; i < openList.length; i++) {
+        openList[i].classList.toggle("active");
+        openList[i].parentElement.classList.toggle("showMenu");
+    }
+
     function subMenu(target1) {
         let subList = document.querySelectorAll(".iocn-link");
         let openList = document.querySelectorAll(".active");
@@ -32,10 +39,10 @@ const Teacher = () => {
                 </li>
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(0)}>
-                        <Link>
+                        <span>
                             <i class='bx bx-collection'></i>
                             <span class="link_name">Attendance Info</span>
-                        </Link>
+                        </span>
                         <i class='bx bxs-chevron-down arrow'></i>
                     </div>
                     <ul class="sub-menu">
@@ -55,10 +62,10 @@ const Teacher = () => {
                 </li>
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(1)}>
-                        <Link>
+                        <span>
                             <i class='bx bx-collection'></i>
                             <span class="link_name">HR</span>
-                        </Link>
+                        </span>
                         <i class='bx bxs-chevron-down arrow'></i>
                     </div>
                     <ul class="sub-menu">
@@ -69,10 +76,10 @@ const Teacher = () => {
                 </li>
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(2)}>
-                        <Link>
+                        <span>
                             <i class='bx bx-collection'></i>
                             <span class="link_name">Class Info</span>
-                        </Link>
+                        </span>
                         <i class='bx bxs-chevron-down arrow'></i>
                     </div>
                     <ul class="sub-menu">

@@ -13,3 +13,70 @@
     border-color:white;
     font-size:20px;
 }
+
+.Leave-Container-1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Leave-Container input[type="text"],
+.Leave-Container select,
+.Leave-Container input[type="date"]{
+    width:80%;
+    padding:5px;
+    font-size: 15px;
+    border-radius: 3px;
+    border:1.5px solid black;
+}
+
+.Leave-Container select{
+    width: 70%;
+}
+
+
+.Leave-content-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 200px;
+    font-size: 17px;
+  }
+  .Leave-content-table tr th,
+  .Leave-content-table tr td {
+    border-bottom: 1px solid #cadeef;
+    text-align: left;
+    padding: 5px;
+  }
+  .Leave-content-table tr th:nth-child(8n),
+  .Leave-content-table tr td:nth-child(8n) {
+    border-right: 1px solid #cadeef;
+  }
+  .Leave-content-table tr th:first-child,
+  .Leave-content-table tr td:first-child {
+    border-left: 1px solid #cadeef;
+  }
+  .Leave-content-table tr th {
+    background:	#cadeef;
+    border-top: 1px solid #cadeef;
+  }
+  .Leave-content-table tr td {
+      background: rgb(202 222 239 / 0.3);
+    }
+  
+  .Leave-content-table tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+  
+  .Leave-content-table tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
+  
+  .Leave-content-table tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+  
+  .Leave-content-table tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+  }
+  

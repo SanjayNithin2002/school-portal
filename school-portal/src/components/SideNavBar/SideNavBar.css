@@ -16788,27 +16788,18 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   display: flex;
 }
 
-
 .iocn-link.active{
   background-image: linear-gradient(to bottom right,#39ace7,#9bd4e4);
 }
 .sidebar{
   position: fixed;
-  height:100vh;
-  overflow-y:auto;
   top: 0;
   left: 0;
   width: 200px;
+  height:100vh;
   background: #0784b5;
   z-index: 100;
   transition: all 0.5s ease;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-
-.sidebar::-webkit-scrollbar {
-  display: none;
 }
 
 .sidebar .logo-details{
@@ -16834,8 +16825,11 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 
 .sidebar .nav-links{
-  padding: 30px 0 0px 0;
+  height: 100%;
+  padding: 30px 0 150px 0;
   overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;  
 }
 
 .sidebar .nav-links::-webkit-scrollbar{
@@ -16869,12 +16863,15 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   transform: rotate(-180deg);
 }
 
-.sidebar .nav-links li a{
+.sidebar .nav-links li a,
+.sidebar .nav-links li span{
   display: flex;
+  cursor: pointer;
   align-items: center;
   text-decoration: none;
 }
-.sidebar .nav-links li a .link_name{
+.sidebar .nav-links li a .link_name,
+.sidebar .nav-links li span .link_name{
   font-size: 18px;
   font-weight: 400;
   color: #fff;
@@ -16959,6 +16956,15 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
     left: 78px;
     width: calc(100% - 78px);
   }
+
+  .sidebar .logo-details{
+    margin-left: 33px;
+  }
+
+  .sidebar .logo-details i{
+    font-size: 40px;
+  }
+
   .sidebar .nav-links li .sub-menu .link_name{
     font-size: 18px;
     opacity: 1;
@@ -16995,8 +17001,10 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   .sidebar .nav-links i.arrow{
     display: none;
   }
-  .sidebar .nav-links li a .link_name{
+  .sidebar .nav-links li a .link_name, 
+  .sidebar .nav-links li span .link_name{
     opacity: 0;
+    display: none;
     pointer-events: none;
   }
 

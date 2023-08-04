@@ -7,11 +7,14 @@ import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import {useDispatch,useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
+
+import "./Settings.css";
 import { changePassword, changeUserID, setCurrentUser } from '../../actions/currentUser';
 const styles = {
     width: 300,
     marginBottom: 10
 };
+
 
 function Settings() {
 
@@ -72,7 +75,8 @@ function Settings() {
                     <Accordion defaultActiveKey="0">
                         <Accordion.Item eventKey="0">
                             <Accordion.Header style={{ padding: "initial" }}>Change User ID</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className='Setting-Container'> 
+                                <div className='Setting-Container-1'>
                                 <div className='row'>
                                     <div className='col-lg-2'><h6>Current User ID : </h6></div>
                                     <div className='col-lg-2'>
@@ -111,11 +115,13 @@ function Settings() {
                                         <button className='btn btn-primary' onClick={handleSubmit1}>Change</button>
                                     </div>
                                 </div>
+                                </div>
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
                             <Accordion.Header>Change Password</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className='Setting-Container'>
+                            <div className='Setting-Container-1'>
                                 <div className='row'>
                                     <div className='col-lg-2'><h6>Current Password : </h6></div>
                                     <div className='col-lg-2'>
@@ -153,6 +159,7 @@ function Settings() {
                                     <div className='col-lg-2'>
                                         <button className='btn btn-primary' onClick={handleSubmit2}>Change</button>
                                     </div>
+                                </div>
                                 </div>
                             </Accordion.Body>
                         </Accordion.Item>

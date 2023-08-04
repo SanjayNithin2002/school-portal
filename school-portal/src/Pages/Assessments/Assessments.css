@@ -17,6 +17,23 @@
     }
   }
 
+.Assessment-Container{
+    padding:10px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}  
+
+.Assessment-Container::-webkit-scrollbar {
+    display: none;
+  }
+
+.btnmove .btn-group .btn-primary{
+    border-top-left-radius: inherit; 
+    border-bottom-left-radius: inherit;
+    height: fit-content;
+    width: fit-content;
+}
 
 .Assessment-tab{
     display:flex;

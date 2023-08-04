@@ -109,30 +109,27 @@ const AddStudent = (props) => {
                     
                     <br/>
                     <div className="row poststudent-container">
-                        <div className="col-lg-3" style={{ margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
-                            <h5>Default Value : </h5>
+                        <div className="col-lg-6 col-md-8 col-sm-10 poststudent-container-1 ">
+                            <h5>Default Value<span style={{color:"white"}}>_</span>: </h5>&ensp;
                             <Toggle checked={default1} onChange={()=>{setDefault1(!default1);setAttendance(null);}} size="lg" checkedChildren="Present" unCheckedChildren="Absent" disabled={attendances && attendances.docs.length>0 ? true : false} />
                         </div>
                     </div>
                     <br />
                     <div className="row poststudent-container">
-                        <div className="col-lg-5" style={{ fontSize:"16px",margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <span style={{fontWeight:"600"}}>Attendance Date</span>&nbsp;: {getDate(props.day)} {getTimings(props.time)}
+                        <div className="col-lg-6 col-md-8 col-sm-10 poststudent-container-2">
+                            <span style={{fontWeight:"600"}}>Attendance Date : </span>&ensp; {getDate(props.day)} {getTimings(props.time)}
                         </div>
                     </div>
                     <br/>
                     <div className="row" style={{justifyContent:"center"}}>
                         <div className="col-lg-10 table-responsive">
-                            <Table bordered striped >
-                                <thead>
+                            <Table className="PostStudent-content-table">
                                     <tr>
                                         <th>S.No</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Attendance</th>
                                     </tr>
-                                </thead>
-                                <tbody>
                                     {
                                         props.students && props.students.docs.map((student,index)=>(
                                         <tr>
@@ -153,8 +150,6 @@ const AddStudent = (props) => {
                                         </tr>
                                         ))
                                     }
-                                    
-                                </tbody>
                             </Table>
                         </div>
                     </div>

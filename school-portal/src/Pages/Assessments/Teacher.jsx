@@ -112,9 +112,9 @@ function Teacher() {
                                 </div>
                             </div>
 
-
                             <hr style={{ border: "1px solid gray" }} />
-                            <Accordion defaultActiveKey="0">
+                            <div className='Assessment-Container'>
+                            <Accordion defaultActiveKey="0" style={{minWidth:"400px"}}>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header style={{ padding: "initial" }}>Upcoming/Ongoing Assessments</Accordion.Header>
                                     <Accordion.Body>
@@ -176,6 +176,7 @@ function Teacher() {
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
+                            </div>
                         </div>
                     </div>
                     :

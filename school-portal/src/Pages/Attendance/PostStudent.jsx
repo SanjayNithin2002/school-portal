@@ -22,9 +22,9 @@ const PostStudent = () => {
     const [classID, setClassID] = useState(null)
     const [split, setSplit] = useState(null);
     const [editDisplay, setEditDisplay] = useState(false);
-    const [day,setDay] = useState(null);
-    const [date,setDate] = useState(null);
-    const [time,setTime] = useState(null);
+    const [day, setDay] = useState(null);
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
@@ -38,7 +38,7 @@ const PostStudent = () => {
     let timetable = useSelector((state) => state.timeTableReducer)
     let students = useSelector((state) => state.allStudentsReducer)
 
-    if (!split && edit1 && timetable !== null && timetable.docs.length>0) {
+    if (!split && edit1 && timetable !== null && timetable.docs.length > 0) {
         let time = [];
         time.push(timetable.docs[0].startTime);
         console.log(timetable.docs[0].break);
@@ -62,12 +62,12 @@ const PostStudent = () => {
         classes.docs.map((item) => {
             if (item.standard === parseInt(standard)) {
                 if (item.section === section) {
-                    if(item.subject !== "Class Teacher"){
+                    if (item.subject !== "Class Teacher") {
                         console.log(standard);
                         setClassID(item._id)
-                        dispatch({type:"FETCH_ALL_TIMETABLE",payload:null});
-                        dispatch({type:"STUDENT_FETCH_ATTENDANCE",payload:null});
-                        dispatch({type:'FETCH_CLASS_STUDENTS',payload:null});
+                        dispatch({ type: "FETCH_ALL_TIMETABLE", payload: null });
+                        dispatch({ type: "STUDENT_FETCH_ATTENDANCE", payload: null });
+                        dispatch({ type: 'FETCH_CLASS_STUDENTS', payload: null });
                         dispatch(getTimeTable(standard))
                         setSplit(null);
                     }
@@ -79,7 +79,7 @@ const PostStudent = () => {
         setEdit1(true);
     }
 
-    const close = () =>{
+    const close = () => {
         setEditDisplay(false);
     }
 
@@ -93,18 +93,18 @@ const PostStudent = () => {
         const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
         return formattedDate
     }
-    
-    const handleDelete = async(date) => {
-        const { data } = await api.getStudentAttendances({standard,section,date});
+
+    const handleDelete = async (date) => {
+        const { data } = await api.getStudentAttendances({ standard, section, date });
         let request = [];
-        if(data){
-        data.docs.map((item)=>{
-            request.push(item._id);
-            return true;
-        })
-        dispatch(deleteStudentAttendance(request));
+        if (data) {
+            data.docs.map((item) => {
+                request.push(item._id);
+                return true;
+            })
+            dispatch(deleteStudentAttendance(request));
         }
-        else{
+        else {
             console.log("error");
         }
     }
@@ -122,8 +122,8 @@ const PostStudent = () => {
         var currentDate = new Date();
         var desiredDay = days.indexOf(day1);
         var daysAgo = 0;
-        if(currentDate.getDay()>desiredDay)
-            daysAgo = -1*(currentDate.getDay()-desiredDay);
+        if (currentDate.getDay() > desiredDay)
+            daysAgo = -1 * (currentDate.getDay() - desiredDay);
         else
             daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
@@ -134,116 +134,119 @@ const PostStudent = () => {
         var currentDate = new Date();
         var desiredDay = days.indexOf(day1);
         var daysAgo = 0;
-        if(currentDate.getDay()>desiredDay)
-            daysAgo = -1*(currentDate.getDay()-desiredDay);
+        if (currentDate.getDay() > desiredDay)
+            daysAgo = -1 * (currentDate.getDay() - desiredDay);
         else
             daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
-        let date = desiredDate.getDate()<10 ? "0"+desiredDate.getDate() : desiredDate.getDate();
-        let month = desiredDate.getMonth()<10 ? "0"+(desiredDate.getMonth()+1) : (desiredDate.getMonth()+1);
-        return month+"-"+date+"-"+desiredDate.getFullYear();
+        let date = desiredDate.getDate() < 10 ? "0" + desiredDate.getDate() : desiredDate.getDate();
+        let month = desiredDate.getMonth() < 10 ? "0" + (desiredDate.getMonth() + 1) : (desiredDate.getMonth() + 1);
+        return month + "-" + date + "-" + desiredDate.getFullYear();
     }
-        
+
     return (
         <div className="Main">
             {
-            editDisplay===false ? 
-            <div className="Home">
-                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
-                    <h2>Students Attendance</h2>
-                    <hr style={{ border: "1px solid gray" }} />
-                    <div className=""><div className="row poststudent-container">
-                        <div className="col-lg-2">
-                            <h4>Select Standard : </h4>
-                        </div>
-                        <div className="col-lg-3">
-                            <select
-                                className="selectPicker3"
-                                value={standard}
-                                onChange={(e) => {setStandard(e.target.value);setEdit(true);}}
-                            >
-                                <option value="" disabled>
-                                    Select Standard
-                                </option>
-                                {
-                                    classes &&
-                                    Array.from(new Set(classes.docs.map((element)=>element.standard))).map((item) => (
-                                        standardList.filter((class1) => class1.value === item).map((class1) => (
-                                            <option value={class1.value}>{class1.label}</option>
-                                        ))
-                                    ))
-                                }
-                            </select>
-                        </div>
-                        <div className="col-lg-2">
-                            <h4>Select Section : </h4>
-                        </div>
-                        <div className="col-lg-3">
-                            <select
-                                className="selectPicker3"
-                                value={section}
-                                onChange={(e) => {setSection(e.target.value);setEdit(true);}}
-                            >
-                                <option value="" disabled>
-                                    Select Section
-                                </option>
-                                {
-                                    classes &&
-                                    Array.from(new Set(classes.docs.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
-                                        <option value={item}>{item}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                        <br />
-                        <br />
-                        {
-                            standard !== '' && section !== '' && classes &&
-                            <div className="row poststudent-container">
-                                <div className="col-lg-8">
-                                    <Table striped bordered className="tablestyle2">
-                                        <thead>
-                                            <tr>
-                                                <th>S.No</th>
-                                                <th>Date</th>
-                                                <th>Slot</th>
-                                                <th>Strength</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                classes.docs.filter((item) => item._id === classID).map((item) => (
-                                                    students && split && item.timings.filter((slot) => split.includes(slot.startTime)).map((slot, index) => (
-                                                        <tr>
-                                                            <td>{index + 1}</td>
-                                                            <td>{getDate(slot.day)}<br />{slot.day}</td>
-                                                            <td>{getTimings(slot.startTime)}</td>
-                                                            <td>{students.docs.length}</td>
-                                                            <td>
-                                                                <div style={{ display: "contents" }} onClick={() => {setEditDisplay(true);setDate(getDates(slot.day));setDay(slot.day);setTime(getTimings(slot.startTime)==="Morning"? "FN" : "AN" )}}>
-                                                                    <FontAwesomeIcon icon={Regular.faPenToSquare} />
-                                                                </div>
-                                                                &nbsp;/&nbsp;
-                                                                <div style={{ display: "contents" }} onClick={() => handleDelete(getDates(slot.day))}>
-                                                                    <FontAwesomeIcon icon={Solid.faTrashAlt} />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                editDisplay === false ?
+                    <div className="Home">
+                        <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
+                            <h2>Students Attendance</h2>
+                            <hr style={{ border: "1px solid gray" }} />
+                            <div className="">
+                                <div className="row poststudent-container">
+                                    <div className='col-lg-6 row' style={{ justifyContent: "center" }}>
+                                        <div className="col-lg-7 col-md-5 col-sm-6 studentlist-filter">
+                                            <h4>Select Standard : </h4>
+                                        </div>
+                                        <div className="col-lg-5 col-md-5 col-sm-6">
+                                            <select
+                                                className="selectPicker3"
+                                                value={standard}
+                                                onChange={(e) => { setStandard(e.target.value); setEdit(true); }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Standard
+                                                </option>
+                                                {
+                                                    classes &&
+                                                    Array.from(new Set(classes.docs.map((element) => element.standard))).map((item) => (
+                                                        standardList.filter((class1) => class1.value === item).map((class1) => (
+                                                            <option value={class1.value}>{class1.label}</option>
+                                                        ))
                                                     ))
-                                                ))
-                                            }
-                                        </tbody>
-                                    </Table>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className='col-lg-6 row' style={{ justifyContent: "center" }}>
+                                        <div className="col-lg-7 col-md-5 col-sm-6 studentlist-filter">
+                                            <h4>Select Section : </h4>
+                                        </div>
+                                        <div className="col-lg-5 col-md-5 col-sm-6">
+                                            <select
+                                                className="selectPicker3"
+                                                value={section}
+                                                onChange={(e) => { setSection(e.target.value); setEdit(true); }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Section
+                                                </option>
+                                                {
+                                                    classes &&
+                                                    Array.from(new Set(classes.docs.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
+                                                        <option value={item}>{item}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                <br />
+                                <br />
+                                    <div className="row" style={{justifyContent:"center"}}>
+                                        <div className="col-lg-8">
+                                            <Table className="StudentList-content-table">
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>Date</th>
+                                                        <th>Slot</th>
+                                                        <th>Strength</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    {
+                                                        standard !== '' && section !== '' && classes ?
+                                                        classes.docs.filter((item) => item._id === classID).map((item) => (
+                                                            students && split && item.timings.filter((slot) => split.includes(slot.startTime)).map((slot, index) => (
+                                                                <tr>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{getDate(slot.day)}<br />{slot.day}</td>
+                                                                    <td>{getTimings(slot.startTime)}</td>
+                                                                    <td>{students.docs.length}</td>
+                                                                    <td>
+                                                                        <div style={{ display: "contents" }} onClick={() => { setEditDisplay(true); setDate(getDates(slot.day)); setDay(slot.day); setTime(getTimings(slot.startTime) === "Morning" ? "FN" : "AN") }}>
+                                                                            <FontAwesomeIcon icon={Regular.faPenToSquare} />
+                                                                        </div>
+                                                                        &nbsp;/&nbsp;
+                                                                        <div style={{ display: "contents" }} onClick={() => handleDelete(getDates(slot.day))}>
+                                                                            <FontAwesomeIcon icon={Solid.faTrashAlt} />
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        ))
+                                                        :
+                                                        <tr>
+                                                            <td style={{textAlign:"center"}} colSpan={5}>No Data</td>
+                                                        </tr>
+                                                    }
+                                            </Table>
+                                        </div>
+                                    </div>
                             </div>
-                        }
+                        </div>
                     </div>
-                </div>
-            </div>
-            :
-            <AddStudent standard={standard} section={section} students={students} close={()=>close()} day={day} date={date} time={time} split={split}/>
+                    :
+                    <AddStudent standard={standard} section={section} students={students} close={() => close()} day={day} date={date} time={time} split={split} />
             }
         </div>
     );

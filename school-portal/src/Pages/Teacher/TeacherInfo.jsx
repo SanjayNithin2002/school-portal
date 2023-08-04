@@ -39,27 +39,26 @@ function TeacherInfo() {
                 <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <h2>Staff Info</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className='studentinfo-container'>
+                    <div className='StaffInfo-container'>
                         <div className='row' style={{ alignItems: "center" }}>
-                            <div className='col-lg-3'><h5>Search by Staff Name/ID&ensp;:&ensp;</h5></div>
-                            <div className='col-lg-9'><input value={search} onChange={(e) => setSearch(e.target.value)} type="search" className='selectPicker2' /></div>
+                            <div className='col-lg-3 col-md-5 col-sm-6'><h5>Search by Staff Name/ID&ensp;:&ensp;</h5></div>
+                            <div className='col-lg-9 col-md-7 col-sm-6'><input value={search} onChange={(e) => setSearch(e.target.value)} type="search" className='selectPicker2' /></div>
                         </div>
                         <br /><br />
                         <div className='row' style={{ justifyContent: "center" }}>
-                            <div className='col-lg-10'>
-                                <Table striped className='tablestyle4'>
-                                    <thead>
+                            <div className='col-lg-10 table-responsive'>
+                                <Table className='TeacherInfo-content-table'>
+                                    <tr>
                                         <th>S.No</th>
                                         <th>Name</th>
                                         <th>Staff ID</th>
                                         <th>Designation</th>
                                         <th>Action</th>
-                                    </thead>
-                                    <tbody>
+                                    </tr>
                                         {
                                             search === '' ?
                                                 <tr>
-                                                    <td align='center' colSpan={6}>
+                                                    <td style={{textAlign:"center"}} colSpan={6}>
                                                         No Data
                                                     </td>
                                                 </tr> : <>{
@@ -75,15 +74,13 @@ function TeacherInfo() {
                                                         ))
                                                         :
                                                         <tr>
-                                                            <td align='center' colSpan={6}>
+                                                            <td style={{textAlign:"center"}} colSpan={6}>
                                                                 No Data
                                                             </td>
                                                         </tr>
                                                 }
                                                 </>
                                         }
-
-                                    </tbody>
                                 </Table>
                             </div>
                         </div>

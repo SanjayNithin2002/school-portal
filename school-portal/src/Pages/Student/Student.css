@@ -1,11 +1,15 @@
 .selectPicker2{
-    width: 50%;
+    width: 90%;
     padding: 5px;
     border-radius: 5px;
 }
 
+.selectPicker2:focus{
+    outline:none;
+}
+
 .selectPicker3{
-    width: 75%;
+    width: 100%;
     padding: 5px;
     border-radius: 5px;
 }
@@ -43,30 +47,115 @@
 
 .studentlist-container{
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
-.tablestyle4{
-    width:100%;
-    margin:10px auto;
-    border-collapse: collapse;
-    border: 1px solid black;
+.studentlist-filter{
+  text-align: right;
 }
 
-.tablestyle4 th,.tablestyle4 td{
-    border: 1px solid black;
-    padding:10px;
-}
 
-.tablestyle4 th{
-    background-color: gray;
-    color:white;
-    font-weight: 800;
-    font-size:19px;
-}
+.StudentList-content-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 400px;
+    font-size: 17px;
+  }
+  .StudentList-content-table tr th,
+  .StudentList-content-table tr td {
+    border-bottom: 1px solid #cadeef;
+    text-align: left;
+    padding: 5px;
+  }
+  .StudentList-content-table tr th:nth-child(5n),
+  .StudentList-content-table tr td:nth-child(5n) {
+    border-right: 1px solid #cadeef;
+  }
+  .StudentList-content-table tr th:first-child,
+  .StudentList-content-table tr td:first-child {
+    border-left: 1px solid #cadeef;
+  }
+  .StudentList-content-table tr th {
+    background:	#cadeef;
+    border-top: 1px solid #cadeef;
+  }
+  .StudentList-content-table tr td {
+      background: rgb(202 222 239 / 0.3);
+    }
+  
+  .StudentList-content-table tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+  
+  .StudentList-content-table tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
+  
+  .StudentList-content-table tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+  
+  .StudentList-content-table tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+  }
 
-.tablestyle4 td{
-    font-weight: 800;
-    font-size:16px;
-}
+  .StudentInfo-content-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 400px;
+    font-size: 17px;
+  }
+  .StudentInfo-content-table tr th,
+  .StudentInfo-content-table tr td {
+    border-bottom: 1px solid #cadeef;
+    text-align: left;
+    padding: 5px;
+  }
+  .StudentInfo-content-table tr th:nth-child(6n),
+  .StudentInfo-content-table tr td:nth-child(6n) {
+    border-right: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr th:first-child,
+  .StudentInfo-content-table tr td:first-child {
+    border-left: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr th {
+    background:	#cadeef;
+    border-top: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr td {
+      background: rgb(202 222 239 / 0.3);
+    }
+  
+  .StudentInfo-content-table tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+  }
+  
+
+  @media (min-width:1000px){
+    .selectPicker2{
+        width:50%;
+    }   
+  }
+
+  
+  @media (max-width:575px){
+    .studentlist-filter{
+      text-align: left;
+    }
+  }

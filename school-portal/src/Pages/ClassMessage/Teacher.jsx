@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { getClass } from '../../actions/class';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import moment from "moment";
 
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
@@ -21,6 +22,7 @@ const Teacher = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [classID, setClassID] = useState(null)
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [message, setMessage] = useState("");
@@ -41,19 +43,28 @@ const Teacher = () => {
 
     const class1 = useSelector((state) => state.allClassReducer)
     const messages = useSelector((state) => state.classmessageReducer)
-    const [classes, setClasses] = useState(null)
 
     console.log(class1);
-    console.log(classes)
+    console.log(classID)
     console.log(messages)
 
-    if (class1 && class1.docs && classes === null) {
-        setClasses(class1.docs)
+    if (standard && section && classID === null) {
+        if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length > 1) {
+            class1.docs.map((item) => {
+                if (item.standard === parseInt(standard) && item.section === section && item.subject !== "Class Teacher") {
+                    setClassID(item._id);
+                }
+                return true;
+            })
+        }
+        else if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length === 1) {
+            setClassID(class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]._id);
+        }
     }
 
     const handleSubmit = () => {
         let ClassID = null;
-        classes.map((item) => {
+        class1.docs.map((item) => {
             if (item.standard === parseInt(standard) && item.section === section) {
                 ClassID = item._id;
             }
@@ -66,71 +77,68 @@ const Teacher = () => {
         dispatch(deleteClassMessage(deleteID));
         setShowDialog(false);
     };
-    if(classes)
-    console.log(Array.from(new Set(classes.map((obj)=>obj.standard))));
 
     return (
         <div className="Main">
             <div className="Home">
-                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Class Message</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div>
                         <div className="row classmessage-container-1">
-                            <div className="col-lg-2">
-                                <h4>Select Standard : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select className="selectPicker3" value={standard} onChange={(e) => setStandard(e.target.value)}>
-                                    <option value="" disabled>
-                                        Select Standard
-                                    </option>
-                                    {
-                                        classes !== null &&
-                                        Array.from(new Set(classes.map((obj)=>obj.standard))).map((item) => (
-                                            standardList.filter((class1) => class1.value === item).map((class1) => (
-                                                <option value={class1.value}>{class1.label}</option>
+                            <div className='col-lg-6 row classmessage-1'>
+                                <div className="col-lg-7 col-md-5 col-sm-6">
+                                    <h4>Select Standard : </h4>
+                                </div>
+                                <div className="col-lg-5 col-md-6 col-sm-6">
+                                    <select className="selectPicker3" value={standard} onChange={(e) => { setStandard(e.target.value); setClassID(null); }}>
+                                        <option value="" disabled>
+                                            Select Standard
+                                        </option>
+                                        {
+                                            class1 !== null &&
+                                            Array.from(new Set(class1.docs.map((obj) => obj.standard))).map((item) => (
+                                                standardList.filter((class1) => class1.value === item).map((class1) => (
+                                                    <option value={class1.value}>{class1.label}</option>
+                                                ))
                                             ))
-                                        ))
-                                    }
-                                </select>
+                                        }
+                                    </select>
+                                </div>
                             </div>
-                            <div className="col-lg-2">
-                                <h4>Select Section : </h4>
-                            </div>
-                            <div className="col-lg-3">
-                                <select className="selectPicker3" value={section} onChange={(e) => setSection(e.target.value)}>
-                                    <option value="" disabled>
-                                        Select Section
-                                    </option>
-                                    {
-                                        classes !== null &&
-                                        Array.from(new Set(classes.filter((item) => parseInt(standard) === item.standard).map((obj)=>obj.section))).map((item) => (
-                                            <option value={item}>{item}</option>
-                                        ))
-                                    }
-                                </select>
+                            <div className='col-lg-6 row classmessage-1'>
+                                <div className="col-lg-7 col-md-5 col-sm-6">
+                                    <h4>Select Section : </h4>
+                                </div>
+                                <div className="col-lg-5 col-md-6 col-sm-6">
+                                    <select className="selectPicker3" value={section} onChange={(e) => { setSection(e.target.value); setClassID(null); }}>
+                                        <option value="" disabled>
+                                            Select Section
+                                        </option>
+                                        {
+                                            class1 !== null &&
+                                            Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard).map((obj) => obj.section))).map((item) => (
+                                                <option value={item}>{item}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <br />
                         <br />
                         {standard && section && <>
-                        <div className="row classmessage-container-2">
-                            <div className='col-lg-2 message-box'>
-                                <h4>Message : </h4>
-                            </div>
-
-                            <div className='col-lg-8'>
-                                <textarea className="msg-textarea" value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
-                            </div>
-                        </div>
                             <div className="row classmessage-container-2">
-                                <div className='col-lg-2'></div>
-                                <div className='col-lg-3' style={{ display: "flex", alignItems: "center" }}>
-                                    <button className='btn btn-primary'><Attach style={{ color: "white", fontSize: '20px' }} />Attach</button>
+                                <div className='col-lg-3 col-md-3 col-sm-4 message-box'>
+                                    <h4>Message : </h4>
                                 </div>
-                                <div className='col-lg-2'></div>
-                                <div className='col-lg-3' style={{ display: "flex", alignItems: "center" }}>
+                                <div className='col-lg-8 col-md-7 col-sm-8'>
+                                    <textarea className="msg-textarea" value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
+                                </div>
+                            </div>
+                            <br />
+                            <div className="row classmessage-container-3">
+                                <div className='col-lg-3 col-md-3 col-sm-4'>
                                     <button className='btn btn-success' onClick={() => handleSubmit()}><Icon as={Send} style={{ color: "white", fontSize: '20px' }} />send</button>
                                 </div>
                             </div>
@@ -139,18 +147,19 @@ const Teacher = () => {
 
                             <div className="row classmessage-container-2">
                                 <div className='col-lg-10 chat-container'>
-                                    hi
                                     {
-                                        messages && messages.docs.filter((item) => item.class.standard === parseInt(standard) && item.class.section === section).map((item) => <>
+                                        messages && classID && messages.docs.filter((item) => item.class === classID).map((item) => <>
                                             <div className="Row chat-container-2">
                                                 <div className='col-lg-2 Avatar'>
-                                                    <span className='Avatar-1' title={item.class.subject + " Teacher"}>You</span>
+                                                    <span className='Avatar-1' title={class1.docs.filter((item) => item._id === classID)[0].subject + " Teacher"}>You</span>
                                                 </div>
 
                                                 <div className='col-lg-8 message-content'>
                                                     <p className='Avatar-2'>{item.message}</p>
-                                                    <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
-                                                    <p className='timer'>a day ago</p>
+                                                    <div className='message-content-1'>
+                                                        <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
+                                                        <span className='timer'>{moment(new Date(item.postedOn), "YYYYMMDD").fromNow()}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </>
