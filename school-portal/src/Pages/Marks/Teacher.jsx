@@ -68,7 +68,7 @@ const MarksTeacher = () => {
 
   const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
   const m = useSelector((state) => state.marksReducer)
-  // console.log(m)
+  console.log(m)
 
   // let sum = 0;
   // for (let i = 0; i < data.length; i++) {

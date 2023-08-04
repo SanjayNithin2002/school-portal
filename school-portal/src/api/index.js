@@ -61,7 +61,8 @@ export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${
 
 /* Marks */
 export const getMarks = (userData) => API.get(`/marks/teachers/${userData.id}`);
-export const getMarksForStudent = (userData) => API.get(`/marks/students/${userData.id}`);
+export const getMarksForStudent = (userData) => API.get(`marks/students/${userData.id}`);
+export const postMarks = (updateData) => API.patch(`marks/649244661c9f98c6b70d0334`,updateData);
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);

@@ -14,9 +14,8 @@ const MarksStudent = () => {
     dispatch(getMarksForStudent({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
   }, [dispatch])
 
-  const m = useSelector((state) => state.studentMarksReducer)
-  // console.log(m)
-
+  const m = useSelector((state) => state.marksReducer)
+  console.log(m)
   return (
     <>
 <div className="Main">
@@ -45,7 +44,6 @@ const MarksStudent = () => {
                       })}
                     </select>
                   </div>
-
 
                   <div className="col-lg-3">
                     <h4>Select Exam : </h4>
