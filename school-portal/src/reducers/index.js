@@ -14,6 +14,7 @@ import examReducer from "./Exam"
 import userLeaveReducer from "./UserLeave"
 import allLeaveReducer from "./AllLeave"
 import marksReducer from "./Marks"
+import marksCSVReducer from "./MarksCSV"
 export default combineReducers({
-    currentUserReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer
+    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer
 })

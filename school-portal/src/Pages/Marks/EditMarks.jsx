@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import { useNavigate } from 'react-router-dom';
 import { getMarks, postMarks, postMany, delMarks, getMarksCSV } from '../../actions/marks';
+import marksCSVReducer from '../../reducers/MarksCSV';
 
 const UploadMarks = () => {
     const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const UploadMarks = () => {
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <h2>Upload Marks</h2>
+                        <h2>Edit Marks</h2>
                         {step === 1 ? <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button> : <></>}
                         {step === 1 ? <button className='btn btn-primary' onClick={() => handleSubmit()}>dow</button> : <></>}
                     </div>

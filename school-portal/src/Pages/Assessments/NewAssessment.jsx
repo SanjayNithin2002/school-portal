@@ -69,7 +69,7 @@ function NewAssessment() {
             dispatch(postAssessment(formData,navigate))
         }
         else{
-            alert('Kindly file all the details')
+            alert('Kindly fill all the details')
         }
     }
     

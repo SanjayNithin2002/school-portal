@@ -61,8 +61,12 @@ export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${
 
 /* Marks */
 export const getMarks = (userData) => API.get(`/marks/teachers/${userData.id}`);
-export const getMarksForStudent = (userData) => API.get(`marks/students/${userData.id}`);
-export const postMarks = (updateData) => API.patch(`marks/649244661c9f98c6b70d0334`,updateData);
+export const getMarksCSV = (userData) => API.get(`/students/marks/generatecsv/5/A`);
+export const getMarksByID = (userData) => API.get(`marks/assessments/64923d976255f24e230a6c65`);
+export const getMarksForStudent = (userData) => API.get(`/marks/students/${userData.id}`);
+export const postMarks = (updateData) => API.post(`/marks/`,updateData);
+export const delMarks = (updateData) => API.delete(`/marks/64d139c5b613daf5ecc7ec53`);
+export const postMany = (updateData) => API.post(`/marks/postmany`,updateData);
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);

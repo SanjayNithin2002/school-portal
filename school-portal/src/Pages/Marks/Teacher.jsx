@@ -105,6 +105,7 @@ const MarksTeacher = () => {
             <div className='d-flex justify-content-between'>
               <h2>Marks View</h2>
               <Link to="/UploadMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Upload Marks</Link>
+              <Link to="/EditMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Edit Marks</Link>
             </div>
             <hr style={{ border: "1px solid gray" }} />
             <div>
