@@ -6,9 +6,8 @@ import SideNavBar from "../components/SideNavBar/SideNavBar"
 function Error404() {
     return (
         <div className="Main">
-            <SideNavBar />
             <div className="Home">
-                <div class="container">
+                <div style={{padding:"20px 40px"}} class="container1 container">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="error-template">

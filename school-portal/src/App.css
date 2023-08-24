@@ -81,3 +81,9 @@ body {
 .table-responsive::-webkit-scrollbar {
   display: none;
 }
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus{
+  outline:none;
+}

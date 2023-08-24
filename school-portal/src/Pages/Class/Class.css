@@ -5,35 +5,18 @@
 }
 .ClassInfo-container{
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
-
-.CreateClass-Table-List{
-    width:100%;
-    justify-content: center;
+.AddStudent-Table-List input[type="time"]{
+    width: 70%;
+    padding: 3px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1.5px solid #cadeef;
 }
 
-.CreateClass-Table-List tr:nth-child(odd) td:nth-child(odd){
-    background-color: gray;
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 700;
-}
-
-.CreateClass-Table-List tr:nth-child(even) td:nth-child(odd){
-    background-color: lightgray;
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 700;
-}
-
-.CreateClass-Table-List input[type="text"]{
-    padding:2px;
-    width:75%;
-    font-size:18px;
-}
 .CreateClass-subTable td{
     background-color: white;
     font-size: initial;

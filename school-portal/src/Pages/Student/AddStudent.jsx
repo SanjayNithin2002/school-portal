@@ -102,16 +102,16 @@ const AddStudent = () => {
     }
     
     return (
-        <div className="Main">
-            <SideNavBar />
+        <div className='Main'>
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Add Student</h2>
                         {step===3 && <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button>}
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className="">
+                    <div className="AddStudent-container">
+                        <div style={{minWidth:"600px"}}>
                         <Steps current={step}>
                             <Steps.Item title="Personal" />
                             <Steps.Item title="Family" />
@@ -122,7 +122,7 @@ const AddStudent = () => {
                         {step === 0 &&
                             <div className='row'>
                                 <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='AddStudent-Table-List'>
+                                    <Table className='AddStudent-Table-List'>
                                         <tbody>
                                             <tr>
                                                 <td>First Name</td>
@@ -608,15 +608,17 @@ const AddStudent = () => {
                             </div>
                         }
                         <br />
-                        <ButtonGroup>
-                            <Button onClick={onPrevious} disabled={step === 0}>
+                        
+                    </div>
+                    </div>
+                    <ButtonGroup>
+                            <Button onClick={onPrevious} color="blue" disabled={step === 0}>
                                 Previous
                             </Button>
-                            <Button onClick={onNext} disabled={step === 3}>
+                            <Button onClick={onNext} color="blue" disabled={step === 3}>
                                 Next
                             </Button>
                         </ButtonGroup>
-                    </div>
                 </div>
             </div>
         </div>

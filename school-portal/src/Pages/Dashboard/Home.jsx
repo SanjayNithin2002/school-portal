@@ -16,7 +16,7 @@ const Home = () => {
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Error404/>
+        <Teacher/>
     }
     </>
   )

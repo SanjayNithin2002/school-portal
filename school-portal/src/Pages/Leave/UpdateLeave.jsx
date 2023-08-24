@@ -32,10 +32,9 @@ function UpdateLeave() {
 
     return (
         <div className="Main">
-            <SideNavBar />
-            <div className="Home">
-                { !display ?
-                <div class="container rounded bg-white">
+        <div className="Home">
+            {!display ?
+            <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
                     <Header>
                         <h2>Leave Request</h2>
                         <hr style={{ border: "1px solid gray" }} />
@@ -43,8 +42,8 @@ function UpdateLeave() {
                     <br /><br />
                     <div className="row" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <div className="cols-lg-10 table-responsive">
-                            <Table striped bordered hover style={{textAlign:"center"}}>
-                                <thead>
+                            <Table className="UpdateLeave-content-table">
+                                <tr>
                                     <th>S.No</th>
                                     <th>Staff Name</th>
                                     <th>Staff ID</th>
@@ -52,8 +51,7 @@ function UpdateLeave() {
                                     <th>No of Days</th>
                                     <th>Status</th>
                                     <th>Action</th>
-                                </thead>
-                                <tbody>
+                                </tr>
                                     {
                                         leave && leave.docs.length>0 ? 
                                         leave.docs.map((item,index)=>(
@@ -74,7 +72,6 @@ function UpdateLeave() {
                                             <td colSpan={9}>No Data</td>
                                         </tr>
                                     }
-                                </tbody>
                             </Table>
                         </div>
                     </div>

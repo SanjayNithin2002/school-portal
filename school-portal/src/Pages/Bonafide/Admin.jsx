@@ -43,14 +43,13 @@ function AdminBonafide() {
     
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Bonafide Applications</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <br/>
                     <div className='table-responsive'>
-                    <Table striped bordered hover>
+                    <Table className='AdminBonafide-content-table'>
                         <thead>
                             <tr>
                                 <th>S.No.</th>

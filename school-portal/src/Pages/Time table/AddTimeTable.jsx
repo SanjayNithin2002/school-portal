@@ -174,17 +174,7 @@ const AddTimeTable = () => {
                         }
                     })
                 })
-            })
-
-
-
-
-
-
-
-
-
-            
+            })     
     }
 
     if (class1 && timetableData2.length === 0 && timetable !== null) {
@@ -323,15 +313,15 @@ const AddTimeTable = () => {
                                         <br />
                                         {step === 1 ?
                                             <>
-                                                <div className='d-flex justify-content-center' style={{ fontSize: "18px", cursor: "pointer" }}>
+                                                <div className='TimeTable-Menu d-flex justify-content-center'>
                                                     <span onClick={() => setShowTimeTable(true)}><FontAwesomeIcon icon={solid.faEye} /> Preview</span>&emsp;&emsp;
                                                     <span onClick={() => setShowClassTeacher(true)}><FontAwesomeIcon icon={solid.faPencil} />Class Teacher</span>
                                                 </div>
                                                 <div className='timetable-main-content'>
-                                                    <div className='timetable-main-content-1' style={{}}>
+                                                    <div className='timetable-main-content-1'>
                                                         {days.map((day1, index1) => (
                                                             index1 < timetable.docs.filter((item) => item.standard === standard)[0]["workingDays"] &&
-                                                            <><button className={day === day1 ? "active" : ""} onClick={() => setDay(day1)}>{day1}</button>&emsp;</>
+                                                            <><button className={day===day1 && "active1"} onClick={() => setDay(day1)}>{day1}</button>&emsp;</>
                                                         ))}
                                                     </div>
                                                     <div className='timetable-main-content-2 table-responsive'>

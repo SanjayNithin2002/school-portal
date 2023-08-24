@@ -41,7 +41,7 @@ function CreateClass() {
     }, [dispatch])
 
     if (allStudents && standard) {
-        students = allStudents.docs.filter((item) => item.standard == standard);
+        students = allStudents.docs.filter((item) => item.standard === parseInt(standard));
     }
 
     const onChange = nextStep => setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
@@ -85,14 +85,14 @@ function CreateClass() {
                 return true
             })
             let break2 = [];
-            timings.filter((item1)=>item1.type==="Break").map((slot)=>{
+            timings.filter((item1) => item1.type === "Break").map((slot) => {
                 break2.push({
-                    title:slot.title,
-                    startTime:slot.startTime,
-                    endTime:slot.endTime
+                    title: slot.title,
+                    startTime: slot.startTime,
+                    endTime: slot.endTime
                 })
             })
-            
+
             setRequest3({
                 standard,
                 startTime,
@@ -219,7 +219,7 @@ function CreateClass() {
             updatedBreaks[index][field] = value;
             return updatedBreaks;
         });
-        if(break1[index].content==="New"){
+        if (break1[index].content === "New") {
             setEdit2(index);
         }
     }
@@ -253,9 +253,9 @@ function CreateClass() {
         console.log(request1)
         console.log(request2)
         console.log(request3)
-        dispatch(createClass(request1,navigate))
-        dispatch(updateSection(request2,navigate))
-        dispatch(postTimeTable(request3,navigate))
+        dispatch(createClass(request1, navigate))
+        //dispatch(updateSection(request2,navigate))
+        //dispatch(postTimeTable(request3,navigate))
     }
 
     const durationList = [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
@@ -324,7 +324,7 @@ function CreateClass() {
                     type: slot.type,
                     index: slot.index,
                 }
-                if (index == timings.length - 1) {
+                if (index === timings.length - 1) {
                     setEndTime(endTime);
                 }
                 updatedTime.push(time);
@@ -366,10 +366,10 @@ function CreateClass() {
                 let dur1 = eTime1.getTime() - sTime1.getTime()
                 let startTime = parseInt(newStartTime.getHours()) < 10 ? "0" + newStartTime.getHours() + ":" : newStartTime.getHours() + ":"
                 startTime += parseInt(newStartTime.getMinutes()) < 10 ? "0" + newStartTime.getMinutes() : newStartTime.getMinutes()
-                if(slot.type==="Class")
-                newStartTime.setTime(newStartTime.getTime() + parseInt(duration)*1000*60)
+                if (slot.type === "Class")
+                    newStartTime.setTime(newStartTime.getTime() + parseInt(duration) * 1000 * 60)
                 else
-                newStartTime.setTime(newStartTime.getTime() + dur1)
+                    newStartTime.setTime(newStartTime.getTime() + dur1)
                 let endTime = parseInt(newStartTime.getHours()) < 10 ? "0" + newStartTime.getHours() + ":" : newStartTime.getHours() + ":"
                 endTime += parseInt(newStartTime.getMinutes()) < 10 ? "0" + newStartTime.getMinutes() : newStartTime.getMinutes()
                 if (slot.type === "Break") {
@@ -382,7 +382,7 @@ function CreateClass() {
                     type: slot.type,
                     index: slot.index,
                 }
-                if (index == timings.length - 1) {
+                if (index === timings.length - 1) {
                     //setEndTime(endTime);
                 }
                 updatedTime.push(time);
@@ -436,7 +436,7 @@ function CreateClass() {
                     type: slot.type,
                     index: slot.index,
                 }
-                if (index == timings.length - 1) {
+                if (index === timings.length - 1) {
                     setEndTime(endTime);
                 }
                 updatedTime.push(time);
@@ -503,7 +503,7 @@ function CreateClass() {
                         type: slot.type,
                         index: slot.index,
                     }
-                    if (index == timings.length - 1) {
+                    if (index === timings.length - 1) {
                         setEndTime(endTime);
                     }
                     updatedTime.push(time);
@@ -524,9 +524,8 @@ function CreateClass() {
 
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Create Class</h2>
                         {
@@ -534,403 +533,407 @@ function CreateClass() {
                         }
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className="">
-                        <Steps current={step}>
-                            <Steps.Item title="Class" />
-                            <Steps.Item title="Students" />
-                            <Steps.Item title="Review" />
-                        </Steps>
-                        <br />
-                        {
-                            step === 0 &&
-                            <div className='row'>
-                                <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='CreateClass-Table-List'>
-                                        <tbody>
-                                            <tr>
-                                                <td>Standard</td>
-                                                <td>
-                                                    <select value={standard} onChange={(e) => setStandard(e.target.value)}>
-                                                        <option value="" disabled>Select Standard</option>
-                                                        {
-                                                            standardList.map((item) => (
-                                                                <option value={item.value}>{item.label}</option>
-                                                            ))
-                                                        }
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Working Days<br />(per Week)</td>
-                                                <td>
-                                                    <select value={workingDays} onChange={(e) => setWorkingDay(e.target.value)}>
-                                                        <option value="" disabled>Select Standard</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Day Start Time</td>
-                                                <td><input type="time" min="07:00" max="18:00" value={startTime} onChange={(e) => { setStartTime(e.target.value); setEdit1(true); }} /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Day End Time</td>
-                                                <td><input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} disabled /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Duration per Class<br />(in min)</td>
-                                                <td>
-                                                    <select value={duration} onChange={(e) => { setDuration(e.target.value); setEdit1(true); }}>
-                                                        <option value="">Select Duration</option>
-                                                        {
-                                                            durationList.map((item) => (
-                                                                <option value={item}>{item} min</option>
-                                                            ))
-                                                        }
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Classes Per Day ?</td>
-                                                <td><input type="number" min={0} value={noClass} onChange={(e) => { setNoClass(e.target.value); setEdit1(true); handleBreak(0); }} /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Break or Lunch per Day ?</td>
-                                                <td><input type="number" min={0} value={noBreak} onChange={(e) => handleBreak(e.target.value)} /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Subjects ?</td>
-                                                <td><input type="number" min={0} value={noSubject} onChange={(e) => handleSubject(e)} /></td>
-                                            </tr>
-                                            {
-                                                timings.length !== 0 && break1.length !== 0 &&
+                    <div style={{width:"100%"}} className="AddStudent-container">
+                        <div style={{ minWidth: "600px" }}>
+                            <Steps current={step}>
+                                <Steps.Item title="Class" />
+                                <Steps.Item title="Students" />
+                                <Steps.Item title="Review" />
+                            </Steps>
+                            <br />
+                            {
+                                step === 0 &&
+                                <div className='row' style={{width:"100%"}}>
+                                    <div className='col-lg-10 justify-content-center'>
+                                        <Table className='AddStudent-Table-List'>
+                                            <tbody>
                                                 <tr>
-                                                    <td colSpan={2} style={{ textAlign: "center", fontWeight: "600" }}>Break List</td>
+                                                    <td>Standard</td>
+                                                    <td>
+                                                        <select value={standard} onChange={(e) => setStandard(e.target.value)}>
+                                                            <option value="" disabled>Select Standard</option>
+                                                            {
+                                                                standardList.map((item) => (
+                                                                    <option value={item.value}>{item.label}</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </td>
                                                 </tr>
-                                            }
-                                            {
-                                                timings.length !== 0 && break1.map((item, index) => (
+                                                <tr>
+                                                    <td>No of Working Days<br />(per Week)</td>
+                                                    <td>
+                                                        <select value={workingDays} onChange={(e) => setWorkingDay(e.target.value)}>
+                                                            <option value="" disabled>Select Standard</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Day Start Time</td>
+                                                    <td><input type="time" min="07:00" max="18:00" value={startTime} onChange={(e) => { setStartTime(e.target.value); setEdit1(true); }} /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Day End Time</td>
+                                                    <td><input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} disabled /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Duration per Class<br />(in min)</td>
+                                                    <td>
+                                                        <select value={duration} onChange={(e) => { setDuration(e.target.value); setEdit1(true); }}>
+                                                            <option value="">Select Duration</option>
+                                                            {
+                                                                durationList.map((item) => (
+                                                                    <option value={item}>{item} min</option>
+                                                                ))
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Classes Per Day ?</td>
+                                                    <td><input type="number" min={0} value={noClass} onChange={(e) => { setNoClass(e.target.value); setEdit1(true); handleBreak(0); }} /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Break or Lunch per Day ?</td>
+                                                    <td><input type="number" min={0} value={noBreak} onChange={(e) => handleBreak(e.target.value)} /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Subjects ?</td>
+                                                    <td><input type="number" min={0} value={noSubject} onChange={(e) => handleSubject(e)} /></td>
+                                                </tr>
+                                                {
+                                                    timings.length !== 0 && break1.length !== 0 &&
+                                                    <tr>
+                                                        <td colSpan={2} style={{ textAlign: "center", fontWeight: "600" }}>Break List</td>
+                                                    </tr>
+                                                }
+                                                {
+                                                    timings.length !== 0 && break1.map((item, index) => (
+                                                        <>
+                                                            <tr>
+                                                                <td>Break {index + 1} Name</td>
+                                                                <td><input type="text" value={item.title} onChange={event => handleInputChange(event.target.value, index, 'title')} disabled={item.content === "old" ? true : false} /></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Start Time</td>
+                                                                <td>
+                                                                    <select value={item.startTime} onChange={event => handleInputChange(event.target.value, index, 'startTime')} disabled={item.content === "old" ? true : false} >
+                                                                        <option value="">Select Start Time</option>
+                                                                        {
+                                                                            timings.map((item) => (
+                                                                                <option value={item.endTime}>{item.endTime} min</option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Duration</td>
+                                                                <td>
+                                                                    <select value={item.endTime} onChange={event => handleInputChange(event.target.value, index, 'endTime')} disabled={item.content === "old" ? true : false}>
+                                                                        <option value="">Select Duration</option>
+                                                                        {
+                                                                            breakDuration.map((item) => (
+                                                                                <option value={item}>{item} min</option>
+                                                                            ))
+                                                                        }
+                                                                    </select>
+                                                                    {item.content === "old" && <button onClick={() => clearBreak(item, index)}>Clear</button>}
+                                                                </td>
+                                                            </tr>
+                                                        </>
+                                                    ))
+                                                }
+                                                {
+                                                    subject.length !== 0 &&
+                                                    <tr>
+                                                        <td colSpan={2} style={{ textAlign: "center", fontWeight: "600" }}>Subject List{noSubject}</td>
+                                                    </tr>
+                                                }
+                                                {
+                                                    subject.map((item, index) => (
+                                                        <>
+                                                            <tr>
+                                                                <td>Subject {index + 1} Name</td>
+                                                                <td><input type="text" value={item} onChange={event => handleSubjectChange(event, index)} /></td>
+                                                            </tr>
+                                                        </>
+                                                    ))
+                                                }
+                                                <tr>
+                                                    <td style={{ backgroundColor: "white" }} colSpan={2}>
+                                                        <h4>Preview</h4>
+                                                        {
+                                                            workingDays && timings.length !== 0 &&
+                                                            <Table className='CreateClass-subTable'>
+                                                                <tr>
+                                                                    <td>From</td>
+                                                                    {
+                                                                        timings.map((item) => (
+                                                                            <td>{item.startTime}</td>
+                                                                        ))
+                                                                    }
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>To</td>
+                                                                    {
+                                                                        timings.map((item) => (
+                                                                            <td>{item.endTime}</td>
+                                                                        ))
+                                                                    }
+                                                                </tr>
+                                                                {
+                                                                    days.map((item, index) => (
+                                                                        <tr>
+                                                                            <td>{item}</td>
+                                                                            {
+                                                                                index + 1 <= workingDays ?
+                                                                                    timings.map((item1) => (
+                                                                                        <>{
+                                                                                            item1.type === "Break" && index === 0 && <td rowSpan={workingDays}></td>
+                                                                                        }
+                                                                                            {
+                                                                                                item1.type !== "Break" && <td></td>
+                                                                                            }</>
+                                                                                    ))
+                                                                                    :
+                                                                                    <td colSpan={timings.length}>Holiday</td>
+                                                                            }
+                                                                        </tr>
+                                                                    ))
+                                                                }
+                                                            </Table>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            }
+                            {
+                                step === 1 &&
+                                <div className='row' style={{width:"100%"}}>
+                                    <div className='col-lg-8 justify-content-center'>
+                                        <Table className='AddStudent-Table-List'>
+                                            <tbody>
+                                                <tr>
+                                                    <td>No of Boys </td>
+                                                    <td>{getCount('male')}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Girls</td>
+                                                    <td>{getCount('female')}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Sections</td>
+                                                    <td>
+                                                        <input style={{ width: "50%" }} type="number" min={0} value={noSections} onChange={(e) => handleSection(e)} />
+                                                        <br />
+                                                        {noSections ? <>
+                                                            Eg,
+                                                            {sections.length !== 0 &&
+                                                                sections.map((item) => (
+                                                                    <>{item},</>
+                                                                ))
+                                                            }
+                                                        </>
+                                                            :
+                                                            <></>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Generate Automatically</td>
+                                                    <td><button className='btn btn-primary' onClick={generateAutomatically}>Click</button></td>
+                                                </tr>
+                                                {auto &&
+                                                    <tr>
+                                                        <td style={{ textAlign: "center", backgroundColor: "white" }} colSpan={2}>
+                                                            <p>Preview</p>
+                                                            <div className='row'>
+                                                                <div className='col-lg-6'>
+
+                                                                    <Table className='CreateClass-subTable'>
+                                                                        <thead>
+                                                                            <th>Sections</th>
+                                                                            <th>No of Boys</th>
+                                                                            <th>No of Girls</th>
+                                                                            <th>Total Strength</th>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {
+                                                                                sections.map((item, index) => (
+                                                                                    <tr>
+                                                                                        <td>{item}</td>
+                                                                                        <td>{boys[index].length}</td>
+                                                                                        <td>{girls[parseInt(noSections) - index - 1].length}</td>
+                                                                                        <td>{boys[index].length + girls[parseInt(noSections) - index - 1].length}</td>
+                                                                                    </tr>
+                                                                                ))
+                                                                            }
+                                                                        </tbody>
+                                                                    </Table>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                                <tr>
+                                                    <td>Manual Entry<br /><a href='/Home'>Download</a></td>
+                                                    <td><input type="file" onChange={() => setAuto(false)} /></td>
+                                                </tr>
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </div>
+                            }
+                            {
+                                step === 2 &&
+                                <div className='row' style={{width:"100%"}}>
+                                    <div className='col-lg-8 justify-content-center'>
+                                        <Table>
+                                            <tbody>
+                                                <tr>
+                                                    <td colSpan={4} style={{ textAlign: "center", fontWeight: "bold" }}>Class Details</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Standard</td>
+                                                    <td>{standard}</td>
+                                                    <td>No of Working Days</td>
+                                                    <td>{workingDays}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Day Start Time</td>
+                                                    <td>{startTime}</td>
+                                                    <td>Day End Time</td>
+                                                    <td>{endTime}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Duration</td>
+                                                    <td>{duration} min</td>
+                                                    <td>No of Classes per Day</td>
+                                                    <td>{noClass} classes</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={4} style={{ fontWeight: "bold" }}>Break Details</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={2}>No of Break or Lunch per Day ?</td>
+                                                    <td colSpan={2}>{noBreak}</td>
+                                                </tr>
+                                                {break1.map((item) => (
                                                     <>
                                                         <tr>
-                                                            <td>Break {index + 1} Name</td>
-                                                            <td><input type="text" value={item.title} onChange={event => handleInputChange(event.target.value, index, 'title')} disabled={item.content === "old" ? true : false} /></td>
+                                                            <td>Break Name</td>
+                                                            <td>{item.title}</td>
+                                                            <td></td>
+                                                            <td></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Start Time</td>
-                                                            <td>
-                                                                <select value={item.startTime} onChange={event => handleInputChange(event.target.value, index, 'startTime')} disabled={item.content === "old" ? true : false} >
-                                                                    <option value="">Select Start Time</option>
-                                                                    {
-                                                                        timings.map((item) => (
-                                                                            <option value={item.endTime}>{item.endTime} min</option>
-                                                                        ))
-                                                                    }
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Duration</td>
-                                                            <td>
-                                                                <select value={item.endTime} onChange={event => handleInputChange(event.target.value, index, 'endTime')} disabled={item.content === "old" ? true : false}>
-                                                                    <option value="">Select Duration</option>
-                                                                    {
-                                                                        breakDuration.map((item) => (
-                                                                            <option value={item}>{item} min</option>
-                                                                        ))
-                                                                    }
-                                                                </select>
-                                                                {item.content === "old" && <button onClick={() => clearBreak(item, index)}>Clear</button>}
-                                                            </td>
+                                                            <td>{item.startTime}</td>
+                                                            <td>End Time</td>
+                                                            <td>{item.endTime}</td>
                                                         </tr>
                                                     </>
                                                 ))
-                                            }
-                                            {
-                                                subject.length !== 0 &&
+                                                }
                                                 <tr>
-                                                    <td colSpan={2} style={{ textAlign: "center", fontWeight: "600" }}>Subject List{noSubject}</td>
+                                                    <td colSpan={4} style={{ fontWeight: "bold" }}>Subject Details</td>
                                                 </tr>
-                                            }
-                                            {
-                                                subject.map((item, index) => (
-                                                    <>
-                                                        <tr>
-                                                            <td>Subject {index + 1} Name</td>
-                                                            <td><input type="text" value={item} onChange={event => handleSubjectChange(event, index)} /></td>
-                                                        </tr>
-                                                    </>
-                                                ))
-                                            }
-                                            <tr>
-                                                <td style={{ backgroundColor: "white" }} colSpan={2}>
-                                                    <h4>Preview</h4>
-                                                    {
-                                                        workingDays && timings.length !== 0 &&
-                                                        <Table className='CreateClass-subTable'>
-                                                            <tr>
-                                                                <td>From</td>
-                                                                {
-                                                                    timings.map((item) => (
-                                                                        <td>{item.startTime}</td>
-                                                                    ))
-                                                                }
-                                                            </tr>
-                                                            <tr>
-                                                                <td>To</td>
-                                                                {
-                                                                    timings.map((item) => (
-                                                                        <td>{item.endTime}</td>
-                                                                    ))
-                                                                }
-                                                            </tr>
-                                                            {
-                                                                days.map((item, index) => (
-                                                                    <tr>
-                                                                        <td>{item}</td>
-                                                                        {
-                                                                            index + 1 <= workingDays ?
-                                                                                timings.map((item1) => (
-                                                                                    <>{
-                                                                                        item1.type === "Break" && index === 0 && <td rowSpan={workingDays}></td>
-                                                                                    }
-                                                                                        {
-                                                                                            item1.type !== "Break" && <td></td>
-                                                                                        }</>
-                                                                                ))
-                                                                                :
-                                                                                <td colSpan={timings.length}>Holiday</td>
-                                                                        }
-                                                                    </tr>
-                                                                ))
-                                                            }
-                                                        </Table>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
-                        }
-                        {
-                            step === 1 &&
-                            <div className='row'>
-                                <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='CreateClass-Table-List'>
-                                        <tbody>
-                                            <tr>
-                                                <td>No of Boys </td>
-                                                <td>{getCount('male')}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Girls</td>
-                                                <td>{getCount('female')}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Sections</td>
-                                                <td>
-                                                    <input type="number" min={0} value={noSections} onChange={(e) => handleSection(e)} />
-                                                    <br />
-                                                    {noSections && <>
-                                                        Eg,
-                                                        {sections.length !== 0 &&
-                                                            sections.map((item) => (
+                                                <tr>
+                                                    <td colSpan={2}>No of Subjects ?</td>
+                                                    <td colSpan={2}>{noSubject}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Subject List</td>
+                                                    <td colSpan={3}>
+                                                        {
+                                                            subject.map((item) => (
                                                                 <>{item},</>
                                                             ))
                                                         }
-                                                    </>
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Generate Automatically</td>
-                                                <td><button className='btn btn-primary' onClick={generateAutomatically}>Click</button></td>
-                                            </tr>
-                                            {auto &&
-                                                <tr>
-                                                    <td style={{ textAlign: "center", backgroundColor: "white" }} colSpan={2}>
-                                                        <p>Preview</p>
-                                                        <div className='row'>
-                                                            <div className='col-lg-6'>
-
-                                                                <Table className='CreateClass-subTable'>
-                                                                    <thead>
-                                                                        <th>Sections</th>
-                                                                        <th>No of Boys</th>
-                                                                        <th>No of Girls</th>
-                                                                        <th>Total Strength</th>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {
-                                                                            sections.map((item, index) => (
-                                                                                <tr>
-                                                                                    <td>{item}</td>
-                                                                                    <td>{boys[index].length}</td>
-                                                                                    <td>{girls[parseInt(noSections) - index - 1].length}</td>
-                                                                                    <td>{boys[index].length + girls[parseInt(noSections) - index - 1].length}</td>
-                                                                                </tr>
-                                                                            ))
-                                                                        }
-                                                                    </tbody>
-                                                                </Table>
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
-                                            }
-
-                                            <tr>
-                                                <td>Manual Entry<br /><a href='/Home'>Download</a></td>
-                                                <td><input type="file" onChange={() => setAuto(false)} /></td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
-                        }
-                        {
-                            step === 2 &&
-                            <div className='row'>
-                                <div className='col-lg-8 justify-content-center'>
-                                    <Table>
-                                        <tbody>
-                                            <tr>
-                                                <td colSpan={4} style={{ textAlign: "center", fontWeight: "bold" }}>Class Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Standard</td>
-                                                <td>{standard}</td>
-                                                <td>No of Working Days</td>
-                                                <td>{workingDays}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Day Start Time</td>
-                                                <td>{startTime}</td>
-                                                <td>Day End Time</td>
-                                                <td>{endTime}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Duration</td>
-                                                <td>{duration} min</td>
-                                                <td>No of Classes per Day</td>
-                                                <td>{noClass} classes</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={4} style={{ fontWeight: "bold" }}>Break Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>No of Break or Lunch per Day ?</td>
-                                                <td colSpan={2}>{noBreak}</td>
-                                            </tr>
-                                            {break1.map((item) => (
-                                                <>
+                                                <tr>
+                                                    <td colSpan={4} style={{ textAlign: "center", fontWeight: "bold" }}>Students Details</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Boys</td>
+                                                    <td>{getCount('male')}</td>
+                                                    <td>No of Girls</td>
+                                                    <td>{getCount('female')}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No of Sections</td>
+                                                    <td>{noSections}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                {auto && <>
                                                     <tr>
-                                                        <td>Break Name</td>
-                                                        <td>{item.title}</td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td colSpan={4} style={{ fontWeight: "bold" }}>Generated Automatically</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Start Time</td>
-                                                        <td>{item.startTime}</td>
-                                                        <td>End Time</td>
-                                                        <td>{item.endTime}</td>
+                                                        <td style={{ backgroundColor: "white" }} colSpan={4}>
+                                                            <h4>Preview</h4>
+                                                            <div style={{ textAlign: "center" }} className='row'>
+                                                                <div className='col-lg-6 d-flex justify-content-center'>
+                                                                    <Table className='CreateClass-subTable'>
+                                                                        <thead>
+                                                                            <th>Sections</th>
+                                                                            <th>No of Boys</th>
+                                                                            <th>No of Girls</th>
+                                                                            <th>Total Strength</th>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {
+                                                                                sections.map((item, index) => (
+                                                                                    <tr>
+                                                                                        <td>{item}</td>
+                                                                                        <td>{boys[index].length}</td>
+                                                                                        <td>{girls[parseInt(noSections) - index - 1].length}</td>
+                                                                                        <td>{boys[index].length + girls[parseInt(noSections) - index - 1].length}</td>
+                                                                                    </tr>
+                                                                                ))
+                                                                            }
+                                                                        </tbody>
+                                                                    </Table>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 </>
-                                            ))
-                                            }
-                                            <tr>
-                                                <td colSpan={4} style={{ fontWeight: "bold" }}>Subject Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>No of Subjects ?</td>
-                                                <td colSpan={2}>{noSubject}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Subject List</td>
-                                                <td colSpan={3}>
-                                                    {
-                                                        subject.map((item) => (
-                                                            <>{item},</>
-                                                        ))
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={4} style={{ textAlign: "center", fontWeight: "bold" }}>Students Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Boys</td>
-                                                <td>{getCount('male')}</td>
-                                                <td>No of Girls</td>
-                                                <td>{getCount('female')}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>No of Sections</td>
-                                                <td>{noSections}</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            {auto && <>
-                                                <tr>
-                                                    <td colSpan={4} style={{ fontWeight: "bold" }}>Generated Automatically</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style={{ backgroundColor: "white" }} colSpan={4}>
-                                                        <h4>Preview</h4>
-                                                        <div style={{ textAlign: "center" }} className='row'>
-                                                            <div className='col-lg-6 d-flex justify-content-center'>
-                                                                <Table className='CreateClass-subTable'>
-                                                                    <thead>
-                                                                        <th>Sections</th>
-                                                                        <th>No of Boys</th>
-                                                                        <th>No of Girls</th>
-                                                                        <th>Total Strength</th>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {
-                                                                            sections.map((item, index) => (
-                                                                                <tr>
-                                                                                    <td>{item}</td>
-                                                                                    <td>{boys[index].length}</td>
-                                                                                    <td>{girls[parseInt(noSections) - index - 1].length}</td>
-                                                                                    <td>{boys[index].length + girls[parseInt(noSections) - index - 1].length}</td>
-                                                                                </tr>
-                                                                            ))
-                                                                        }
-                                                                    </tbody>
-                                                                </Table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </>
-                                            }
-                                            {!auto && <>
-                                                <tr>
-                                                    <td colSpan={4} style={{ fontWeight: "bold" }}>Manual Entry</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colSpan={2}>Student List (Section Wise)</td>
-                                                    <td colSpan={2}><input type="file" onChange={() => setAuto(false)} /></td>
-                                                </tr>
-                                            </>
-                                            }
-                                        </tbody>
-                                    </Table>
+                                                }
+                                                {!auto && <>
+                                                    <tr>
+                                                        <td colSpan={4} style={{ fontWeight: "bold" }}>Manual Entry</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colSpan={2}>Student List (Section Wise)</td>
+                                                        <td colSpan={2}><input type="file" onChange={() => setAuto(false)} /></td>
+                                                    </tr>
+                                                </>
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        <ButtonGroup>
-                            <Button onClick={onPrevious} disabled={step === 0}>
-                                Previous
-                            </Button>
-                            <Button onClick={onNext} disabled={step === 3}>
-                                Next{step}
-                            </Button>
-                        </ButtonGroup>
+                            }
+                        </div>
                     </div>
+                    <ButtonGroup>
+                        <Button onClick={onPrevious} disabled={step === 0}>
+                            Previous
+                        </Button>
+                        <Button onClick={onNext} disabled={step === 3}>
+                            Next{step}
+                        </Button>
+                    </ButtonGroup>
                 </div>
             </div>
         </div>

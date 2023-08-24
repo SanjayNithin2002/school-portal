@@ -8,9 +8,8 @@ const Admin = () => {
     const [active, setActive] = useState("school");
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div class="container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <h2>Fees Structure</h2>
                     </div>

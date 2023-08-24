@@ -82,3 +82,12 @@
   .TeacherInfo-content-table tr:last-child td:last-child {
     border-bottom-right-radius: 6px;
   }
+
+  
+  .TeacherInfo-content-table .btn.btn-primary:hover {
+  background-color: #0a58ca;
+}
+
+.TeacherInfo-content-table .btn.btn-primary {
+  background-color: #0d6efd;
+}

@@ -54,7 +54,7 @@ function NewAssessment() {
             formData.append('questionPaper', selectedFile ,selectedFile.name);
             var classID = '';
             classes.map((item)=>{
-                if(item.teacher && item.teacher!==null && item.teacher._id===currentUser.docs._id){
+                if(item.teacher && item.teacher!==null && item.subject!=="Class Teacher" && item.teacher._id===currentUser.docs._id){
                     if(item.standard===parseInt(standard)){
                         if(item.section===section){
                             classID=item._id
