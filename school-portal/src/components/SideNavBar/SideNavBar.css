@@ -16903,6 +16903,11 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   transform: scale(1.1);
 }
 
+.sidebar .nav-links li .sub-menu .link_name:hover,
+.sidebar .nav-links li .sub-menu .sub-link-name:hover{
+  transform: scale(1);
+}
+
 .sidebar .nav-links li .sub-menu .link_name{
   display: none;
 }
@@ -16964,6 +16969,8 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   position: relative;
   z-index: 2;
 }
+
+
 
 @media screen and (max-width: 900px){
   .sidebar{

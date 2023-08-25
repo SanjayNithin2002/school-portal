@@ -58,6 +58,13 @@ function CreateClass() {
                     })
                     return true
                 })
+                request1.push({
+                    teacher: null,
+                    standard,
+                    section,
+                    subject:"Class Teacher",
+                    timings: []
+                })
                 boys[index].map((student) => {
                     request2.push({
                         student,

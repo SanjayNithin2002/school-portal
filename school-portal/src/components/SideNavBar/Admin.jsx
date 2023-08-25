@@ -43,7 +43,7 @@ const Admin = () => {
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(0)}>
                         <span>
-                            <i class='bx bx-collection'></i>
+                            <i class='bx bx-calendar'></i>
                             <span class="link_name">Attendance Info</span>
                         </span>
                         <i class='bx bxs-chevron-down arrow'></i>
@@ -78,7 +78,7 @@ const Admin = () => {
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(2)}>
                         <span>
-                            <i class='bx bx-collection'></i>
+                            <i class='bx bx-server'></i>
                             <span class="link_name">Class Info</span>
                         </span>
                         <i class='bx bxs-chevron-down arrow'></i>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as solid from "@fortawesome/free-solid-svg-icons"
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./Exam.css"
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
@@ -104,11 +103,11 @@ function Admin() {
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
-                    <div className='d-flex justify-content-between'>
-                        <h2>Examination Schedule</h2>
+                    <div className='row justify-content-between'>
+                        <h2 className='col-xl-10 col-lg-8 col-md-8 col-sm-9'>Examination Schedule</h2>
                         {
                             localStorage.getItem("type") === "admin" ?
-                                <Link to="/AddSchedule" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Add Schedule</Link>
+                                <Link style={{textDecoration:"none"}} to="/AddSchedule" className='btn btn-primary col-xl-2 col-lg-3 col-md-2 col-sm-3'><FontAwesomeIcon icon={solid.faPlus} /> Add Schedule</Link>
                                 :
                                 <></>
                         }
@@ -145,13 +144,13 @@ function Admin() {
                                     <th>Exam Time</th>
                                     <th>Duration</th>
                                 </tr>
-                                {examList ? examList.map((examName) => (
+                                {examList && standard ? examList.map((examName) => (
                                     <>
                                         <tr>
                                             <td style={{ backgroundColor: "#add0ed",textAlign:"center" }} colSpan={5} align='center'>
                                                 {examName}&emsp;
                                                 {localStorage.getItem("type")==="admin" ? 
-                                                <FontAwesomeIcon icon={solid.faPencil} />
+                                                <FontAwesomeIcon style={{padding:"0px",cursor:"pointer"}} icon={solid.faPencil} />
                                                 :
                                                 <></>
                                                 }
@@ -176,6 +175,12 @@ function Admin() {
                                         <td style={{ textAlign: "center" }} colSpan={5}>No Data</td>
                                     </tr>
 
+                                }
+                                {
+                                    examList && standard && examList.length===0 &&
+                                    <tr>
+                                        <td style={{ textAlign: "center" }} colSpan={5}>No Data</td>
+                                    </tr>
                                 }
                         </Table>
                     </div>

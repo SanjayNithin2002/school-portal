@@ -15,8 +15,9 @@ body {
   margin: 20px;
 }
 
-.container1 {
-  padding:30px;
+.Main .Home .container1 {
+  padding: 20px 40px;
+  overflow: hidden;
 }
 
 .error-template {

@@ -32,6 +32,7 @@ export const updateSection = (id,studentData) => API.patch(`/students/${id}`,stu
 export const getAllClass = () => API.get('/classes');
 export const getClass = (userData) => API.get(`/classes/${userData.type}s/${userData.id}`)
 export const getStandardClass = (standard) => API.get(`/classes/standard/${standard}`)
+export const updateClassDetails = (classData) => API.patch('/classes/patchmany',classData);
 
 /* TimeTables */
 export const postTimeTable = (classData) => API.post('/timetables/',classData)

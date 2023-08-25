@@ -36,7 +36,9 @@
     width:75%;
     font-size:18px;
 }
-
+#role-input{
+  display: none;
+}
 
 .TeacherInfo-content-table {
     border-collapse: separate;
