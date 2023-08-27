@@ -40,6 +40,10 @@
   display: none;
 }
 
+.TeacherInfo-content-table tr .sub-head{
+  background-color: rgb(66 135 245/0.2);
+}
+
 .TeacherInfo-content-table {
     border-collapse: separate;
     border-spacing: 0;

@@ -1,0 +1,81 @@
+.bus-content-table {
+  width: 100%;
+}
+.bus-content-table tr td,
+.bus-content-table tr th {
+  padding: 8px 0px;
+}
+
+.bus-content-table tr th {
+  font-weight: 600;
+  font-size: medium;
+}
+.bus-content-table tr th[colspan="2"] {
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.bus-content-table tr input[type="text"],
+.bus-content-table tr input[type="time"],
+.bus-content-table tr input[type="number"],
+.bus-content-table tr input[type="text"]:focus,
+.bus-content-table tr input[type="time"]:focus,
+.bus-content-table tr input[type="number"]:focus {
+  border: 1px solid black;
+  outline: none;
+  border-radius: 10px;
+  padding: 4px;
+}
+.HostelRoom-content-table,
+.HostelMess-content-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 200px;
+  font-size: 17px;
+}
+.HostelRoom-content-table tr th,
+.HostelRoom-content-table tr td,
+.HostelMess-content-table tr th,
+.HostelMess-content-table tr td {
+  border-bottom: 1px solid #cadeef;
+  text-align: left;
+  padding: 5px;
+}
+.HostelRoom-content-table tr th:nth-child(6n),
+.HostelRoom-content-table tr td:nth-child(6n),
+.HostelMess-content-table tr th:nth-child(4n),
+.HostelMess-content-table tr td:nth-child(4n) {
+  border-right: 1px solid #cadeef;
+}
+.HostelRoom-content-table tr th:first-child,
+.HostelRoom-content-table tr td:first-child,
+.HostelMess-content-table tr th:first-child,
+.HostelMess-content-table tr td:first-child {
+  border-left: 1px solid #cadeef;
+}
+.HostelRoom-content-table tr th,
+.HostelMess-content-table tr th {
+  background: #cadeef;
+  border-top: 1px solid #cadeef;
+}
+.HostelRoom-content-table tr td,
+.HostelMess-content-table tr td {
+  background: rgb(202 222 239 / 0.3);
+}
+.HostelRoom-content-table tr:first-child th:first-child,
+.HostelMess-content-table tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+.HostelRoom-content-table tr:first-child th:last-child,
+.HostelMess-content-table tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+.HostelRoom-content-table tr:last-child td:first-child,
+.HostelMess-content-table tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+.HostelRoom-content-table tr:last-child td:last-child,
+.HostelMess-content-table tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}

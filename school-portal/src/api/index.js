@@ -53,6 +53,7 @@ export const deleteAnswers = (answerID) => API.delete(`/answers/${answerID}`)
 /* Class Messages */
 export const getClassMessage = (userData) => API.get(`/classmessages/${userData.type}s/${userData.id}`)
 export const postClassMessage = (message) => API.post('/classmessages',message);
+export const postClassMessage1 = (message) => API.post('/personalmessages',message);
 export const deleteClassMessage = (messageID) => API.delete(`/classmessages/${messageID}`);
 
 /* Exams */
@@ -85,3 +86,23 @@ export const getAllLeave = () => API.get('/leaves');
 export const postLeave = (leaveData) => API.post('/leaves',leaveData);
 export const deleteLeave = (leaveData) => API.delete(`/leaves`,leaveData);
 export const updateStatusLeave = (leaveData) => API.patch(`/leaves`,leaveData);
+
+/* Bus Details */
+export const getBusDetail = (busID) => API.get(`/buses/${busID}`);
+export const getBusDetails = () => API.get('/buses');
+export const postBusDetails = (busData) => API.post('/buses',busData);
+export const updateBusDetails = (busID,busData) => API.patch(`/buses/${busID}`,busData);
+export const deleteBusDetails = (busID) => API.delete(`/buses/${busID}`);
+
+/* Hostel Details */
+export const getHostelRoomDetail = (hostelID) => API.get(`/hostelrooms/${hostelID}`);
+export const getHostelRoomDetails = () => API.get('/hostelrooms');
+export const postHostelRoomDetails = (hostelData) => API.post('/hostelrooms',hostelData);
+export const updateHostelRoomDetails = (hostelID,hostelData) => API.patch(`/hostelrooms/${hostelID}`,hostelData);
+export const deleteHostelRoomDetails = (hostelID) => API.delete(`/hostelrooms/${hostelID}`);
+
+export const getHostelMessDetail = (hostelID) => API.get(`/hostelmess/${hostelID}`);
+export const getHostelMessDetails = () => API.get('/hostelmess');
+export const postHostelMessDetails = (hostelData) => API.post('/hostelmess',hostelData);
+export const updateHostelMessDetails = (hostelID,hostelData) => API.patch(`/hostelmess/${hostelID}`,hostelData);
+export const deleteHostelMessDetails = (hostelID) => API.delete(`/hostelmess/${hostelID}`);

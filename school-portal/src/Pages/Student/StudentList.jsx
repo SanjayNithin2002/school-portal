@@ -69,8 +69,8 @@ function StudentList() {
                                         </option>
                                         {
                                             class1 &&
-                                            class1.docs.map((item) => (
-                                                standardList.filter((class1) => class1.value === item.standard).map((class1) => (
+                                            Array.from( new Set(class1.docs.map((item) => item.standard))).map((item)=>(
+                                                standardList.filter((class1) => class1.value === item).map((class1) => (
                                                     <option value={class1.value}>{class1.label}</option>
                                                 ))
                                             ))
@@ -89,8 +89,8 @@ function StudentList() {
                                         </option>
                                         {
                                             class1 &&
-                                            class1.docs.filter((item) => parseInt(standard) === item.standard).map((item) => (
-                                                <option value={item.section}>{item.section}</option>
+                                            Array.from( new Set(class1.docs.filter((item) => parseInt(standard) === item.standard).map((item) => item.section))).map((item)=>(
+                                                <option value={item}>{item}</option>
                                             ))
                                         }
                                     </select>
@@ -123,7 +123,7 @@ function StudentList() {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan={6} align="center">
+                                                <td colSpan={6} style={{textAlign:"center"}}>
                                                     No Data
                                                 </td>
                                             </tr>

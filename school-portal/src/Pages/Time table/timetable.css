@@ -44,6 +44,7 @@
 .timetable-main-content-1 button{
     font-size:16px;
     padding:10px;
+    font-weight: 700;
     background-color: rgb(202 222 239 / 0.7);
 }
 .timetable-main-content-1 button:hover{

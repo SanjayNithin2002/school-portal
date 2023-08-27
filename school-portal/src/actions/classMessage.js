@@ -12,12 +12,25 @@ export const getClassMessage = (userData) => async (dispatch) => {
     }
 }
 
-export const postClassMessage = (message,navigate) => async () => {
+export const postClassMessage = (message,navigate) => async (dispatch) => {
     try{
         console.log(message)
         const { data } = await api.postClassMessage(message)
+        dispatch(getClassMessage({type:localStorage.getItem("type"),id:localStorage.getItem("id")}))
         console.log(data)
-        navigate('/Home')
+        //navigate('/Home')
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const postClassMessage1 = (message,navigate) => async(dispatch) =>{
+    try{
+        console.log(message)
+        const{data} = await api.postClassMessage1(message)
+        dispatch(getClassMessage({type:localStorage.getItem("type"),id:localStorage.getItem("id")}))
+        console.log(data);
     }
     catch(err){
         console.log(err)
