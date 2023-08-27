@@ -8,9 +8,87 @@ body {
   width: 480px;
 }
 
+.Main-Page-Content{
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.Main-Page-Content div{
+  padding:10px;
+  font-size:20px;
+}
+
+.Main-Page-Content div:first-child{
+  font-size:30px;
+  font-weight: 700;
+}
+
+.Login-card{
+  background-color: white;
+  padding:10px;
+  border-radius: 7px;
+  margin:10px;
+}
+
+.container-fluid1 .form-floating .rs-input-group .rs-input-group-addon{
+  background: #f7f7fa;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.container-fluid1 .form-floating .rs-input-group .rs-input-group-btn{
+  background: none;
+}
+.container-fluid1 .form-floating .rs-input-group .rs-input-group-btn:hover{
+  background: none;
+}
+
+.Login-Content{
+  background-color: white;
+  border-radius: 10px;
+  padding:15px;
+  box-shadow: 0 0 7px #aaaaaa;
+}
+
+.Login-Content-Title{
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.Login-logo img{
+  width:70px;
+  height:70px;
+}
+
+.Login-subMenu{
+  padding: 0px 0px 10px 10px;
+  padding-right:0px;
+  text-align: center;
+}
+
+.Login-subMenu .Login-type{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+@media (max-width:576px) {
+  .container-fluid1 .Login-Main-Content{
+    flex-direction: column;
+    width:60%;
+  }
+}
+
+@media (max-width:410px) {
+  .container-fluid1 .Login-Main-Content{
+    flex-direction: column;
+    width:75%;
+  }
+}
+
+
 .container-fluid1 {
-  display: flex;
-  justify-content: space-around;
+  top:70px;
+  position: relative;
   padding: 10px;
   margin: 20px;
 }

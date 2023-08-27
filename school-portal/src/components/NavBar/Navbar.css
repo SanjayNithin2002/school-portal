@@ -25,6 +25,17 @@
     color: white;
 }
 
+.top-navbar .nav-logo {
+    font-size: 35px;
+}
+
+.top-navbar .title1 {
+    font-size: 1.5rem;
+    margin: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 .top-navbar .top-navbar-ul {
     display: flex;
 }
