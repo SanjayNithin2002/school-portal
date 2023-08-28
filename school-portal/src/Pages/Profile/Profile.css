@@ -1,0 +1,139 @@
+.rightcol {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+.leftcol {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+.col {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.Profile-Container-1 {
+  border-radius: 10px;
+  padding: 10px;
+  height: fit-content;
+}
+
+.Profile-Container-1 table {
+  font-size: 18px;
+  margin: 10px;
+  width: -webkit-fill-available;
+}
+
+.Profile-Container-1 table td:nth-child(odd) {
+  text-align: left;
+  font-weight: bolder;
+}
+.Profile-Container-1 table td:nth-child(even) {
+  text-align: right;
+}
+.Profile-Container-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Profile-Container-2-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.Profile-tab {
+  width: 100%;
+  overflow-x: auto;
+  padding: 5px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+}
+
+.Profile-tab::-webkit-scrollbar {
+  display: none;
+}
+
+.Profile-tab-1 {
+  width: max-content;
+}
+
+.Profile-tab-1 .btn-outline-primary {
+  border-color: #39ace7;
+  color: #39ace7;
+}
+
+.Profile-tab-1 .btn-primary {
+  background-color: #39ace7;
+  border-color: #39ace7;
+}
+
+.Profile-tab-1 .btn-outline-primary:hover {
+  color: #39ace7;
+  background-color: white;
+  font-size: 15px;
+}
+
+.Profile-content {
+  border-radius: 10px;
+  padding: 5px;
+  width: 100%;
+}
+
+
+.Profile-content-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 200px;
+  font-size: 17px;
+}
+.Profile-content-table tr th,
+.Profile-content-table tr td {
+  border-bottom: 1px solid #cadeef;
+  text-align: left;
+  padding: 5px;
+}
+.Profile-content-table tr th:nth-child(even),
+.Profile-content-table tr td:nth-child(even) {
+  border-right: 1px solid #cadeef;
+  text-align: right;
+}
+.Profile-content-table tr th:nth-child(4n),
+.Profile-content-table tr td:nth-child(4n) {
+  border-right: 1px solid #cadeef;
+}
+.Profile-content-table tr th:first-child,
+.Profile-content-table tr td:first-child {
+  border-left: 1px solid #cadeef;
+}
+.Profile-content-table tr th {
+  background:	#cadeef;
+  border-top: 1px solid #cadeef;
+}
+.Profile-content-table tr td {
+    background: rgb(202 222 239 / 0.3);
+  }
+
+.Profile-content-table tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+
+.Profile-content-table tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+
+.Profile-content-table tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.Profile-content-table tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}

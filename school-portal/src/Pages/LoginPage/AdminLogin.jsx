@@ -1,5 +1,5 @@
-import React,{useState} from 'react'
-import { useNavigate,Link } from 'react-router-dom';
+import React,{useEffect, useState} from 'react'
+import { useNavigate,Link, useLocation } from 'react-router-dom';
 import { AdminlogIn } from '../../actions/auth';
 import { useDispatch } from 'react-redux';
 import { Input, InputGroup } from 'rsuite';
@@ -7,6 +7,7 @@ import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import PasswordIcon from "@rsuite/icons/legacy/Lock"
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
+import {Notification,useToaster} from 'rsuite';
 
 const AdminLogin = ({handleBack}) => {
     const [Adminuserid, setAdminUserid] = useState("");
@@ -14,11 +15,31 @@ const AdminLogin = ({handleBack}) => {
     const [visible, setVisible] = React.useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
+    const toaster = useToaster();
+
+    
+
     const handleSubmit = () => {
         dispatch(
             AdminlogIn({ userID: Adminuserid, password: Adminpassword }, navigate)
         );
     };
+
+    useEffect(()=>{
+        if(location.state){
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/',{state:null});
+        }
+    },[location.state,navigate,toaster])
+    
+    console.log(location);
     return (
         <div style={{width:"100%"}} className='row justify-content-center '>
         <div style={{borderTop:"3px solid #0d6efd"}} className='col-sm-8 col-md-6 col-lg-5 col-xl-4 Login-Content'>

@@ -72,12 +72,21 @@ export const postMany = (updateData) => API.post(`/marks/postmany`,updateData);
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
-export const getStudentAttendance = (userData) => 
+export const getTeacherAttendances = (userData) => API.get(`/teacherattendances`);
+export const getAdminAttendances = (userData) => API.get(`/adminattendances`);
+export const getAttendance = (userData) => 
     userData.type==="student" ? API.get(`/studentattendances/${userData.type}s/${userData.id}`) :
     userData.type==="teacher" ? API.get(`/teacherattendances/${userData.type}s/${userData.id}`) : 
     API.get(`/adminattendances/${userData.type}s/${userData.id}`)
 export const postStudentAttendance = (functionData) => API.post('/studentattendances/postmany',functionData);
+export const updateStudentAttendance = (functionData) => API.patch('/studentattendances/patchmany',functionData);
 export const deleteStudentAttendance = (functionID) => API.delete(`/studentattendances/${functionID}`);
+export const postTeacherAttendance = (functionData) => API.post('/teacherattendances/postmany',functionData);
+export const updateTeacherAttendance = (functionData) => API.patch('/teacherattendances/patchmany',functionData);
+export const deleteTeacherAttendance = (functionID) => API.delete(`/teacherattendances/${functionID}`);
+export const postAdminAttendance = (functionData) => API.post('/adminattendances/postmany',functionData);
+export const updateAdminAttendance = (functionData) => API.patch('/adminattendances/patchmany',functionData);
+export const deleteAdminAttendance = (functionID) => API.delete(`/adminattendances/${functionID}`);
 
 
 /* Leaves */

@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 import { Toggle } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getStudentAttendances, postStudentAttendance } from "../../actions/attendance";
+import { getStudentAttendances, postStudentAttendance, updateStudentAttendance } from "../../actions/attendance";
 
 const AddStudent = (props) => {
 
@@ -18,10 +18,10 @@ const AddStudent = (props) => {
         dispatch(getStudentAttendances({standard:props.standard,section:props.section,date:props.date}));
     }, [dispatch,props.standard,props.section,props.date])
 
-    let attendances = useSelector((state) => state.attendanceReducer)
+    let attendances = useSelector((state) => state.studentAttendanceReducer)
 
-    console.log(attendances);
-    console.log(attendance);
+    console.log(attendances)
+    console.log(attendance)
     console.log(props)
 
     if(!attendance && props.students){
@@ -54,7 +54,7 @@ const AddStudent = (props) => {
     }
 
     const handleBack = () => {
-        dispatch({type:"STUDENT_FETCH_ATTENDANCE",payload:null})
+        dispatch({type:"ALL_STUDENT_FETCH_ATTENDANCE",payload:null})
         props.close()
     } 
 
@@ -88,6 +88,25 @@ const AddStudent = (props) => {
             daysAgo = (desiredDay - currentDate.getDay() - 7) % 7;
         var desiredDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + daysAgo);
         return handleDateFormat(desiredDate);
+    }
+
+    const handleUpdate = ( ) => {
+        let request = [];
+        attendance.map((student)=>{
+            let status = student.status ? "Present" : "Absent";
+            attendances.docs.filter((stu)=>stu.student._id===student.student && status!==stu.status).map((stu)=>{
+                request.push({
+                    _id:stu._id,
+                    status,
+                })
+                return true;
+            })
+            return true;
+        })
+        console.log(request);
+        if(request.length>0){
+            dispatch(updateStudentAttendance(request,{standard:props.standard,section:props.section,date:props.date}));
+        }
     }
 
     const handleSubmit = ( ) => {
@@ -156,7 +175,12 @@ const AddStudent = (props) => {
                     <div className="row poststudent-container" style={{justifyContent:'center'}}>
                         <div className="col-lg-6" style={{ margin: "0px auto", display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
                             <button className="btn btn-danger" onClick={()=>handleBack()}>Back</button>
-                            <button className="btn btn-success" onClick={()=>handleSubmit()}>Post</button>
+                            {
+                                attendances && attendances.docs.length>0 ? 
+                                <button className="btn btn-success" onClick={()=>handleUpdate()}>Update</button>
+                                :
+                                <button className="btn btn-success" onClick={()=>handleSubmit()}>Post</button>
+                            }
                         </div>
                     </div>
                 </div>

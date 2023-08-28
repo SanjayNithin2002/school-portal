@@ -103,7 +103,7 @@ function Admin() {
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
-                    <div className='row justify-content-between'>
+                    <div className='row justify-content-between align-items-start'>
                         <h2 className='col-xl-10 col-lg-8 col-md-8 col-sm-9'>Examination Schedule</h2>
                         {
                             localStorage.getItem("type") === "admin" ?
@@ -123,7 +123,7 @@ function Admin() {
                                     Select Standard
                                 </option>
                                 {
-                                    class1 !== null && class1.docs.length > 0 &&
+                                    class1 && class1.docs.length > 0 &&
                                     Array.from(new Set(class1.docs.map(obj => obj.standard))).map((item) => (
                                         standardList.filter((class1) => class1.value === item).map((class1) => (
                                             <option value={class1.value}>{class1.label}</option>

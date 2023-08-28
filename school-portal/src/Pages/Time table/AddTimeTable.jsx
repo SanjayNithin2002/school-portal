@@ -402,8 +402,8 @@ const AddTimeTable = () => {
                                                     :
                                                     <>
                                                         <div className='row justify-content-center '>
-                                                            <div className='col-lg-8 table-responsive d-flex justify-content-center'>
-                                                                <Table className='ExamSchedule-content-table'>
+                                                            <div className='col-lg-8 d-flex justify-content-center'>
+                                                                <Table style={{minWidth:"initial"}} className='ExamSchedule-content-table'>
                                                                     <tbody>
                                                                         <tr>
                                                                             <th>S.No</th>

@@ -1,5 +1,4 @@
 import React from "react";
-import { Nav } from 'rsuite';
 import { Link } from "react-router-dom";
 
 import "./SideNavBar.css";
@@ -71,7 +70,7 @@ const Admin = () => {
                         <li><Link class="sub-link-name"><hr/><span>Staff</span></Link></li>
                         <li><Link to='/StaffInfo'>Staff Info</Link></li>
                         <li><Link to='/AddStaff'>Add Staff</Link></li>
-                        <li><Link to='/PostTeacherAttendanc'>Attendance</Link></li>
+                        <li><Link to='/PostTeacherAttendance'>Attendance</Link></li>
                         <li><Link to='/PostLeave'>Leave</Link></li>
                     </ul>
                 </li>
@@ -123,49 +122,3 @@ const Admin = () => {
 }
 
 export default Admin;
-
-
-// <Nav>
-// 
-// <Nav.Menu placement="rightStart" title="HR" icon={<HR />}>
-//   <Nav.Item divider />
-//   <Nav.Item panel style={{ padding: '15px 20px', color: '#aaa' }}>
-//     Student
-//   </Nav.Item>
-//   <Nav.Item href='/StudentInfo'>
-//     <a href="/StudentInfo" style={{ textDecoration: 'none', color: 'black' }}>Student Info </a></Nav.Item>
-//   <Nav.Item href='/AddStudent'>
-//     <a href="/AddStudent" style={{ textDecoration: 'none', color: 'black' }}>Add Student </a></Nav.Item>
-//   <Nav.Item href='/Bonafide'>
-//     <a href="/Bonafide" style={{ textDecoration: 'none', color: 'black' }}>Student Bonafide </a></Nav.Item>
-//   <Nav.Item divider />
-//   <Nav.Item panel style={{ padding: '15px 20px', color: '#aaa' }}>
-//     Staff
-//   </Nav.Item>
-//   <Nav.Item href='/StaffInfo'>
-//     <a href="/StaffInfo" style={{ textDecoration: 'none', color: 'black' }}>Staff List </a></Nav.Item>
-//   <Nav.Item href='/AddStaff'>
-//     <a href="/AddStaff" style={{ textDecoration: 'none', color: 'black' }}>Add Staff </a></Nav.Item>
-//   <Nav.Item href='/PostTeacherAttendance'>
-//     <a href="/PostTeacherAttendance" style={{ textDecoration: 'none', color: 'black' }}>Attendance </a></Nav.Item>
-//   <Nav.Item href='/PostLeave'>
-//     <a href="/PostLeave" style={{ textDecoration: 'none', color: 'black' }}>Leave Request </a></Nav.Item>
-// </Nav.Menu>
-// <Nav.Item href='/Meeting' icon={<Meet />}>
-//   Meetings
-// </Nav.Item>
-// <Nav.Menu placement="rightStart" title="Class" icon={<Class />}>
-//   <Nav.Item href='/ClassInfo'>
-//     <a href="/ClassInfo" style={{ textDecoration: 'none', color: 'black' }}>Class Info </a></Nav.Item>
-//   <Nav.Item href='/Exam'>
-//     <a href="/Exam" style={{ textDecoration: 'none', color: 'black' }}>Exams </a></Nav.Item>
-//   <Nav.Item href='/TimeTable'>
-//     <a href="/TimeTable" style={{ textDecoration: 'none', color: 'black' }}>TimeTable </a></Nav.Item>
-// </Nav.Menu>
-// <Nav.Item href='/payment' icon={<Fees />}>
-//   Fees Stucture
-// </Nav.Item>
-// <Nav.Item href='/Setting' icon={<Setting />}>
-//   Settings
-// </Nav.Item>
-// </Nav>

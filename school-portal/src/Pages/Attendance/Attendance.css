@@ -905,6 +905,20 @@ button.rbc-input::-moz-focus-inner {
   border-radius: 10px;
 }
 
+.PostStudent-content-table .white-color {
+  color: black;
+  background-color: white;
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.PostStudent-content-table .green-color option,
+.PostStudent-content-table .red-color option,
+.PostStudent-content-table .white-color option {
+  background: white;
+  font-weight: 600;
+}
+
 .poststudent-container-1 {
   margin: 0px auto;
   display: flex;

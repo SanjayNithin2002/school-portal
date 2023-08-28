@@ -1,8 +1,8 @@
 import React from 'react'
 import Student from './Student'
-import Error404 from '../Error404'
+import Teacher from './Teacher'
 
-const ContactUs = () => {
+const Home = () => {
   return (
     <>
     {
@@ -11,14 +11,14 @@ const ContactUs = () => {
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Error404/>
+        <Teacher/>
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Error404/>
+        <Teacher/>
     }
     </>
   )
 }
 
-export default ContactUs
+export default Home

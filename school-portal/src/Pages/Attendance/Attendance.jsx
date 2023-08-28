@@ -3,14 +3,13 @@ import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
-// import {useSelector} from "react-redux"
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import "./Attendance.css"
 import { useDispatch, useSelector } from "react-redux";
-import { getStudentAttendance } from "../../actions/attendance";
+import { getAttendance } from "../../actions/attendance";
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -29,7 +28,7 @@ function Attendance() {
     const [events, setEvents] = useState(null);
 
     useEffect(() => {
-        dispatch(getStudentAttendance({ id: localStorage.getItem('id'), type: localStorage.getItem('type') }))
+        dispatch(getAttendance({ id: localStorage.getItem('id'), type: localStorage.getItem('type') }))
     }, [dispatch])
 
     const event = useSelector(state => state.attendanceReducer)

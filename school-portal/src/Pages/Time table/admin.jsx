@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as solid from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 import { getTimeTable } from '../../actions/timetable';
-import {Table} from "react-bootstrap"
+import { Table } from "react-bootstrap"
 
 
 const Admin = () => {
@@ -42,10 +42,10 @@ const Admin = () => {
         return result;
     }
 
-    const handleStandard = (value) =>{
-        setStandard(value); 
-        setEdit(true); 
-        dispatch({type:"FETCH_CLASS_TIMETABLE",payload:null}); 
+    const handleStandard = (value) => {
+        setStandard(value);
+        setEdit(true);
+        dispatch({ type: "FETCH_CLASS_TIMETABLE", payload: null });
         setTimetableData([]);
     }
 
@@ -53,9 +53,9 @@ const Admin = () => {
 
         let sec = Array.from(new Set(class1.docs.filter((item1) => item1.standard === parseInt(standard)).map((obj) => obj.section)));
         sec.map((item1) => {
-            let subjectList1 = {standard,section:item1};
-            class1.docs.filter((class2)=>class2.standard===parseInt(standard) && class2.section===item1 && class2.subject!=="Class Teacher").map((class2)=>{
-                subjectList1[class2.subject]=class2.teacher;
+            let subjectList1 = { standard, section: item1 };
+            class1.docs.filter((class2) => class2.standard === parseInt(standard) && class2.section === item1 && class2.subject !== "Class Teacher").map((class2) => {
+                subjectList1[class2.subject] = class2.teacher;
                 return true;
             })
             days.map((day1, index1) => {
@@ -78,11 +78,11 @@ const Admin = () => {
                             if (flag === 0) {
                                 let subTeacher = [];
                                 slot["startTime"] = startTime;
-                                subTeacher = class1.docs.filter((class2)=> class2.standard===parseInt(standard) && class2.section===item1 && class2.timings.filter((slot1)=>slot1.startTime===startTime && slot1.day===day1 && slot1.endTime===addMin(startTime, item2.duration)).length>0)
+                                subTeacher = class1.docs.filter((class2) => class2.standard === parseInt(standard) && class2.section === item1 && class2.timings.filter((slot1) => slot1.startTime === startTime && slot1.day === day1 && slot1.endTime === addMin(startTime, item2.duration)).length > 0)
                                 startTime = addMin(startTime, item2.duration);
                                 slot["endTime"] = startTime;
-                                slot["subject"] = subTeacher.length!==0 ? subTeacher[0].subject : "-";
-                                slot["teacher"] = subTeacher.length!==0 ? subTeacher[0].teacher : "-";
+                                slot["subject"] = subTeacher.length !== 0 ? subTeacher[0].subject : "-";
+                                slot["teacher"] = subTeacher.length !== 0 ? subTeacher[0].teacher : "-";
                             }
                             temp1.push(slot);
                         }
@@ -159,51 +159,51 @@ const Admin = () => {
                     <br />
                     <br />
                     <div>
-                    <div className='table-responsive table-preview'>
-                        <Table className='timetable-preview'>
-                            <tr>
-                                <td>From</td>
-                                {
-                                    timetableData && standard && section &&
-                                    timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]["slot"].map((slot) => (
-                                        <td>{slot.startTime}</td>
-                                    ))
-                                }
-                            </tr>
-                            <tr>
-                                <td>To</td>
-                                {
-                                    timetableData && standard && section &&
-                                    timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]["slot"].map((slot) => (
-                                        <td>{slot.endTime}</td>
-                                    ))
-                                }
-                            </tr>
+                        <div className='table-responsive table-preview'>
                             {
                                 timetableData && standard && section &&
-                                timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section).map((item, index) => (
+                                <Table className='timetable-preview'>
                                     <tr>
-                                        <td className='preview-sideHeader'>{days[index]}</td>
+                                        <td>From</td>
                                         {
-                                            item.slot.map((slot, index1) => (
-
-                                                slot.teacher === "Break" && index === 0 ?
-                                                    <>
-                                                        <td rowSpan={timetableData.filter((item) => item.standard === standard && item.section === section).length}>{slot.subject}</td>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        {
-                                                            slot.teacher !== "-" ? slot.teacher !== "Break" ? <td><span style={{ cursor: "pointer" }} title={slot.teacher.firstName + " " + slot.teacher.lastName + " - " + slot.teacher.empID}>{slot.subject}</span></td> : <></> : <td><span style={{ cursor: "pointer" }} title="No Teacher">{slot.subject}</span></td>
-                                                        }
-                                                    </>
+                                            timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]["slot"].map((slot) => (
+                                                <td>{slot.startTime}</td>
                                             ))
                                         }
                                     </tr>
-                                ))
+                                    <tr>
+                                        <td>To</td>
+                                        {
+                                            timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]["slot"].map((slot) => (
+                                                <td>{slot.endTime}</td>
+                                            ))
+                                        }
+                                    </tr>
+                                    {
+                                        timetableData.filter((item) => item.standard === parseInt(standard) && item.section === section).map((item, index) => (
+                                            <tr>
+                                                <td className='preview-sideHeader'>{days[index]}</td>
+                                                {
+                                                    item.slot.map((slot, index1) => (
+
+                                                        slot.teacher === "Break" && index === 0 ?
+                                                            <>
+                                                                <td rowSpan={timetableData.filter((item) => item.standard === standard && item.section === section).length}>{slot.subject}</td>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                {
+                                                                    slot.teacher !== "-" ? slot.teacher !== "Break" ? <td><span style={{ cursor: "pointer" }} title={slot.teacher.firstName + " " + slot.teacher.lastName + " - " + slot.teacher.empID}>{slot.subject}</span></td> : <></> : <td><span style={{ cursor: "pointer" }} title="No Teacher">{slot.subject}</span></td>
+                                                                }
+                                                            </>
+                                                    ))
+                                                }
+                                            </tr>
+                                        ))
+                                    }
+                                </Table>
                             }
-                        </Table>
-                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
