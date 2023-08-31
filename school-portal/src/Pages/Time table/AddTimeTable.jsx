@@ -192,12 +192,15 @@ const AddTimeTable = () => {
                                 day: info.day,
                             })
                         }
+                        return true;
                     })
                 }
+                return true;
             })
             console.log(req);
             if (req._id !== "")
                 request1.push(req);
+            return true;
         })
 
         console.log(request1);
@@ -271,6 +274,7 @@ const AddTimeTable = () => {
                                 item3.timings.filter((item4) => item4.day === item2.day && item4.startTime === slot.startTime).map((item4) => {
                                     updateSlotDetails(index2, index3, item3.subject, item3.teacher);
                                     console.log(temp);
+                                    return true;
                                 })
                             }
                             if (item3.subject !== "Class Teacher" || (item3.subject === "Class Teacher" && item3.timings.length > 0))
@@ -296,6 +300,7 @@ const AddTimeTable = () => {
             if (subjectList.filter((sub) => sub.standard === standard && sub.section === section)[0][item] !== null) {
                 subList.push({ label: item, value: item });
             }
+            return true;
         })
         console.log(subList);
         if (subList.length === 0)
@@ -605,41 +610,3 @@ const AddTimeTable = () => {
 }
 
 export default AddTimeTable
-
-// timetableData2.map((item, i) => {
-            //     item.slot.filter((slot) => slot.teacher !== null && slot.subject !== null && slot.teacher !== "Break").map((slot) => {
-            //         let flag = null;
-            //         request1.map((item2, index2) => {
-            //             if (item2.standard === item.standard && item2.section === item.section && item2.teacher === slot.teacher._id && item2.subject === slot.subject) {
-            //                 flag = index2;
-            //             }
-            //         })
-            //         if (flag !== null) {
-            //             request1[flag].timings.push({ startTime: slot.startTime, endTime: slot.endTime, day: item.day });
-            //         }
-            //         else {
-            //             let temp = {};
-            //             temp.standard = item.standard;
-            //             temp.section = item.section;
-            //             temp.subject = slot.subject;
-            //             temp.teacher = slot.teacher._id;
-            //             temp.timings = [];
-            //             temp.timings.push({ startTime: slot.startTime, endTime: slot.endTime, day: item.day });
-            //             request1.push(temp);
-            //         }
-            //     })
-            //     if (item.classTeacher !== null && i === 0) {
-            //         let temp = {};
-            //         temp.standard = item.standard;
-            //         temp.section = item.section;
-            //         temp.subject = "Class Teacher";
-            //         temp.teacher = item.classTeacher._id;
-            //         temp.timings = [];
-            //         request1.push(temp);
-            //     }
-            // })
-            // class1.docs.filter((class2) => class2.teacher !== null).map((class2) => {
-            //     request2.push(class2._id);
-            // })
-            // console.log(request1);
-            // console.log(request2);

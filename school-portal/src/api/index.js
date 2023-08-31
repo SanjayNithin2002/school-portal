@@ -115,3 +115,9 @@ export const getHostelMessDetails = () => API.get('/hostelmess');
 export const postHostelMessDetails = (hostelData) => API.post('/hostelmess',hostelData);
 export const updateHostelMessDetails = (hostelID,hostelData) => API.patch(`/hostelmess/${hostelID}`,hostelData);
 export const deleteHostelMessDetails = (hostelID) => API.delete(`/hostelmess/${hostelID}`);
+
+
+export const getSpotlight = () => API.get('/spotlight');
+export const postSpotlight = (FunctionData) => API.post('/spotlight',FunctionData);
+export const updateSpotlight = (functionID,FunctionData) => API.patch(`/spotlight/${functionID}`,FunctionData);
+export const deleteSpotlight = (functionID) => API.delete(`/spotlight/${functionID}`);

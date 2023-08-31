@@ -95,7 +95,7 @@ const Admin = () => {
                         <span class="link_name">Bus & Hostel</span>
                     </Link>
                     <ul class="sub-menu blank">
-                        <li><Link to='/payment' class="link_name">Bus & Hostel</Link></li>
+                        <li><Link to='/busHostel' class="link_name">Bus & Hostel</Link></li>
                     </ul>
                 </li>
                 <li>
@@ -105,6 +105,15 @@ const Admin = () => {
                     </Link>
                     <ul class="sub-menu blank">
                         <li><Link to='/payment' class="link_name">Fees Structure</Link></li>
+                    </ul>
+                </li>
+                <li>
+                    <Link to='/Spotlight'>
+                        <i class='bx bx-certification'></i>
+                        <span class="link_name">Spotlight</span>
+                    </Link>
+                    <ul class="sub-menu blank">
+                        <li><Link to='/Spotlight' class="link_name">Spotlight</Link></li>
                     </ul>
                 </li>
                 <li>

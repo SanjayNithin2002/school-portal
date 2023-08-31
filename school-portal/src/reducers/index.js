@@ -21,7 +21,8 @@ import hostelRoomReducer from "./hostelroom"
 import adminAttendanceReducer from "./AdminAttendance"
 import teacherAttendanceReducer from "./teacherAttendance"
 import studentAttendanceReducer from "./StudentAttendance"
+import spotlightReducer from "./Spotlight"
 
 export default combineReducers({
-    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer,busReducer,hostelRoomReducer,hostelMessReducer,adminAttendanceReducer,teacherAttendanceReducer,studentAttendanceReducer
+    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer,busReducer,hostelRoomReducer,hostelMessReducer,adminAttendanceReducer,teacherAttendanceReducer,studentAttendanceReducer,spotlightReducer
 })
