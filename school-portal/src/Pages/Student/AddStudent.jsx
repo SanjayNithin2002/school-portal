@@ -4,8 +4,6 @@ import Table from 'react-bootstrap/esm/Table';
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {AddStudents} from "../../actions/auth";
-
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Student.css";
 
 const AddStudent = () => {
@@ -23,13 +21,9 @@ const AddStudent = () => {
     const [motherDetails,setMotherDetails] = useState({name:'',age:null,qualification:'',occupation:'',annualIncome:'',phoneNumber:null,email:''});
     const [gaudianDetails,setGaudianDetails] = useState({name:'',age:null,qualification:'',occupation:'',annualIncome:'',phoneNumber:null,email:''});
     const [address,setAddress] = useState({line1:'',line2:'',city:'',state:'',pincode:''});
-    const [busdetails,setBusdetails] = useState({isNeeded:false,busStopArea:'',busStop:'',availableBus:''});
-    const [hostelDetails,setHostelDetails] = useState({isNeeded:false,roomType:'',foodType:''});
     const [step, setStep] = useState(0);
     const [father,setFather] = useState(true);
     const [mother,setMother] = useState(true); 
-    const [bus,setBus] = useState(false);
-    const [hostel,setHostel] = useState(false);
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 3 ? 3 : nextStep);
     };
@@ -62,34 +56,24 @@ const AddStudent = () => {
             }
             if(flag===1){
                 onChange(step + 1);
+                setRequest({
+                    applicationNumber,
+                    firstName:name.fname,
+                    lastName:name.lname,
+                    dob,
+                    gender,
+                    bloodGroup:blood,
+                    aadhaarNumber:aadhaar,
+                    motherTongue:secondLang,
+                    standard,
+                    section:"",
+                    email,
+                    address,
+                    father:father ? fatherDetails:null,
+                    mother:mother ? motherDetails:null,
+                    guadian:!father && !mother ? gaudianDetails:null,
+                });
             }
-            
-            setFatherDetails((prev) => ({...prev,annualIncome:100000}))
-        }
-        else if(step===2){
-            onChange(step + 1);
-            setRequest({
-                applicationNumber,
-                firstName:name.fname,
-                lastName:name.lname,
-                dob,
-                gender,
-                bloodGroup:blood,
-                aadhaarNumber:aadhaar,
-                motherTongue:secondLang,
-                standard,
-                section:"",
-                email,
-                address,
-                father:father ? fatherDetails:null,
-                mother:mother ? motherDetails:null,
-                guadian:!father && !mother ? gaudianDetails:null,
-                busDetails: busdetails,
-                hostelDetails : hostelDetails,
-            });
-        }
-        else if(step===3){
-            
         }
     }
     const onPrevious = () => onChange(step - 1);
@@ -107,7 +91,7 @@ const AddStudent = () => {
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <div className='d-flex justify-content-between'>
                         <h2>Add Student</h2>
-                        {step===3 && <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button>}
+                        {step===2 && <button className='btn btn-primary' onClick={() => handleSubmit()}>Submit</button>}
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="AddStudent-container">
@@ -115,7 +99,6 @@ const AddStudent = () => {
                         <Steps current={step}>
                             <Steps.Item title="Personal" />
                             <Steps.Item title="Family" />
-                            <Steps.Item title={<>School Bus <br/>& Hostel</>} />
                             <Steps.Item title="Review" />
                         </Steps>
                         <br />
@@ -353,60 +336,8 @@ const AddStudent = () => {
                                 </div>
                             </div>
                         }
+                        
                         {step === 2 &&
-                            <div className='row'>
-                                <div className='col-lg-8 justify-content-center'>
-                                    <Table bordered className='AddStudent-Table-List'>
-                                        <tbody>
-                                            {
-                                            (bus || (!bus && !hostel) ) && 
-                                            <tr>
-                                                <td>Does the student need school bus : </td>
-                                                <td><input type="radio" name="bus" onClick={()=>{setBus(true);setBusdetails((prev)=>({...prev,isNeeded:true}));}} checked={bus} />Yes &emsp; <input type="radio" name="bus" onClick={()=>{setBus(false);setBusdetails((prev)=>({...prev,isNeeded:false}));}} checked={!bus} />No</td>
-                                            </tr>
-                                             
-                                           } 
-                                           {
-                                            (hostel || (!bus && !hostel) ) && 
-                                            <tr>
-                                                <td>Does the student need Hostal : </td>
-                                                <td><input type="radio" name="hostel" onClick={()=>{setHostel(true);setHostelDetails((prev)=>({...prev,isNeeded:true}));}} checked={hostel} />Yes &emsp; <input type="radio" name="hostel" onClick={()=>{setHostel(false);setHostelDetails((prev)=>({...prev,isNeeded:false}));}} checked={!hostel} />No</td>
-                                            </tr>
-                                            }
-                                            {bus && <>
-                                            <tr>
-                                                <td>Bus Stop Area</td>
-                                                <td><input value={busdetails.busStopArea} onChange={(e)=>setBusdetails((prev) => ({...prev,busStopArea:e.target.value}))} type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Bus Stop</td>
-                                                <td><input value={busdetails.busStop} onChange={(e)=>setBusdetails((prev) => ({...prev,busStop:e.target.value}))} type="text" /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Available Bus</td>
-                                                <td><input value={busdetails.availableBus} onChange={(e)=>setBusdetails((prev) => ({...prev,availableBus:e.target.value}))} type="text" /><br/>Automatically</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Route Bus</td>
-                                                <td>{busdetails.route}</td>
-                                            </tr>
-                                            </>}
-                                            {hostel && <>
-                                            <tr>
-                                                <td>Room Type</td>
-                                                <td><input type="radio" name="room" onClick={()=>setHostelDetails((prev) => ({...prev,roomType:"AC"}))} />AC &emsp; <input type="radio" name="room" onClick={()=>setHostelDetails((prev) => ({...prev,roomType:"Non AC"}))} />Non AC</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Food Type</td>
-                                                <td><input type="radio" name="food" onClick={()=>setHostelDetails((prev) => ({...prev,foodType:"Veg"}))} />Veg &emsp; <input type="radio" name="food" onClick={()=>setHostelDetails((prev) => ({...prev,foodType:"Non Veg"}))} />Non Veg</td>
-                                            </tr>
-                                            </>}
-                                        </tbody>
-                                    </Table>
-                                </div>
-                            </div>
-                        }
-                        {step === 3 &&
                             <div className='row'>
                                 <div className='col-lg-8 justify-content-center'>
                                     <Table className='AddStudent-Table-List-1'>
@@ -563,45 +494,7 @@ const AddStudent = () => {
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
-                                                <td colSpan={4} style={{textAlign:"center",fontWeight:"bold"}}>School Bus and Hostel Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>Does the student need school bus : </td>
-                                                <td colSpan={2}>{bus ? "Yes" : "No"}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan={2}>Does the student need Hostal : </td>
-                                                <td colSpan={2}>{hostel ? "Yes" : "No"}</td>
-                                            </tr>
-                                            {bus && <>
-                                            <tr>
-                                                <td colSpan={4} style={{fontWeight:"bold"}}>School Bus Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Bus Stop Area</td>
-                                                <td>{busdetails.busStopArea}</td>
-                                                <td>Bus Stop</td>
-                                                <td>{busdetails.busStop}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Available Bus</td>
-                                                <td>{busdetails.availableBus}</td>
-                                                <td>Route Bus</td>
-                                                <td>{busdetails.route}</td>
-                                            </tr>
-                                            </>}
-                                            {hostel && <>
-                                            <tr>
-                                                <td colSpan={4} style={{fontWeight:"bold"}}>Hostel Details</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Room Type</td>
-                                                <td>{hostelDetails.roomType}</td>
-                                                <td>Food Type</td>
-                                                <td>{hostelDetails.foodType}</td>
-                                            </tr>
-                                            </>}
+                                            
                                         </tbody>
                                     </Table>
                                 </div>

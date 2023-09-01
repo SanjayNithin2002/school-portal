@@ -1,6 +1,9 @@
 import axios from "axios"
-const API = axios.create({baseURL:'https://schoolportalbackend.onrender.com',headers:{authorization:`Bearer ${localStorage.getItem('token')}`}})
-const API1 = axios.create({headers:{authorization:`Bearer ${localStorage.getItem('token')}`}})
+
+const token = localStorage.getItem("token");
+console.log(token)
+const API = axios.create({baseURL:'https://schoolportalbackend.onrender.com',headers:{authorization:`Bearer ${token}`}})
+const API1 = axios.create({headers:{authorization:`Bearer ${token}`}})
 
 /* Generals */
 export const getCurrentUser = (userData) => API.get(`/${userData.type}s/${userData.id}`)
@@ -12,6 +15,8 @@ export const requestTeacher = (teacherID) => API.get(`/teachers/${teacherID}`)
 export const requestContact = (contactData) => API.post('/sendmail',contactData)
 export const AddStudent = (authData) => API.post('/students/signup',authData)
 export const AddTeacher = (authData) => API.post('/teachers/signup',authData)
+export const AddAdmin = (authData) => API.post('/admins/signup',authData)
+export const AddWorkers = (authData) => API.post('/workers',authData)
 
 /* Settings */
 export const changeUserID = (type,userData) => API.patch(`/${type}s/changeuserid`,userData)
@@ -96,27 +101,8 @@ export const postLeave = (leaveData) => API.post('/leaves',leaveData);
 export const deleteLeave = (leaveData) => API.delete(`/leaves`,leaveData);
 export const updateStatusLeave = (leaveData) => API.patch(`/leaves`,leaveData);
 
-/* Bus Details */
-export const getBusDetail = (busID) => API.get(`/buses/${busID}`);
-export const getBusDetails = () => API.get('/buses');
-export const postBusDetails = (busData) => API.post('/buses',busData);
-export const updateBusDetails = (busID,busData) => API.patch(`/buses/${busID}`,busData);
-export const deleteBusDetails = (busID) => API.delete(`/buses/${busID}`);
 
-/* Hostel Details */
-export const getHostelRoomDetail = (hostelID) => API.get(`/hostelrooms/${hostelID}`);
-export const getHostelRoomDetails = () => API.get('/hostelrooms');
-export const postHostelRoomDetails = (hostelData) => API.post('/hostelrooms',hostelData);
-export const updateHostelRoomDetails = (hostelID,hostelData) => API.patch(`/hostelrooms/${hostelID}`,hostelData);
-export const deleteHostelRoomDetails = (hostelID) => API.delete(`/hostelrooms/${hostelID}`);
-
-export const getHostelMessDetail = (hostelID) => API.get(`/hostelmess/${hostelID}`);
-export const getHostelMessDetails = () => API.get('/hostelmess');
-export const postHostelMessDetails = (hostelData) => API.post('/hostelmess',hostelData);
-export const updateHostelMessDetails = (hostelID,hostelData) => API.patch(`/hostelmess/${hostelID}`,hostelData);
-export const deleteHostelMessDetails = (hostelID) => API.delete(`/hostelmess/${hostelID}`);
-
-
+/* SpotLight */
 export const getSpotlight = () => API.get('/spotlight');
 export const postSpotlight = (FunctionData) => API.post('/spotlight',FunctionData);
 export const updateSpotlight = (functionID,FunctionData) => API.patch(`/spotlight/${functionID}`,FunctionData);

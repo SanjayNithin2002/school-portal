@@ -113,13 +113,24 @@
     top:-25px;
 }
 
+.new-assessment-table .quill{
+    width: 400px;
+}
+.new-assessment-table .ql-editor{
+    height:150px;
+    width: inherit;
+    overflow: auto;
+}
+
 .new-assessment-table{
-    width:60%;
+    width:100%;
     border: 1px solid lightgray;
     border-radius: 10px;
 }
 
-.new-assessment-table input[type="text"],.new-assessment-table textarea {
+.new-assessment-table input[type="text"],
+.new-assessment-table input[type="number"],
+.new-assessment-table textarea {
     width:90%;
     padding:4px;
     font-size:18px;

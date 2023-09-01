@@ -35,7 +35,6 @@ import ViewBonafide from "./Pages/Bonafide/ViewBonafide";
 import UpdateLeave from "./Pages/Leave/UpdateLeave";
 import AddTimeTable from "./Pages/Time table/AddTimeTable";
 import SideNavBar from "./components/SideNavBar/SideNavBar";
-import BusHostel from "./Pages/BusHostel/BusHostel";
 import Profile from "./Pages/Profile/Profile"
 import Spotlight from "./Pages/Spotlight/Spotlight";
 
@@ -78,7 +77,6 @@ const AllRoutes = () => {
                 <Route path='/ViewBonafide' element={<ViewBonafide/>} />
                 <Route path='/PostLeave' element={<UpdateLeave/>}/>
                 <Route path='/AddTimeTable' element={<AddTimeTable/>}/>
-                <Route path='/busHostel' element={<BusHostel/>}/>
                 <Route path='/Profile' element={<Profile/>} />
                 <Route path='/Spotlight' element={ <Spotlight/> }/>
                 

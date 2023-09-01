@@ -311,11 +311,12 @@ const AddTimeTable = () => {
     }
 
     if (teacher1 && teachersList.length <= 0) {
-        setTeachersList(teacher1.docs.map(item => ({ label: item.firstName + " " + item.lastName + " - " + item.empID, value: item._id })))
+        setTeachersList(teacher1.docs.map(item => ({ label: item.firstName + " " + item.lastName + " - " + item.empID, value: item._id, role: item.primarySubject ? item.primarySubject.toUpperCase() : "ANY" })))
     }
 
     console.log(timetableData2);
     console.log(subjectList);
+    console.log(teachersList);
 
     return (
         <div className="Main">
@@ -428,7 +429,7 @@ const AddTimeTable = () => {
                                                                                                     sub[item].firstName + " " + sub[item].lastName + " - " + sub[item].empID : <>
                                                                                                         {
                                                                                                             teachersList.length > 0 &&
-                                                                                                            <SelectPicker value="" onChange={(value) => { updateSubjectList(standard, section, item, teacher1.docs.filter(teacher => teacher._id === value)[0]); setDisplaySubject([]); }} data={teachersList} />
+                                                                                                            <SelectPicker value="" onChange={(value) => { updateSubjectList(standard, section, item, teacher1.docs.filter(teacher => teacher._id === value)[0]); setDisplaySubject([]); }} groupBy='role' data={teachersList} />
                                                                                                         }</>
                                                                                             }
                                                                                         </td>

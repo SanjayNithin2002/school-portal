@@ -72,6 +72,30 @@ export const AddTeachers = (authData,navigate) => async (dispatch) => {
     }
 }
 
+export const AddAdmin = (authData,navigate) => async (dispatch) => {
+    try{
+        console.log(authData)
+        const {data} = await api.AddAdmin(authData)
+        console.log(data)
+        navigate('/AddStaff');
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+export const AddWorkers = (authData,navigate) => async (dispatch) => {
+    try{
+        console.log(authData)
+        const {data} = await api.AddWorkers(authData)
+        console.log(data)
+        navigate('/AddStaff');
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 export const requestContact = (contactData,navigate) => async (dispatch) => {
     try{
         console.log(contactData)
