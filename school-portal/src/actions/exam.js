@@ -30,7 +30,7 @@ export const getExam = (examData) => async(dispatch) =>{
 
 export const getStudentExam = (userData) => async(dispatch) => {
     try{
-        console.log(userData)
+        // console.log(userData)
         const {data} = await api.getStudentExam(userData);
         dispatch({type:"FETCH_STUDENT_EXAM",payload:data})
     }

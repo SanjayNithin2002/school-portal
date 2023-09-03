@@ -41,7 +41,7 @@ export const getStandardClass = (standard) => async(dispatch) =>{
 
 export const getClass = (userData) => async(dispatch) =>{
     try{
-        console.log(userData)
+        // console.log(userData)
         const {data} = await api.getClass(userData);
         dispatch({type:'FETCH_CLASS_DETAILS',payload:data})
     }

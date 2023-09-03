@@ -70,13 +70,15 @@ export const getExam = (examData) => API.get(`/exams/standard/${examData.standar
 export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${userData.id}`)
 
 /* Marks */
-export const getMarks = (userData) => API.get(`/marks/teachers/${userData.id}`);
+export const getMarks = (userData) => API.get(`/assessments/exams/${userData.id}`);
 export const getMarksCSV = (userData) => API.get(`/students/marks/generatecsv/5/A`);
-export const getMarksByID = (assessmentID) => API.get(`marks/assessments/${assessmentID}`);
+export const getMarksByAssessmentID = (userData) => API.get(`marks/assessments/${userData.id}`);
+export const getMarksByExamID = (userData) => API.get(`marks/exams/${userData.id}`);
 export const getMarksForStudent = (userData) => API.get(`/marks/students/${userData.id}`);
+export const delMarks = (updateData) => API.delete(`/marks/649244661c9f98c6b70d0337`);
 export const postMarks = (updateData) => API.post(`/marks/`,updateData);
-export const delMarks = (updateData) => API.delete(`/marks/64d139c5b613daf5ecc7ec53`);
-export const postMany = (updateData) => API.post(`/marks/postmany`,updateData);
+export const postMany = (updatedData) => API.post(`/marks/postmany`,updatedData);
+export const postManyFile = (formData) => API.post(`/marks/postmany/fileupload`,formData);
 
 /* Student Attendance */
 export const getStudentAttendances = (userData) => API.get(`/studentattendances/standard/${userData.standard}/section/${userData.section}/date/${userData.date}`);
