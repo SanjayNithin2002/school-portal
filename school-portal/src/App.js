@@ -28,9 +28,6 @@ function App() {
             {
                     userType==="" && 
                     <>
-                <div>
-                    <img className="" src="" alt=""/>
-                </div>
                 <div className=" Main-Page-Content d-flex flex-column align-item-start">
                     <div>
                         Welcome to the School Portal

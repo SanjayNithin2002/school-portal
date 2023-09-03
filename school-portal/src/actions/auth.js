@@ -14,8 +14,7 @@ export const StudentlogIn = (authData,navigate) => async (dispatch) => {
     }
     catch(err){
         console.log(err)
-        
-
+        navigate('/',{state:{status:err.response.status,message:err.response.data.message}})
     }
 }
 export const TeacherlogIn = (authData,navigate) => async (dispatch) => {
@@ -30,6 +29,7 @@ export const TeacherlogIn = (authData,navigate) => async (dispatch) => {
     }
     catch(err){
         console.log(err)
+        navigate('/',{state:{status:err.response.status,message:err.response.data.message}})
     }
 }
 export const AdminlogIn = (authData,navigate) => async (dispatch) => {

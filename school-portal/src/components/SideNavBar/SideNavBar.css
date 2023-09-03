@@ -16795,7 +16795,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200px;
+  width: 220px;
   height:100vh;
   background: #0784b5;
   z-index: 100;
@@ -17038,9 +17038,6 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 
 @media screen and (max-width: 400px){
-  .sidebar{
-    width: 240px;
-  }
   .sidebar{
     width: 65px;
   }

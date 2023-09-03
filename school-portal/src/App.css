@@ -71,10 +71,13 @@ body {
   font-weight: 700;
 }
 
-@media (max-width:576px) {
+@media (max-width:575px) {
   .container-fluid1 .Login-Main-Content{
     flex-direction: column;
     width:60%;
+  }
+  .Main-Page-Content{
+    width: 100%;
   }
 }
 

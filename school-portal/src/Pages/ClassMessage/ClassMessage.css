@@ -70,7 +70,7 @@
 .Avatar{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 15px;
     padding-top: 0px;
     min-width: fit-content;
@@ -95,7 +95,7 @@
     padding: 10px;
     border-radius: 15px;
     font-size:18px;
-    min-width:200px;
+    min-width:300px;
     min-height: 80px;
     position: relative;
   }
@@ -127,6 +127,7 @@
   .timer {
     font-size: 15px;
     opacity: 0.8;
+    text-align: right;
   }
 
   

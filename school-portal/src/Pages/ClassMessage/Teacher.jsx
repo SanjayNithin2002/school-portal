@@ -208,11 +208,11 @@ const Teacher = () => {
                                     <div className='col-lg-10 chat-container'>
                                         {
                                             messages && classID && messages.docs.filter((item) => (item.class && item.class._id === classID) || (item.student && item.student[0].standard===parseInt(standard) && item.student[0].section===section)).sort((a,b)=>checkDate(a,b)).map((item) => <>
-                                                <div className="Row chat-container-2">
-                                                    <div className='col-lg-2 Avatar'>
+                                                <div className=" chat-container-2">
+                                                    <div className='col-xl-2 col-lg-2 col-md-3 col-sm-4 Avatar'>
                                                         <span className='Avatar-1' title={class1.docs.filter((item) => item._id === classID)[0].subject + " Teacher"}>You</span>
                                                     </div>
-                                                    <div className='col-lg-8 message-content'>
+                                                    <div className='col-xl-10 col-lg-10 col-md-9 col-sm-8 message-content'>
                                                         {
                                                             item.student && item.student.length>0 ?
                                                             <p className='Avatar-2-1'>

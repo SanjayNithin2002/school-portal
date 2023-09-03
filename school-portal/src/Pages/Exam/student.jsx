@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
-
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./Exam.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentExam } from '../../actions/exam'
@@ -18,7 +16,7 @@ function Student() {
     console.log(exam)
 
     if(exam && !examList){
-        setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName))));
+        setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName.name+"-"+obj.examName.sequence))));
     }
 
     const handleDateFormat = (date1) => {
@@ -83,7 +81,9 @@ function Student() {
                     <h2>Examination Schedule</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <br />
-                    <Table striped bordered hover>
+                    <div className='table-responsive'>
+                        
+                    <Table style={{minWidth:"500px"}} className='StudentList-content-table'>
                         <thead>
                             <tr>
                                 <th>S.No.</th>
@@ -97,17 +97,16 @@ function Student() {
                             {examList ? examList.map((examName)=>(
                                 <>
                                 <tr>
-                                    <td style={{backgroundColor:"lightgray"}} colSpan={5} align='center'>{examName}</td>
+                                    <td style={{ backgroundColor: "#add0ed",textAlign:"center" }} colSpan={5}>{examName}</td>
                                 </tr>
                                 {
-                                exam.docs.filter((item) => item.examName === examName).sort((a, b) => (new Date(a.date).getTime()) === (new Date(b.date).getTime()) ? compareTime(a, b) : (new Date(a.date).getTime()) - (new Date(b.date).getTime())).map((item,index)=>(
+                                exam.docs.filter((item) => item.examName.name+"-"+item.examName.sequence === examName).sort((a, b) => (new Date(a.date).getTime()) === (new Date(b.date).getTime()) ? compareTime(a, b) : (new Date(a.date).getTime()) - (new Date(b.date).getTime())).map((item,index)=>(
                                     <tr>
                                         <td>{index+1}</td>
                                         <td>{item.subject}</td>
                                         <td>{handleDateFormat(item.date)}</td>
                                         <td>{handleTimeFormat(item.startTime)} to {handleTimeFormat(item.endTime)}</td>
                                         <td>{duration(item.startTime,item.endTime)} min</td>
-
                                     </tr>
                                 ))
                                 }
@@ -122,6 +121,7 @@ function Student() {
                         </tbody>
                     </Table>
 
+                    </div>
                 </div>
             </div>
         </div>
