@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import Accordion from 'react-bootstrap/Accordion'
-import Table from 'react-bootstrap/Table'
+import { Uploader } from 'rsuite';
 
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./Assessments.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { getAnswers, getAssessments } from '../../actions/assessments'
-import ViewAssessment from './ViewAssessment'
+import { deleteAnswers, postAnswers } from '../../actions/assessments'
+import { requestTeacher } from '../../actions/teachers';
+import { viewBonafide } from '../../actions/bonafide';
+import Table from "react-bootstrap/Table"
 
-function Student() {
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [display, setDisplay] = useState(false);
-    const [assessmentID, setAssessmentID] = useState(false);
-    const [teacherID, setTeacherID] = useState(false);
+const Student = (props) => {
+    const dispatch = useDispatch()
+    const [selectedFile, setSelectedFile] = useState(null)
+    const allAssessments = props.assessments
+    const answers = props.answers
 
     useEffect(() => {
-        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getAnswers({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
+        dispatch(requestTeacher(props.teacherID))
+    }, [dispatch, props.teacherID])
 
-    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
-    const assessments = useSelector((state) => state.assessmentsReducer)
-    const answers = useSelector((state) => state.answersReducer)
+    const teacher = useSelector((state) => state.teacherReducer)
 
-    console.log(answers);
-    console.log(assessments)
+    console.log(allAssessments)
+    console.log(answers)
+    console.log(teacher)
 
     const handleDateFormat = (date1) => {
         const date = new Date(date1);
@@ -44,6 +39,28 @@ function Student() {
         return formattedDate
     }
 
+    const handleFileChange = (fileList) => {
+        setSelectedFile(fileList[0]);
+    };
+
+    const close1 = () => {
+        props.close();
+    }
+
+    const handleSubmit = () => {
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('assessment', props.assessmentID);
+            formData.append('student', localStorage.getItem('id'));
+            formData.append('answerFile', selectedFile.blobFile, selectedFile.blobFile.name);
+            console.log(formData)
+            dispatch(postAnswers(formData))
+        }
+        else {
+            alert('Kindly upload the file')
+        }
+    }
+
     const checkDueDate = (date1) => {
         const startDate = new Date();
         const endDate = new Date(date1);
@@ -53,120 +70,133 @@ function Student() {
             return false;
     }
 
-    const handleClick = (aID, tID) => {
-        setTeacherID(tID);
-        setAssessmentID(aID);
-        setDisplay(true);
+    const handleDelete = (answerID) => {
+        dispatch(deleteAnswers(answerID));
     }
 
-    const close = () => {
-        setDisplay(false);
+    const handleFile = (request) => {
+        dispatch(viewBonafide(request));
     }
 
     return (
-        <div className='Main'>
-            <div className="Home">
-                {!display ?
-                    <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
-                        <h2>Assessments</h2>
-                        <hr style={{ border: "1px solid gray" }} />
-                        <Accordion defaultActiveKey="0">
-                            <Accordion.Item eventKey="0">
-                                <Accordion.Header style={{ padding: "initial" }}>Ongoing Assessments</Accordion.Header>
-                                <Accordion.Body>
-                                    {
-                                        assessments && assessments.docs.filter((item1) => { return checkDueDate(item1.lastDate) }).length === 0 &&
-                                        <div>No data</div>
-                                    }
-                                    {
-                                        assessments && assessments.docs.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
+        allAssessments && allAssessments.docs.filter((item) => item._id === props.assessmentID).map((item) => (
+            <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
+                <div className='row Assessment-tab-1'>
+                    <h2 className='col-lg-9 col-md-7 col-sm-6'>{item.title}</h2>
+                    <h4 className='col-lg-3 col-md-5 col-sm-6 h4'>{item.class.subject}</h4>
+                </div>
+                <hr style={{ border: "1px solid gray" }} />
+                <div style={{ width: "100%" }} className="AddStudent-container">
+                    <div className='row' style={{ width: "100%", minWidth: "600px" }}>
+                        <div className='float-md-right col-lg-7 col-xl-8'>
+                            <div style={{fontSize:"18px"}} dangerouslySetInnerHTML={{ __html: item.description }} />
+                            <br />
+                            {
+                                answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                    item1.answerFile !== null ?
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                            <button className='btn btn-primary' onClick={() => handleFile(item1.answerFile)}>View Answer</button>
+                                        </div>
+                                        :
+                                        <>
+                                            {checkDueDate(item.lastDate) &&
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
+                                                </div>
+                                            }
+                                        </>
 
-                                            <div onClick={() => handleClick(item._id, item.class.teacher)} style={{ color: 'inherit', textDecoration: "none" }}>
-                                                <div className='Assessment-tab'>
-                                                    <div className='Assessment-tab-1'>
-                                                        <h4>{item.title}</h4>
-                                                        <h5>{item.class.subject}</h5>
-                                                    </div>
-                                                    <div className='Assessment-tab-1'>
-                                                        <div style={{ fontWeight: "800" }}>
-                                                            Status :&nbsp;
-                                                            {
-                                                                answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === item._id).map((item1) => (
-                                                                    item1.answerFile !== null ?
-                                                                        <span style={{ color: "green" }}>
-                                                                            File Uploaded
-                                                                        </span>
-                                                                        :
-                                                                        <span style={{ color: "orange" }}>
-                                                                            File Not Uploaded
-                                                                        </span>
-                                                                ))
-                                                                    :
-                                                                    <span style={{ color: "orange" }}>
-                                                                        File Not Uploaded
-                                                                    </span>
-                                                            }
-                                                        </div>
-                                                        <div>{handleDateFormat(item.lastDate)}</div>
-                                                    </div>
-                                                </div>
+                                ))
+                                    :
+                                    <>
+                                        {checkDueDate(item.lastDate) &&
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <Uploader autoUpload={false} onChange={handleFileChange} disabled={selectedFile ? true : false} />
                                             </div>
-                                        ))
-                                    }
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey="1">
-                                <Accordion.Header>Completed Assessments</Accordion.Header>
-                                <Accordion.Body>
+                                        }
+                                    </>
+                            }
+
+                        </div>
+                        <div className='float-md-left col-lg-5 col-xl-4'>
+                            <Table style={{ minWidth: "100px" }} className='AddStudent-Table-List'>
+                                <tr>
+                                    <td style={{ width: "40%" }}>Posted By</td>
+                                    <td style={{ width: "59%" }}>
+                                        {
+                                            teacher && teacher !== null && <>
+                                                {teacher.docs.firstName + " " + teacher.docs.lastName}</>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Posted on</td>
+                                    <td>{handleDateFormat(item.postedOn)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Due Date</td>
+                                    <td>{handleDateFormat(item.lastDate)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Maximum Mark</td>
+                                    <td>{item.maxMarks}</td>
+                                </tr>
+                                <tr>
+                                    <td>Weightage Mark</td>
+                                    <td>{item.weightageMarks}</td>
+                                </tr>
+                                <tr>
+                                    <td>Uploaded On</td>
                                     {
-                                        assessments && assessments.docs.filter((item1) => { return !checkDueDate(item1.lastDate) }).length === 0 &&
-                                        <div>No data</div>
-                                    }
-                                    {
-                                        assessments && assessments.docs.filter((item) => { return !checkDueDate(item.lastDate) }).map((item) => (
-                                            <div onClick={() => handleClick(item._id, item.class.teacher)} style={{ color: 'inherit', textDecoration: "none" }}>
-                                                <div className='Assessment-tab'>
-                                                    <div className='Assessment-tab-1'>
-                                                        <h4>{item.title}</h4>
-                                                        <h5>{item.class.subject}</h5>
-                                                    </div>
-                                                    <div className='Assessment-tab-1'>
-                                                        <div style={{ fontWeight: "800" }}>
-                                                            Status :&nbsp;
-                                                            {
-                                                                answers && answers.docs.filter((item1) => item1.assessment._id === item._id).map((item1) => (
-                                                                    item1.answerFile !== null ?
-                                                                        <span style={{ color: "green" }}>
-                                                                            File Uploaded
-                                                                        </span>
-                                                                        :
-                                                                        <span style={{ color: "red" }}>
-                                                                            File Not Uploaded
-                                                                        </span>
-                                                                ))
-                                                            }{
-                                                                answers && answers.docs.filter((item1) => item1.assessment._id === item._id).length===0 &&
-                                                                <span style={{ color: "red" }}>
-                                                                            File Not Uploaded
-                                                                        </span>
-                                                                }
-                                                            
-                                                        </div>
-                                                        <div>{handleDateFormat(item.lastDate)}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                            item1.answersFile !== null ?
+                                                <td>date</td>
+                                                :
+                                                <td>---</td>
                                         ))
+                                            :
+                                            <td>---</td>
                                     }
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
+                                </tr>
+                                {
+                                    answers && answers.docs.length !== 0 ?
+                                        answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                            item1.answersFile === null ?
+                                                <tr>
+                                                    <td style={{ textAlign: "right" }} colSpan={2}>
+                                                        {
+                                                            checkDueDate(item.lastDate) &&
+                                                            <><button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>&emsp;</>
+                                                        }
+                                                        <button className='btn btn-danger' onClick={() => close1()}>Back1</button>&emsp;
+                                                    </td>
+                                                </tr>
+                                                :
+                                                <tr>
+                                                    <td style={{ textAlign: "right" }} colSpan={2}>
+                                                        <button className='btn btn-danger' onClick={() => handleDelete(item1._id)}>Delete</button>&emsp;
+
+                                                        <button className='btn btn-warning' onClick={() => close1()}>Back3</button>&emsp;
+                                                    </td>
+                                                </tr>
+                                        ))
+                                        :
+                                        <tr>
+                                            <td style={{ textAlign: "right" }} colSpan={2}>
+                                                {
+                                                    checkDueDate(item.lastDate) &&
+                                                    <><button className='btn btn-success' onClick={() => handleSubmit()}>Submit</button>&emsp;</>
+                                                }
+                                                <button style={{ backgroundColor: "#dc3545" }} className='btn btn-danger' onClick={() => close1()}>Back2</button>&emsp;
+                                            </td>
+                                        </tr>
+                                }
+                            </Table>
+                        </div>
                     </div>
-                    :
-                    <ViewAssessment assessments={assessments} answers={answers} teacherID={teacherID} assessmentID={assessmentID} close={() => close()} />
-                }
+                </div>
             </div>
-        </div>
+        ))
     )
 }
 

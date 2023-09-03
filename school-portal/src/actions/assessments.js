@@ -33,6 +33,17 @@ export const getAnswers = (userData) => async(dispatch) =>{
     }
 }
 
+export const getAssessmentAnswers = (AssessmentID) => async(dispatch) =>{
+    try{
+        const {data} = await api.getAssessmentAnswers(AssessmentID);
+        dispatch({type:'FETCH_ASSESSMENT_ANSWERS',payload:data})
+        console.log(data);
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 export const postAnswers = (formData) => async (dispatch) => {
     try {
         const { data } = await api.postAnswers(formData);
@@ -43,11 +54,33 @@ export const postAnswers = (formData) => async (dispatch) => {
     }
 };
 
+
 export const deleteAnswers = (answerID) => async (dispatch) => {
     try{
         const { data } = await api.deleteAnswers(answerID);
         console.log(data);
         dispatch(getAnswers({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+export const updateAssessment = (assessmentID,functionData,navigate) => async (dispatch) => {
+    try{
+        const { data } = await api.updateAssessment(assessmentID,functionData);
+        console.log(data);
+        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const updateQuestionPaper = (assessmentID,functionData,navigate) => async (dispatch) => {
+    try{
+        const { data } = await api.updateQuestionPaper(assessmentID,functionData);
+        console.log(data);
+        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     } catch (err) {
         console.log(err);
     }

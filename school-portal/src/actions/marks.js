@@ -20,9 +20,9 @@ export const getMarksCSV = (userData) => async (dispatch) => {
         console.log(err)
     }
 }
-export const getMarksByID = (userData) => async (dispatch) => {
+export const getMarksByID = (assessmentID) => async (dispatch) => {
     try{
-        const { data } = await api.getMarksByID(userData)
+        const { data } = await api.getMarksByID(assessmentID)
         console.log(data);   
         dispatch({type:"FETCH_MARKS",payload:data})
     }
