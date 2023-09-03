@@ -49,3 +49,17 @@ export const getClass = (userData) => async(dispatch) =>{
         console.log(err)
     }
 }
+
+export const updateClassDetails = (classData,navigate) => async (dispatch) => {
+    try{
+        console.log(classData);
+        const { data } = await api.updateClassDetails(classData);
+		dispatch(getAllClass());
+        console.log(data);
+        navigate('/Home')
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+//

@@ -1,0 +1,72 @@
+.spotlight-message .text-area-editor{
+    padding:0px;
+    width:fit-content
+}
+
+.spotlight-message input[type="text"]{
+    width: 80%;
+    padding: 3px;
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1.5px solid #cadeef;
+}
+
+.spotlight-message .format-buttons{
+    margin:0px;
+    width:375px;
+    border: 1.5px solid #cadeef;
+    background-color: white;
+}
+
+.spotlight-message input[type="text"]{
+    background-color: white;
+}
+
+.spotlight-message .editor{
+    min-height:200px;
+    max-height: 200px;
+    overflow-x: auto;
+    width:375px;
+    background-color: white;
+    border: 1.5px solid #cadeef;
+    border-top: none;
+}
+
+.spotlight-message .editor:focus{
+    outline: none;
+    border: 1.5px solid #cadeef;
+    border-top: none;
+}
+
+.editor::-webkit-scrollbar {
+  width: 10px;
+}
+.editor::-webkit-scrollbar-track {
+  background: #9bd4e4; 
+  width: 12px;
+}
+.editor::-webkit-scrollbar-thumb {
+  margin:5px;
+  background: rgb(57 172 231/0.5);
+  border-radius:100px;
+}
+
+.format-buttons button{
+    background-color: transparent;
+}
+
+.spotlight-message .btn-success{
+    background-color: #198754;
+}
+
+.spotlight-message .btn-success:hover{
+    background-color: #157347;
+}
+
+.spotlight-message .btn-warning{
+    background-color: #ffc107;
+}
+
+.spotlight-message .btn-warning:hover{
+    background-color: #ffca2c;
+}

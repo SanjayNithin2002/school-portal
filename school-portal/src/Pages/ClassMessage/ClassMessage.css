@@ -1,14 +1,16 @@
 .classmessage-container-1{
     align-items: center;
-    justify-content: center;
 }
 
+.msg-textarea,
+.stu-list{
+    width: 255%;
+    max-width: 255%;
+    box-sizing: border-box;
+}
 .msg-textarea{
     height: 100px; 
-    width: 100%;
     resize: both; 
-    box-sizing: border-box;
-    
 }
 .classmessage-container-2{
     align-items: flex-start;
@@ -24,7 +26,7 @@
 
 .chat-container{
     border:none;
-    height:60vh;
+    max-height:60vh;
     padding:0px;
     overflow-y: auto;
     display: flex;
@@ -111,6 +113,16 @@
     min-width: 100px;
     text-align: left;
   }
+
+  .Avatar-2-1{
+    margin: 0;
+    border-radius: 10px;
+    width: 100%;
+    min-width: 100px;
+    text-align: left;
+    font-size: 14px;
+    color:gray;
+  }
   
   .timer {
     font-size: 15px;
@@ -129,15 +141,13 @@
     font-weight: 600;
 }
 
-.classmessage-1 div:nth-child(1){
-    text-align: right;
-}
+
 
 @media (max-width:992px) {
-    .classmessage-1 div:nth-child(n){
-        text-align: left;
+    .msg-textarea,
+    .stu-list{
+        max-width: 100%;
+        width:100%;
     }
-    .message-box{
-        text-align: left;
-    }
+
 }

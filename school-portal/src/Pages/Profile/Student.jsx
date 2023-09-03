@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Panel } from 'rsuite';
-import './Home.css';
+import './Profile.css';
 import { setCurrentUser } from "../../actions/currentUser";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "react-bootstrap/Table"
@@ -12,7 +12,9 @@ function Home() {
     const dispatch = useDispatch();
     const [buttonType, setButtonType] = useState("personal");
     useEffect(() => {
+        if(localStorage.getItem("token")){
         dispatch(setCurrentUser({ type: localStorage.getItem("type"), id: localStorage.getItem("id") }))
+        }
     }, [dispatch])
 
     const currentUser = useSelector(state => state.currentUserReducer);

@@ -16827,7 +16827,8 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 .sidebar .nav-links{
   height: 100%;
   padding: 30px 0 150px 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;  
 }
@@ -16902,6 +16903,11 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   transform: scale(1.1);
 }
 
+.sidebar .nav-links li .sub-menu .link_name:hover,
+.sidebar .nav-links li .sub-menu .sub-link-name:hover{
+  transform: scale(1);
+}
+
 .sidebar .nav-links li .sub-menu .link_name{
   display: none;
 }
@@ -16947,6 +16953,24 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   font-weight: 600;
 }
 
+.sub-link-name {
+  left: -50px;
+  position: relative;
+  font-weight: 600;
+}
+
+.sub-link-name hr{
+    border:1px solid #9bd4e4;
+    position: absolute;
+    z-index: 1;
+    width: 200%;
+}
+.sub-link-name span{
+  position: relative;
+  z-index: 2;
+}
+
+
 
 @media screen and (max-width: 900px){
   .sidebar{
@@ -16965,6 +16989,9 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
     font-size: 40px;
   }
 
+  .sub-link-name {
+    left: 0px;
+}
   .sidebar .nav-links li .sub-menu .link_name{
     font-size: 18px;
     opacity: 1;

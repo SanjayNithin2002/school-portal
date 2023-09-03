@@ -27,8 +27,8 @@ function StudentInfo() {
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='studentinfo-container'>
                         <div className='row' style={{ alignItems: "center" }}>
-                            <div className='col-lg-3 col-md-5 col-sm-6 col-xs-6'><h5>Search by Student Name&ensp;:&ensp;</h5></div>
-                            <div className='col-lg-9 col-md-7 col-sm-6 col-xs-6'><input value={search} onChange={(e) => setSearch(e.target.value)} type="search" className='selectPicker2' /></div>
+                            <div className='col-xl-3 col-lg-5 col-md-5 col-sm-6 col-xs-6'><h5>Search by Student Name&ensp;:&ensp;</h5></div>
+                            <div className='col-xl-9 col-lg-7 col-md-7 col-sm-6 col-xs-6'><input value={search} onChange={(e) => setSearch(e.target.value)} type="search" className='selectPicker2' /></div>
                         </div>
                         <br /><br />
                         <div className='row' style={{ justifyContent: "center" }}>

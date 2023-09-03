@@ -67,20 +67,19 @@ const ViewBonafide = () => {
 
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
+            <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>View Bonafide Info</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <br />
                     <br />
                     <form encType='multipart/form-data' onSubmit={handleSubmit}>
                     <div className='row'>
-                        <div className='col-lg-8 justify-content-center'>
+                        <div className='col-lg-8 justify-content-center table-responsive'>
                             {
                                 student.length !== 0 && bonafide.length !== 0 &&
                                 bonafide.map((item) => (
-                                    <Table bordered className='AddStudent-Table-List'>
+                                    <Table className='AddStudent-Table-List'>
                                         <tbody>
                                             <tr>
                                                 <td>Student Profile</td>

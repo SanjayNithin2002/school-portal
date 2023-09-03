@@ -16,7 +16,7 @@ function ClassInfo() {
     const dispatch = useDispatch();
     const [edit, setEdit] = useState(false);
     const [edit1, setEdit1] = useState(false);
-    const [standard, setStardard] = useState('');
+    const [standard, setStandard] = useState('');
 
     if (standard && edit) {
         dispatch(getStandardClass(standard));
@@ -31,9 +31,9 @@ function ClassInfo() {
     console.log(timetable);
 
     const getCount = (type) => {
-        let count  = 0;
-        class1.sections.map((item)=>{
-            count+=class1.count[item][type];
+        let count = 0;
+        class1.sections.map((item) => {
+            count += class1.count[item][type];
         })
         return count;
     }
@@ -41,10 +41,9 @@ function ClassInfo() {
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
     return (
         <div className='Main'>
-            <SideNavBar />
             <div className="Home">
-                <div className="container rounded bg-white">
-                    <div className='d-flex justify-content-between'>
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
+                    <div className='d-flex justify-content-between' style={{alignItems:"flex-start"}}>
                         <h2>Class Info</h2>
                         <Link to='/CreateClass' style={{ textDecoration: "none", color: "white", fontWeight: "600", fontSize: "18px" }} className='btn btn-primary d-flex align-items-center'>
                             <FontAwesomeIcon icon={solid.faPlus} />&ensp;Create Class
@@ -52,27 +51,24 @@ function ClassInfo() {
                     </div>
 
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className="row ClassInfo-container">
-                        <div className="col-lg-2">
-                            <h4>Select Stardard : </h4>
+                    <div className='row ClassInfo-container'>
+                        <div className="col-lg-4 col-md-5 col-sm-6">
+                            <h4>Select Standard : </h4>
                         </div>
-                        <div className="col-lg-3">
-                            <select
-                                className="ClassSelectPicker"
-                                value={standard}
-                                onChange={(e) => { setStardard(e.target.value); setEdit(true); }}
-                            >
+                        <div className="col-lg-3 col-md-5 col-sm-6">
+                            <select className="selectPicker3" value={standard} onChange={(e) => {setStandard(e.target.value);setEdit(true);}}>
                                 <option value="" disabled>
-                                    Select Stardard
+                                    Select Standard
                                 </option>
                                 {
-                                    standardList.map((item) => (
-                                        <option value={item.value}>{item.label}</option>
-                                    ))
+                                    standardList.map((class1) => (
+                                            <option value={class1.value}>{class1.label}</option>
+                                        ))
                                 }
                             </select>
                         </div>
                     </div>
+                    
                     <br />
                     <br />
                     {
@@ -158,41 +154,41 @@ function ClassInfo() {
                                             <td></td>
                                             <td></td>
                                         </tr>
-                                            <tr>
-                                                <td colSpan={4} style={{ fontWeight: "bold" }}>Students count (Section Wise)</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={{ backgroundColor: "white" }} colSpan={4}>
-                                                    <div style={{ textAlign: "center" }} className='row'>
-                                                        <div className='col-lg-6 d-flex justify-content-center'>
-                                                            <Table className='CreateClass-subTable'>
-                                                                <thead>
-                                                                    <th>Sections</th>
-                                                                    <th>No of Boys</th>
-                                                                    <th>No of Girls</th>
-                                                                    <th>Total Strength</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {
-                                                                        class1.sections.map((item, index) => (
-                                                                            <tr>
-                                                                                <td>{item}</td>
-                                                                                <td>{
-                                                                                    class1.count[item]["male"]
-                                                                                }</td>
-                                                                                <td>{
-                                                                                    class1.count[item]["female"]
-                                                                                }</td>
-                                                                                <td>{class1.count[item]["male"] + class1.count[item]["female"]}</td>
-                                                                            </tr>
-                                                                        ))
-                                                                    }
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
+                                        <tr>
+                                            <td colSpan={4} style={{ fontWeight: "bold" }}>Students count (Section Wise)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style={{ backgroundColor: "white" }} colSpan={4}>
+                                                <div style={{ textAlign: "center" }} className='row'>
+                                                    <div className='col-lg-6 d-flex justify-content-center'>
+                                                        <Table className='CreateClass-subTable'>
+                                                            <thead>
+                                                                <th>Sections</th>
+                                                                <th>No of Boys</th>
+                                                                <th>No of Girls</th>
+                                                                <th>Total Strength</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                {
+                                                                    class1.sections.map((item, index) => (
+                                                                        <tr>
+                                                                            <td>{item}</td>
+                                                                            <td>{
+                                                                                class1.count[item]["male"]
+                                                                            }</td>
+                                                                            <td>{
+                                                                                class1.count[item]["female"]
+                                                                            }</td>
+                                                                            <td>{class1.count[item]["male"] + class1.count[item]["female"]}</td>
+                                                                        </tr>
+                                                                    ))
+                                                                }
+                                                            </tbody>
+                                                        </Table>
                                                     </div>
-                                                </td>
-                                            </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </Table>
                             </div>

@@ -15,6 +15,11 @@ import userLeaveReducer from "./UserLeave"
 import allLeaveReducer from "./AllLeave"
 import marksReducer from "./Marks"
 import marksCSVReducer from "./MarksCSV"
+import adminAttendanceReducer from "./AdminAttendance"
+import teacherAttendanceReducer from "./teacherAttendance"
+import studentAttendanceReducer from "./StudentAttendance"
+import spotlightReducer from "./Spotlight"
+
 export default combineReducers({
-    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer
+    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer,adminAttendanceReducer,teacherAttendanceReducer,studentAttendanceReducer,spotlightReducer
 })

@@ -10,7 +10,6 @@ import Leave from "./Pages/Leave/Leave";
 import Assessments from "./Pages/Assessments/Assessments";
 import Teacher from "./Pages/Teacher/Teacher";
 import Settings from "./Pages/Settings/Settings";
-import ViewAssessment from "./Pages/Assessments/ViewAssessment";
 import Marks from "./Pages/Marks/Marks";
 import Bonafide from "./Pages/Bonafide/Bonafide";
 import StudentInfo from "./Pages/Student/StudentInfo";
@@ -20,7 +19,6 @@ import PostStudent from "./Pages/Attendance/PostStudent";
 import PostTeacher from "./Pages/Attendance/PostTeacher";
 import ClassMessage from "./Pages/ClassMessage/ClassMessage";
 import Timetable from "./Pages/Time table/timetable";
-import PostAssessment from "./Pages/Assessments/PostAssessment"
 import NewAssessment from "./Pages/Assessments/NewAssessment"
 import Exam from "./Pages/Exam/Exam"
 import AddStudent from "./Pages/Student/AddStudent";
@@ -29,14 +27,14 @@ import Fees from "./Pages/Fees/Fees";
 import AddExam from "./Pages/Exam/AddExam";
 import UploadMarks from "./Pages/Marks/UploadMarks";
 import EditMarks from "./Pages/Marks/EditMarks";
-import Meeting from "./Pages/Meeting/Meeting";
-import AddMeeting from "./Pages/Meeting/AddMeeting";
 import CreateClass from "./Pages/Class/CreateClass";
 import ClassInfo from "./Pages/Class/ClassInfo";
 import ViewBonafide from "./Pages/Bonafide/ViewBonafide";
 import UpdateLeave from "./Pages/Leave/UpdateLeave";
 import AddTimeTable from "./Pages/Time table/AddTimeTable";
 import SideNavBar from "./components/SideNavBar/SideNavBar";
+import Profile from "./Pages/Profile/Profile"
+import Spotlight from "./Pages/Spotlight/Spotlight";
 
 const AllRoutes = () => {
     return(
@@ -50,9 +48,7 @@ const AllRoutes = () => {
                 <Route path='/Leave' element={<Leave/>}/>
                 <Route path='/ContactUs' element={<ContactUs/>}/>                
                 <Route path='/Assessment' element={<Assessments/>}/>
-                <Route path='/Assessment/:id' element={<ViewAssessment />}/>
-                <Route path='/PostAssessment/:id' element={<PostAssessment />}/>
-                <Route path='/PostAssessment' element={<NewAssessment />}/>
+                <Route path='/PostAssessment' element={<NewAssessment/>}/>
                 <Route path='/Marks' element={<Marks/>}/>
                 <Route path='/Teachers' element={<Teacher/>}/>
                 <Route path='/Setting' element={<Settings/>}/>
@@ -72,13 +68,13 @@ const AllRoutes = () => {
                 <Route path='/AddSchedule' element={<AddExam/>} />
                 <Route path='/UploadMarks' element={<UploadMarks/>} />
                 <Route path='/EditMarks' element={<EditMarks/>} />
-                <Route path='/Meeting' element={<Meeting/>} />
-                <Route path='/AddMeeting' element={<AddMeeting/>} />
                 <Route path='/CreateClass' element={<CreateClass/>} />
                 <Route path='/ClassInfo' element={<ClassInfo/>} />
                 <Route path='/ViewBonafide' element={<ViewBonafide/>} />
                 <Route path='/PostLeave' element={<UpdateLeave/>}/>
                 <Route path='/AddTimeTable' element={<AddTimeTable/>}/>
+                <Route path='/Profile' element={<Profile/>} />
+                <Route path='/Spotlight' element={ <Spotlight/> }/>
                 
             </Routes>
         </BrowserRouter>

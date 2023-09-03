@@ -1,6 +1,5 @@
 import React from 'react'
 import Student from './Student'
-import Teacher from './Teacher'
 import Error404 from '../Error404'
 
 const ContactUs = () => {
@@ -12,7 +11,7 @@ const ContactUs = () => {
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Teacher/>
+        <Error404/>
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&

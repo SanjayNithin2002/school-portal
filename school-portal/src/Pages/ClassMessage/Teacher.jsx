@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Icon } from '@rsuite/icons';
-import Attach from "@rsuite/icons/Attachment"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { getClass } from '../../actions/class';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { TagPicker } from 'rsuite';
 import moment from "moment";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import * as solid from "@fortawesome/free-solid-svg-icons"
 
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
-import { deleteClassMessage, getClassMessage, postClassMessage } from '../../actions/classMessage';
+import { deleteClassMessage, getClassMessage, postClassMessage, postClassMessage1 } from '../../actions/classMessage';
+import { requestClassStudents } from '../../actions/students';
 
 const Send = React.forwardRef((props, ref) => (
     <svg {...props} ref={ref} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="paper-plane" class="svg-inline--fa fa-paper-plane " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -28,6 +30,9 @@ const Teacher = () => {
     const [message, setMessage] = useState("");
     const [deleteID, setDeleteID] = useState("");
     const [showDialog, setShowDialog] = useState(false);
+    const [selectedValues, setSelectedValues] = useState([]);
+
+
 
     const [show, setShow] = useState(false);
 
@@ -39,14 +44,26 @@ const Teacher = () => {
     useEffect(() => {
         dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+
     }, [dispatch])
 
     const class1 = useSelector((state) => state.allClassReducer)
     const messages = useSelector((state) => state.classmessageReducer)
+    const studentlist = useSelector((state) => state.allStudentsReducer)
+
+    if (!studentlist && classID) {
+        dispatch(requestClassStudents(classID))
+    }
 
     console.log(class1);
     console.log(classID)
     console.log(messages)
+    console.log(studentlist)
+    console.log(selectedValues)
+
+    const handleTagChange = (newSelectedValues) => {
+        setSelectedValues(newSelectedValues);
+    };
 
     if (standard && section && classID === null) {
         if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length > 1) {
@@ -63,14 +80,20 @@ const Teacher = () => {
     }
 
     const handleSubmit = () => {
-        let ClassID = null;
-        class1.docs.map((item) => {
-            if (item.standard === parseInt(standard) && item.section === section) {
-                ClassID = item._id;
-            }
-            return true;
-        })
-        dispatch(postClassMessage({ class: ClassID, message, postedBy: localStorage.getItem('id') }, navigate));
+        if(selectedValues.length===0){
+            let ClassID = null;
+            class1.docs.map((item) => {
+                if (item.standard === parseInt(standard) && item.section === section) {
+                    ClassID = item._id;
+                }
+                return true;
+            })
+            dispatch(postClassMessage({ class: ClassID, message, postedBy: localStorage.getItem('id'),postedOn:new Date() }, navigate));
+        }
+        else{
+            dispatch(postClassMessage1({student:selectedValues,postedBy:localStorage.getItem("id"),message,postedOn:new Date()}, navigate));
+        }
+        
     }
 
     const handleConfirm = () => {
@@ -78,98 +101,162 @@ const Teacher = () => {
         setShowDialog(false);
     };
 
+    const checkDate = (a,b) =>{
+        let date1 = new Date(a.postedOn);
+        let date2 = new Date(b.postedOn);
+        return date2 - date1;
+    }
+
     return (
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Class Message</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div>
-                        <div className="row classmessage-container-1">
-                            <div className='col-lg-6 row classmessage-1'>
-                                <div className="col-lg-7 col-md-5 col-sm-6">
-                                    <h4>Select Standard : </h4>
-                                </div>
-                                <div className="col-lg-5 col-md-6 col-sm-6">
-                                    <select className="selectPicker3" value={standard} onChange={(e) => { setStandard(e.target.value); setClassID(null); }}>
-                                        <option value="" disabled>
-                                            Select Standard
-                                        </option>
-                                        {
-                                            class1 !== null &&
-                                            Array.from(new Set(class1.docs.map((obj) => obj.standard))).map((item) => (
-                                                standardList.filter((class1) => class1.value === item).map((class1) => (
-                                                    <option value={class1.value}>{class1.label}</option>
+                    <div className='AddStudent-container'>
+
+                        <div style={{ minWidth: "500px" }} className='timetable-main-content'>
+                            <div className="row classmessage-container-1">
+                                <div className='col-lg-6 row classmessage-1'>
+                                    <div className="col-lg-7 col-md-5 col-sm-6">
+                                        <h4>Select Standard : </h4>
+                                    </div>
+                                    <div className="col-lg-5 col-md-6 col-sm-6">
+                                        <select className="selectPicker3" value={standard} onChange={(e) => { setStandard(e.target.value); setClassID(null); }}>
+                                            <option value="" disabled>
+                                                Select Standard
+                                            </option>
+                                            {
+                                                class1 !== null &&
+                                                Array.from(new Set(class1.docs.map((obj) => obj.standard))).map((item) => (
+                                                    standardList.filter((class1) => class1.value === item).map((class1) => (
+                                                        <option value={class1.value}>{class1.label}</option>
+                                                    ))
                                                 ))
-                                            ))
-                                        }
-                                    </select>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='col-lg-6 row classmessage-1'>
+                                    <div className="col-lg-7 col-md-5 col-sm-6">
+                                        <h4>Select Section : </h4>
+                                    </div>
+                                    <div className="col-lg-5 col-md-6 col-sm-6">
+                                        <select className="selectPicker3" value={section} onChange={(e) => { setSection(e.target.value); setClassID(null); }}>
+                                            <option value="" disabled>
+                                                Select Section
+                                            </option>
+                                            {
+                                                class1 !== null &&
+                                                Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard).map((obj) => obj.section))).map((item) => (
+                                                    <option value={item}>{item}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='col-lg-6 row classmessage-1'>
-                                <div className="col-lg-7 col-md-5 col-sm-6">
-                                    <h4>Select Section : </h4>
-                                </div>
-                                <div className="col-lg-5 col-md-6 col-sm-6">
-                                    <select className="selectPicker3" value={section} onChange={(e) => { setSection(e.target.value); setClassID(null); }}>
-                                        <option value="" disabled>
-                                            Select Section
-                                        </option>
-                                        {
-                                            class1 !== null &&
-                                            Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard).map((obj) => obj.section))).map((item) => (
-                                                <option value={item}>{item}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <br />
-                        {standard && section && <>
-                            <div className="row classmessage-container-2">
-                                <div className='col-lg-3 col-md-3 col-sm-4 message-box'>
-                                    <h4>Message : </h4>
-                                </div>
-                                <div className='col-lg-8 col-md-7 col-sm-8'>
-                                    <textarea className="msg-textarea" value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
-                                </div>
+
+                            <br />
+                            <div className="row classmessage-container-1">
+                                {
+                                    classID && studentlist &&
+                                    <>
+                                        <div className='col-lg-7 row classmessage-1' >
+                                            <div className="col-lg-6 col-md-5 col-sm-6">
+                                                <h4>Select Students : </h4>
+                                            </div>
+                                            <div className="col-lg-6 col-md-6 col-sm-6">
+                                                <TagPicker
+                                                    placement='bottom'
+                                                    data={studentlist.docs.map((student) => ({ label: student.firstName + " " + student.lastName, value: student._id }))}
+                                                    value={selectedValues}
+                                                    onChange={handleTagChange}
+                                                    searchable={true}
+                                                    menuMaxHeight="200px"
+                                                    className="stu-list"
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+
+                                }
                             </div>
                             <br />
-                            <div className="row classmessage-container-3">
-                                <div className='col-lg-3 col-md-3 col-sm-4'>
-                                    <button className='btn btn-success' onClick={() => handleSubmit()}><Icon as={Send} style={{ color: "white", fontSize: '20px' }} />send</button>
+                            <br />
+                            {standard && section && <>
+                                <div className="row classmessage-container-1">
+                                <div className='col-lg-7 row classmessage-1' >
+                                            <div className="col-lg-6 col-md-5 col-sm-6">
+                                        <h4>Message : </h4>
+                                    </div>
+                                    <div className="col-lg-6 col-md-6 col-sm-6">
+                                        <textarea className="msg-textarea" value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
+                                    </div>
                                 </div>
-                            </div>
+                                </div>
+                                <br />
+                                <div className="row classmessage-container-3">
+                                    <div className='col-lg-3 col-md-3 col-sm-4'>
+                                        <button className='btn btn-success' onClick={() => handleSubmit()}><Icon as={Send} style={{ color: "white", fontSize: '20px' }} />send</button>
+                                    </div>
+                                </div>
 
-                            <hr style={{ display: "flex", justifyContent: "center", width: "100%", border: "1px solid gray" }} />
+                                <hr style={{ display: "flex", justifyContent: "center", width: "100%", border: "1px solid gray" }} />
 
-                            <div className="row classmessage-container-2">
-                                <div className='col-lg-10 chat-container'>
-                                    {
-                                        messages && classID && messages.docs.filter((item) => item.class === classID).map((item) => <>
-                                            <div className="Row chat-container-2">
-                                                <div className='col-lg-2 Avatar'>
-                                                    <span className='Avatar-1' title={class1.docs.filter((item) => item._id === classID)[0].subject + " Teacher"}>You</span>
-                                                </div>
-
-                                                <div className='col-lg-8 message-content'>
-                                                    <p className='Avatar-2'>{item.message}</p>
-                                                    <div className='message-content-1'>
-                                                        <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
-                                                        <span className='timer'>{moment(new Date(item.postedOn), "YYYYMMDD").fromNow()}</span>
+                                <div className="row classmessage-container-2">
+                                    <div className='col-lg-10 chat-container'>
+                                        {
+                                            messages && classID && messages.docs.filter((item) => (item.class && item.class._id === classID) || (item.student && item.student[0].standard===parseInt(standard) && item.student[0].section===section)).sort((a,b)=>checkDate(a,b)).map((item) => <>
+                                                <div className="Row chat-container-2">
+                                                    <div className='col-lg-2 Avatar'>
+                                                        <span className='Avatar-1' title={class1.docs.filter((item) => item._id === classID)[0].subject + " Teacher"}>You</span>
+                                                    </div>
+                                                    <div className='col-lg-8 message-content'>
+                                                        {
+                                                            item.student && item.student.length>0 ?
+                                                            <p className='Avatar-2-1'>
+                                                            To : {
+                                                                item.student.map((student,index)=>(
+                                                                    index===0 ?
+                                                                    <>
+                                                                    {student.firstName+" "+student.lastName}
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                    {", "+student.firstName+" "+student.lastName}
+                                                                    </>
+                                                                    
+                                                                ))
+                                                            }
+                                                            </p>
+                                                            :
+                                                            <p className='Avatar-2-1'>
+                                                            To : All Students
+                                                            </p>
+                                                        }
+                                                        
+                                                        <p className='Avatar-2'>{item.message}</p>
+                                                        <div className='message-content-1'>
+                                                            <span onClick={() => { setDeleteID(item._id); setShowDialog(true); }} className='class-message-delete'>Delete</span>
+                                                            <span className='timer'>{moment(new Date(item.postedOn), "YYYYMMDD").fromNow()}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </>
+                                            </>
                                         )}
+                                        {
+                                            messages && classID && messages.docs.filter((item) => (item.class && item.class._id === classID) || (item.student && item.student[0].standard===parseInt(standard) && item.student[0].section===section)).length===0 &&
+                                            <div style={{ display: "flex", justifyContent: "center", alignItems: 'center' }} ><span style={{ borderRadius: "8px", backgroundColor: "#cadeef", padding: "10px 5px", fontSize: "18px", fontWeight: "bold" }}><FontAwesomeIcon icon={solid.faExclamationTriangle} />&emsp;You have not yet sent or receive the message.</span></div>
+                                                
+                                        }
+                                    </div>
+
                                 </div>
 
-                            </div>
-
-                        </>
-                        }
+                            </>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

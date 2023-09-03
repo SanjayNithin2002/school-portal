@@ -41,7 +41,8 @@
     font-weight: 800;
 }
 
-.Bonafide-content-table {
+.Bonafide-content-table,
+.AdminBonafide-content-table {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
@@ -49,41 +50,97 @@
     font-size: 17px;
   }
   .Bonafide-content-table tr th,
-  .Bonafide-content-table tr td {
+  .Bonafide-content-table tr td,
+  .AdminBonafide-content-table tr th,
+  .AdminBonafide-content-table tr td {
     border-bottom: 1px solid #cadeef;
     text-align: left;
     padding: 5px;
   }
   .Bonafide-content-table tr th:nth-child(6n),
-  .Bonafide-content-table tr td:nth-child(6n) {
+  .Bonafide-content-table tr td:nth-child(6n),
+  .AdminBonafide-content-table tr th:nth-child(7n),
+  .AdminBonafide-content-table tr td:nth-child(7n) {
     border-right: 1px solid #cadeef;
     text-align: right;
   }
   .Bonafide-content-table tr th:first-child,
-  .Bonafide-content-table tr td:first-child {
+  .Bonafide-content-table tr td:first-child,
+  .AdminBonafide-content-table tr th:first-child,
+  .AdminBonafide-content-table tr td:first-child {
     border-left: 1px solid #cadeef;
   }
-  .Bonafide-content-table tr th {
+  .Bonafide-content-table tr th,
+  .AdminBonafide-content-table tr th {
     background:	#cadeef;
     border-top: 1px solid #cadeef;
   }
-  .Bonafide-content-table tr td {
+  .Bonafide-content-table tr td,
+  .AdminBonafide-content-table tr td {
       background: rgb(202 222 239 / 0.3);
     }
   
-  .Bonafide-content-table tr:first-child th:first-child {
+  .Bonafide-content-table tr:first-child th:first-child,
+  .AdminBonafide-content-table tr:first-child th:first-child {
     border-top-left-radius: 6px;
   }
   
-  .Bonafide-content-table tr:first-child th:last-child {
+  .Bonafide-content-table tr:first-child th:last-child,
+  .AdminBonafide-content-table tr:first-child th:last-child {
     border-top-right-radius: 6px;
   }
   
-  .Bonafide-content-table tr:last-child td:first-child {
+  .Bonafide-content-table tr:last-child td:first-child,
+  .AdminBonafide-content-table tr:last-child td:first-child {
     border-bottom-left-radius: 6px;
   }
   
-  .Bonafide-content-table tr:last-child td:last-child {
+  .Bonafide-content-table tr:last-child td:last-child,
+  .AdminBonafide-content-table tr:last-child td:last-child{
     border-bottom-right-radius: 6px;
   }
 
+  .StudentInfo-content-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 400px;
+    font-size: 17px;
+  }
+  .StudentInfo-content-table tr th,
+  .StudentInfo-content-table tr td {
+    border-bottom: 1px solid #cadeef;
+    text-align: left;
+    padding: 5px;
+  }
+  .StudentInfo-content-table tr th:nth-child(6n),
+  .StudentInfo-content-table tr td:nth-child(6n) {
+    border-right: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr th:first-child,
+  .StudentInfo-content-table tr td:first-child {
+    border-left: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr th {
+    background:	#cadeef;
+    border-top: 1px solid #cadeef;
+  }
+  .StudentInfo-content-table tr td {
+      background: rgb(202 222 239 / 0.3);
+    }
+  
+  .StudentInfo-content-table tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+  
+  .StudentInfo-content-table tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+  }

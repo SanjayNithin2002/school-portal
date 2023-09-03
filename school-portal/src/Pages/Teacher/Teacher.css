@@ -36,7 +36,13 @@
     width:75%;
     font-size:18px;
 }
+#role-input{
+  display: none;
+}
 
+.TeacherInfo-content-table tr .sub-head{
+  background-color: rgb(66 135 245/0.2);
+}
 
 .TeacherInfo-content-table {
     border-collapse: separate;
@@ -82,3 +88,12 @@
   .TeacherInfo-content-table tr:last-child td:last-child {
     border-bottom-right-radius: 6px;
   }
+
+  
+  .TeacherInfo-content-table .btn.btn-primary:hover {
+  background-color: #0a58ca;
+}
+
+.TeacherInfo-content-table .btn.btn-primary {
+  background-color: #0d6efd;
+}

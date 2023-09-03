@@ -40,7 +40,7 @@ const Teacher = () => {
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(0)}>
                         <span>
-                            <i class='bx bx-collection'></i>
+                            <i class='bx bx-calendar'></i>
                             <span class="link_name">Attendance Info</span>
                         </span>
                         <i class='bx bxs-chevron-down arrow'></i>
@@ -77,7 +77,7 @@ const Teacher = () => {
                 <li>
                     <div class="iocn-link" onClick={() => subMenu(2)}>
                         <span>
-                            <i class='bx bx-collection'></i>
+                            <i class='bx bx-server'></i>
                             <span class="link_name">Class Info</span>
                         </span>
                         <i class='bx bxs-chevron-down arrow'></i>
@@ -101,60 +101,9 @@ const Teacher = () => {
                         <li><Link to='/Setting' class="link_name">Settings</Link></li>
                     </ul>
                 </li>
-                <li>
-                    <Link to='/ContactUs'>
-                        <i class='bx bxs-contact'></i>
-                        <span class="link_name">Contacts</span>
-                    </Link>
-                    <ul class="sub-menu blank">
-                        <li><Link to='/ContactUs' class="link_name">Contacts</Link></li>
-                    </ul>
-                </li>
             </ul>
         </div>
     )
 }
 
 export default Teacher;
-
-
-{/* <Nav>
-            <Nav.Item href='/Home' title={"DashBoard"} icon={<DashboardIcon />}>
-              Dashboard
-            </Nav.Item>
-            <Nav.Menu placement="rightStart" title="Attendance" icon={<Upload />}>
-              <Nav.Item href='/Attendance'>
-                <a href='/Attendance' style={{ textDecoration: 'none', color: 'black'}}> Attendance </a></Nav.Item>
-              <Nav.Item href='/Leave'>
-                <a href='/Leave' style={{ textDecoration: 'none', color: 'black'}}>Leave</a></Nav.Item>
-            </Nav.Menu>
-            <Nav.Item href='/Timetable' icon={<Calendar />}>
-              TimeTable
-            </Nav.Item>
-            <Nav.Menu placement="rightStart" title="HR" icon={<HR />}>
-              <Nav.Item href='/StudentInfo'>
-                <a href='/StudentInfo' style={{ textDecoration: 'none', color: 'black'}}> Student Info </a></Nav.Item>
-              <Nav.Item href='/StaffInfo'>
-                <a href='/StaffInfo' style={{ textDecoration: 'none', color: 'black'}}> Staffs Info </a></Nav.Item>
-            </Nav.Menu>
-            <Nav.Menu placement="rightStart" title="Class Info" icon={<Class />}>
-              <Nav.Item href='/StudentList'>
-                <a href='StudentList' style={{ textDecoration: 'none', color: 'black'}}>Student List</a></Nav.Item>
-              <Nav.Item href='/PostStudentAttendance'>
-                <a href='/PostStudentAttendance' style={{ textDecoration: 'none', color: 'black'}}>Attendance</a></Nav.Item>
-              <Nav.Item href='/ClassMessage'>
-                <a href='ClassMessage' style={{ textDecoration: 'none', color: 'black'}}>Class Message</a></Nav.Item>
-              <Nav.Item href='/Assessment'>
-                <a href='Assessment' style={{ textDecoration: 'none', color: 'black'}}>Assessments</a></Nav.Item>
-              <Nav.Item href='/Marks'>
-                <a href='Marks' style={{ textDecoration: 'none', color: 'black'}}>Marks View</a></Nav.Item>
-              <Nav.Item href='/Exam'>
-                <a href='Exam' style={{ textDecoration: 'none', color: 'black'}}>Exam</a></Nav.Item>
-            </Nav.Menu>
-            <Nav.Item href='/Setting' icon={<Setting />}>
-              Settings
-            </Nav.Item>
-            <Nav.Item href='/ContactUs' icon={<GroupIcon />}>
-              Contact
-            </Nav.Item>
-          </Nav> */}

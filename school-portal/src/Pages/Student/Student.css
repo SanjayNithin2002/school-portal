@@ -20,29 +20,94 @@
 
 }
 
-.AddStudent-Table-List{
-    width:100%;
-    justify-content: center;
+.AddStudent-container{
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
 }
 
-.AddStudent-Table-List tr:nth-child(odd) td:nth-child(odd){
-    background-color: gray;
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 700;
+.AddStudent-container::-webkit-scrollbar {
+  display: none;
 }
 
-.AddStudent-Table-List tr:nth-child(even) td:nth-child(odd){
-    background-color: lightgray;
-    font-size: 20px;
-    font-style: italic;
-    font-weight: 700;
+.AddStudent-Table-List {
+  border-collapse: separate;
+  justify-content: center;
+  border-spacing: 0;
+  width: 100%;
+  min-width: 400px;
+  font-size: 17px;
 }
+.AddStudent-Table-List tr td:nth-child(odd),
+.AddStudent-Table-List tr td:nth-child(even) {
+  border-bottom: 1px solid #cadeef;
+  text-align: left;
+  padding: 5px;
+}
+
+.AddStudent-Table-List tr td:nth-child(even) {
+  border-right: 1px solid #cadeef;
+}
+
+.AddStudent-Table-List tr td:first-child {
+  border-left: 1px solid #cadeef;
+}
+
+.AddStudent-Table-List tr td:nth-child(odd) {
+  background:	#cadeef;
+  font-size: 18px;
+  font-weight: 700;
+}
+.AddStudent-Table-List tr td:nth-child(even) { 
+    background: rgb(202 222 239 / 0.3);
+  }
+
+  .AddStudent-Table-List tr:first-child td:first-child {
+  border-top-left-radius: 6px;
+}
+
+.AddStudent-Table-List tr:first-child td:last-child {
+  border-top-right-radius: 6px;
+}
+
+.AddStudent-Table-List tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.AddStudent-Table-List tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+
 
 .AddStudent-Table-List input[type="text"]{
     padding:2px;
     width:75%;
     font-size:18px;
+}
+
+.AddStudent-Table-List input[type="text"],
+.AddStudent-Table-List input[type="number"],
+.AddStudent-Table-List select,
+.AddStudent-Table-List input[type="date"]{
+    width:80%;
+    padding:3px;
+    font-size: 16px;
+    border-radius: 3px;
+    border:1.5px solid #cadeef;
+}
+
+.AddStudent-Table-List input[type="text"]:focus,
+.AddStudent-Table-List input[type="number"]:focus,
+.AddStudent-Table-List select:focus,
+.AddStudent-Table-List input[type="date"]:focus{
+    border:1.5px solid #73ade0;
+    outline:none;
+}
+
+
+.AddStudent-Table-List select{
+    width: 70%;
 }
 
 .studentlist-container{
@@ -55,6 +120,13 @@
   text-align: right;
 }
 
+.StudentList-content-table .btn.btn-primary{
+  background-color: #0d6efd;
+}
+
+.StudentList-content-table .btn.btn-primary:hover{
+  background-color: #0b5ed7;
+}
 
 .StudentList-content-table {
     border-collapse: separate;
@@ -159,3 +231,11 @@
       text-align: left;
     }
   }
+
+.StudentInfo-content-table .btn.btn-primary:hover {
+    background-color: #0a58ca;
+}
+
+.StudentInfo-content-table .btn.btn-primary {
+    background-color: #0d6efd;
+}

@@ -160,7 +160,7 @@ function Leave() {
                                             ))
                                             :
                                             <tr>
-                                                <td style={{ textAlign: "center", fontSize: "20px" }} colSpan={7}>No Data</td>
+                                                <td style={{ textAlign: "center", fontSize: "20px" }} colSpan={8}>No Data</td>
                                             </tr>
                                     }
 
