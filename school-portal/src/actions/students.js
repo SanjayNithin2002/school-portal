@@ -15,10 +15,10 @@ export const requestStudents = () => async (dispatch) => {
 export const requestClassStudents = (classID,navigate) => async (dispatch) => {
     try{
         const {data} = await api.requestClassStudents(classID)
-        console.log(data)
-        console.log(data.docs);
+        // console.log(data)
+        // console.log(data.docs);
         dispatch({type:'FETCH_CLASS_STUDENTS',payload:data})
-        navigate('/StudentList',{state:{students:data.docs}})
+        // navigate('/StudentList',{state:{students:data.docs}})
     }
     catch(err){
         console.log(err)

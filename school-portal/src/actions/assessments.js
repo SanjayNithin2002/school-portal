@@ -15,7 +15,7 @@ export const getAssessments = (userData) => async(dispatch) =>{
     try{
         const {data} = await api.getAssessments(userData);
         dispatch({type:'FETCH_USER_ASSESSMENTS',payload:data})
-        console.log(data);
+        // console.log(data);
     }
     catch(err){
         console.log(err)
@@ -26,7 +26,7 @@ export const getAnswers = (userData) => async(dispatch) =>{
     try{
         const {data} = await api.getAnswers(userData);
         dispatch({type:'FETCH_USER_ANSWERS',payload:data})
-        console.log(data);
+        // console.log(data);
     }
     catch(err){
         console.log(err)
