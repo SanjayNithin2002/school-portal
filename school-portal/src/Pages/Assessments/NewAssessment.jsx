@@ -15,7 +15,7 @@ function NewAssessment() {
     const [weightageMarks, setWeightageMarks] = useState(0);
     const [lastDate, setLastDate] = useState(new Date());
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('<p>This Assessment is for testin</p>');
+    const [description, setDescription] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
 
     const [standard, setStandard] = useState("");

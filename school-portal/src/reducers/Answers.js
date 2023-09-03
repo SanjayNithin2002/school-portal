@@ -3,6 +3,8 @@ const answersReducer = (state=null,action) =>{
     {
         case 'FETCH_USER_ANSWERS': 
             return action.payload;
+        case 'FETCH_ASSESSMENT_ANSWERS':
+            return action.payload;
         default : 
             return state;
     }

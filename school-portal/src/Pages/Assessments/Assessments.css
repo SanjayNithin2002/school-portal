@@ -55,13 +55,10 @@
     justify-content: space-between;
 }
 
-@media (max-width:650px) {
-    .Assessment-tab-1{
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
+.Assessment-tab-1{
+    align-items: flex-start;
 }
+
 
 .Assessment-tab-1 .h4{
  text-align: right;
@@ -92,8 +89,7 @@
 
 .edit-title{
     vertical-align: top;
-    font-size:18px;
-    font-style: italic;
+    font-size:16px;
     font-weight: 600;
 }
 
@@ -109,8 +105,13 @@
 }
 
 .custom-btn{
-    position: relative;
-    top:-25px;
+    padding: 0;
+    padding-left:30px;
+    font-size:20px;
+    color:red;
+}
+.custom-btn:hover{
+    color:lightcoral;
 }
 
 .new-assessment-table .quill{

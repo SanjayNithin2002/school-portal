@@ -49,11 +49,14 @@ export const postAssessment = (functionData) => API.post('/assessments',function
 export const getAssessments = (userData) => API.get(`/assessments/${userData.type}s/${userData.id}`)
 export const getAssessment = (functionID) => API.get(`/assessments/${functionID}`);
 export const deleteAssessment = (functionID) => API.delete(`/assessments/${functionID}`)
+export const updateAssessment = (assessmentID,functionData) => API.patch(`/assessments/${assessmentID}`,functionData)
+export const updateQuestionPaper = (assessmentID,formData) => API.patch(`/assessments/questionPaper/${assessmentID}`,formData)
 
 /* Ansswers */
 export const getAnswers = (userData) => API.get(`/answers/${userData.type}s/${userData.id}`)
 export const postAnswers = (formData) => API.post('/answers',formData);
 export const deleteAnswers = (answerID) => API.delete(`/answers/${answerID}`)
+export const getAssessmentAnswers = (AssessmentID) => API.get(`/answers/assessments/${AssessmentID}`)
 
 /* Class Messages */
 export const getClassMessage = (userData) => API.get(`/classmessages/${userData.type}s/${userData.id}`)
@@ -69,7 +72,7 @@ export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${
 /* Marks */
 export const getMarks = (userData) => API.get(`/marks/teachers/${userData.id}`);
 export const getMarksCSV = (userData) => API.get(`/students/marks/generatecsv/5/A`);
-export const getMarksByID = (userData) => API.get(`marks/assessments/64923d976255f24e230a6c65`);
+export const getMarksByID = (assessmentID) => API.get(`marks/assessments/${assessmentID}`);
 export const getMarksForStudent = (userData) => API.get(`/marks/students/${userData.id}`);
 export const postMarks = (updateData) => API.post(`/marks/`,updateData);
 export const delMarks = (updateData) => API.delete(`/marks/64d139c5b613daf5ecc7ec53`);
