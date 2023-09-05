@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
-
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./Teacher.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { getClass } from '../../actions/class';
@@ -21,14 +19,14 @@ function Teacher() {
     console.log(class1);
     console.log(teacherList);
 
-    if (class1 && !teacherList && edit) {
-        let id = null;
+    if (class1!==null && teacherList===null && edit) {
+        let id = "";
         let teachers = [];
-        class1.docs.filter((item) => item.subject === "Class Teacher").map((item) => {
+        class1.docs.filter((item) => item.subject === "Class Teacher" && item.teacher!==null).map((item) => {
             id = item.teacher._id;
             return true;
         })
-        if (class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject !== "Class Teacher").length === 0) {
+        if (class1.docs.filter((item) => item.teacher !== null && (item.teacher._id === id || id==="") && item.subject !== "Class Teacher").length === 0) {
             let empID, name, email
             class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject === "Class Teacher").map((item) => {
                 empID = item.teacher.empID

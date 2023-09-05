@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Table from "react-bootstrap/Table"
 import { DatePicker, Stack } from 'rsuite'
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion'
 import moment from "moment"
 
 import "./Bonafide.css"
-import { requestBonafide,viewBonafide } from '../../actions/bonafide';
+import { requestBonafide, viewBonafide } from '../../actions/bonafide';
 import { setCurrentUser } from '../../actions/currentUser';
 import { StudentBonafide } from "../../actions/bonafide";
 
@@ -38,8 +38,8 @@ function Student() {
     console.log(bonafide)
     console.log(location)
 
-    if(location.state && certificate!=='select'){
-        if(location.state.message==="success"){
+    if (location.state && certificate !== 'select') {
+        if (location.state.message === "success") {
             setPassport({ description: "" });
             setBusPass({ description: "" });
             setNCC({ description: "" });
@@ -94,7 +94,7 @@ function Student() {
         return formattedDate
     }
 
-    const handleFile = (request) =>{
+    const handleFile = (request) => {
         dispatch(viewBonafide(request));
     }
 
@@ -104,162 +104,164 @@ function Student() {
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Bonafide Application</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div className='container bonafide-content'>
-                        <div className='bonafide-content-1'>
-                            <div className='col-lg-3'>
-                                <h4>Select Service : </h4>
-                            </div>
-                            <div className='col-lg-4'>
-                                <select value={certificate} className="selectPicker" onChange={(e) => setCertificate(e.target.value)} required>
-                                    <option value='select' disabled>Select Service</option>
-                                    {
-                                        data.map((item) => (
-                                            <option value={item.value}>{item.value}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className='bonafide-content-2'>
-                            <br /><br />
-                            {certificate !== 'select' &&
-                            <div className='table-responsive'>
-                                <Table className='tablestyle3'>
-                                    <thead>
-                                        <tr>
-                                            <th style={{ textAlign: 'center' }} colSpan={2}>Bonafide Application(All fields are mandatory)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            certificate === "Income Tax" && <>
-                                                <tr>
-                                                    <td>Who is Employee<span style={{ color: "red" }}>*</span></td>
-                                                    <td>
-                                                        <select value={incomeTax.employee} onChange={(e) => setIncomeTax((prev) => ({ ...prev, employee: e.target.value }))} className="selectPicker1" required>
-                                                            <option value='' disabled>Select one option</option>
-                                                            <option value='Father'>Father</option>
-                                                            <option value='Mother'>Mother</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                    <td><textarea value={incomeTax.description} onChange={(e) => setIncomeTax((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                                </tr>
-                                            </>
-                                        }
-                                        {
-                                            certificate === "Visa" && <>
-                                                <tr>
-                                                    <td>From Date{visa.fromDate}<span style={{ color: "red" }}>*</span></td>
-                                                    <td>
-                                                        <input type="date" value={visa.fromDate} onChange={(e)=>setVisa((prev) => ({ ...prev, fromDate: e.target.value }))}/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>To Date<span style={{ color: "red" }}>*</span></td>
-                                                    <td>
-                                                        <input type="date" value={visa.toDate} onChange={(e)=>setVisa((prev) => ({ ...prev, toDate: e.target.value }))}/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Enter Visa Place<span style={{ color: "red" }}>*</span></td>
-                                                    <td>
-                                                        <input value={visa.place} onChange={(e) => setVisa((prev) => ({ ...prev, place: e.target.value }))} type="text" className="selectPicker1" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                    <td><textarea value={visa.description} onChange={(e) => setVisa((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                                </tr>
-                                            </>
-                                        }
-                                        {
-                                            certificate === "Passport" &&
-                                            <tr>
-                                                <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                <td><textarea value={Passport.description} onChange={(e) => setPassport((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                            </tr>
-                                        }
-                                        {
-                                            certificate === "BusPass" &&
-                                            <tr>
-                                                <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                <td><textarea value={busPass.description} onChange={(e) => setBusPass((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                            </tr>
-                                        }
-                                        {
-                                            certificate === "NCC Bonafide" &&
-                                            <tr>
-                                                <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                <td><textarea value={NCC.description} onChange={(e) => setNCC((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                            </tr>
-                                        }
-                                        {
-                                            certificate === "TC" &&
-                                            <tr>
-                                                <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                <td><textarea value={tc.description} onChange={(e) => setTc((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
-                                            </tr>
-                                        }
-                                        <tr>
-                                            <td style={{ textAlign: "center" }} colSpan={2}>
-                                                <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                    <div style={{ width: "100%" }} className='container bonafide-content AddStudent-container'>
+                        <div style={{ minWidth: "500px" }}>
+                            <div className='bonafide-content-1'>
+                                <div className='col-lg-3'>
+                                    <h4>Select Service : </h4>
                                 </div>
-                            }
-                        </div>
+                                <div className='col-lg-4'>
+                                    <select value={certificate} className="selectPicker" onChange={(e) => setCertificate(e.target.value)} required>
+                                        <option value='select' disabled>Select Service</option>
+                                        {
+                                            data.map((item) => (
+                                                <option value={item.value}>{item.value}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
 
-                        <div className='bonafide-content-2'>
-                            <div className='col-lg-12'>
-                            <Accordion defaultActiveKey="0">
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header style={{ padding: "initial" }}>Requested Bonafide Certificate</Accordion.Header>
-                                    <Accordion.Body>
-                                        <div className='table-responsive'>
-                                        <Table className='Bonafide-content-table'>
+                            <div className='bonafide-content-2'>
+                                <br /><br />
+                                {certificate !== 'select' &&
+                                    <div className='table-responsive'>
+                                        <Table className='tablestyle3'>
                                             <thead>
                                                 <tr>
-                                                    <th>S.No.</th>
-                                                    <th>Bonafide Service</th>
-                                                    <th>Posted Date</th>
-                                                    <th>Status</th>
-                                                    <th>Message</th>
-                                                    <th>Certificate</th>
+                                                    <th style={{ textAlign: 'center' }} colSpan={2}>Bonafide Application(All fields are mandatory)</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                { (!bonafide || bonafide.docs.length===0) ?
-                                                <tr>
-                                                    <td style={{ textAlign: "center" }} colSpan={6}>No Data</td>
-                                                </tr>  
-                                                :
-                                                bonafide.docs.sort((a, b) => (a.status > b.status) ? 1 : -1 ).map((item,index)=>(
-                                                <tr>
-                                                    <td>{index+1}</td>
-                                                    <td>{item.service}</td>
-                                                    <td>{item.postedOn &&  handleDateFormat(new Date(item.postedOn)) }</td>
-                                                    <td>{item.status}</td>
-                                                    <td>{item.message ? item.message : "No Message"}</td>
-                                                    <td>
-                                                        {
-                                                            item.requestedFile===null ? <span>no File</span> : <button type="button" className='btn btn-primary' onClick={()=>handleFile(item.requestedFile)}>Download</button>
-                                                        }
-                                                    </td>
-                                                </tr>  
-                                                ))
+                                                {
+                                                    certificate === "Income Tax" && <>
+                                                        <tr>
+                                                            <td>Who is Employee<span style={{ color: "red" }}>*</span></td>
+                                                            <td>
+                                                                <select value={incomeTax.employee} onChange={(e) => setIncomeTax((prev) => ({ ...prev, employee: e.target.value }))} className="selectPicker1" required>
+                                                                    <option value='' disabled>Select one option</option>
+                                                                    <option value='Father'>Father</option>
+                                                                    <option value='Mother'>Mother</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                            <td><textarea value={incomeTax.description} onChange={(e) => setIncomeTax((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        </tr>
+                                                    </>
                                                 }
+                                                {
+                                                    certificate === "Visa" && <>
+                                                        <tr>
+                                                            <td>From Date{visa.fromDate}<span style={{ color: "red" }}>*</span></td>
+                                                            <td>
+                                                                <input type="date" value={visa.fromDate} onChange={(e) => setVisa((prev) => ({ ...prev, fromDate: e.target.value }))} />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>To Date<span style={{ color: "red" }}>*</span></td>
+                                                            <td>
+                                                                <input type="date" value={visa.toDate} onChange={(e) => setVisa((prev) => ({ ...prev, toDate: e.target.value }))} />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Enter Visa Place<span style={{ color: "red" }}>*</span></td>
+                                                            <td>
+                                                                <input value={visa.place} onChange={(e) => setVisa((prev) => ({ ...prev, place: e.target.value }))} type="text" className="selectPicker1" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                            <td><textarea value={visa.description} onChange={(e) => setVisa((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        </tr>
+                                                    </>
+                                                }
+                                                {
+                                                    certificate === "Passport" &&
+                                                    <tr>
+                                                        <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                        <td><textarea value={Passport.description} onChange={(e) => setPassport((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                    </tr>
+                                                }
+                                                {
+                                                    certificate === "BusPass" &&
+                                                    <tr>
+                                                        <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                        <td><textarea value={busPass.description} onChange={(e) => setBusPass((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                    </tr>
+                                                }
+                                                {
+                                                    certificate === "NCC Bonafide" &&
+                                                    <tr>
+                                                        <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                        <td><textarea value={NCC.description} onChange={(e) => setNCC((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                    </tr>
+                                                }
+                                                {
+                                                    certificate === "TC" &&
+                                                    <tr>
+                                                        <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
+                                                        <td><textarea value={tc.description} onChange={(e) => setTc((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td style={{ textAlign: "center" }} colSpan={2}>
+                                                        <button className='btn btn-primary' onClick={handleSubmit}>Submit</button>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </Table>
-                                        </div>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
+                                    </div>
+                                }
+                            </div>
+
+                            <div className='bonafide-content-2'>
+                                <div className='col-lg-12'>
+                                    <Accordion defaultActiveKey="0">
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header style={{ padding: "initial" }}>Requested Bonafide Certificate</Accordion.Header>
+                                            <Accordion.Body>
+                                                <div className='table-responsive'>
+                                                    <Table className='Bonafide-content-table'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S.No.</th>
+                                                                <th>Bonafide Service</th>
+                                                                <th>Posted Date</th>
+                                                                <th>Status</th>
+                                                                <th>Message</th>
+                                                                <th>Certificate</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {(!bonafide || bonafide.docs.length === 0) ?
+                                                                <tr>
+                                                                    <td style={{ textAlign: "center" }} colSpan={6}>No Data</td>
+                                                                </tr>
+                                                                :
+                                                                bonafide.docs.sort((a, b) => (a.status > b.status) ? 1 : -1).map((item, index) => (
+                                                                    <tr>
+                                                                        <td>{index + 1}</td>
+                                                                        <td>{item.service}</td>
+                                                                        <td>{item.postedOn && handleDateFormat(new Date(item.postedOn))}</td>
+                                                                        <td>{item.status}</td>
+                                                                        <td>{item.message ? item.message : "No Message"}</td>
+                                                                        <td>
+                                                                            {
+                                                                                item.requestedFile === null ? <span>no File</span> : <button type="button" className='btn btn-primary' onClick={() => handleFile(item.requestedFile)}>Download</button>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                ))
+                                                            }
+                                                        </tbody>
+                                                    </Table>
+                                                </div>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>
+                                </div>
                             </div>
                         </div>
                     </div>

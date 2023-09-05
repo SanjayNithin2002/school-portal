@@ -35,7 +35,7 @@ const Student = () => {
         return result;
     }
 
-    if (timetableData.length === 0 && class1 && timetable && currentUser) {
+    if (timetableData.length === 0 && class1 && timetable!==null && currentUser) {
 
         let sec = Array.from(new Set(class1.docs.filter((item1) => item1.standard === currentUser.docs.standard).map((obj) => obj.section)));
         sec.map((item1) => {
@@ -104,7 +104,7 @@ const Student = () => {
                     <br />
                     <div className='table-responsive table-preview'>
                         {
-                            timetableData && currentUser && 
+                            timetableData && currentUser && timetable &&
                             <Table className='timetable-preview'>
                                 <tr>
                                     <td>From</td>

@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import "./ClassMessage.css"
 import { getClassMessage } from '../../actions/classMessage';
+import moment from "moment";
 
 const Student = () => {
 
@@ -35,16 +34,18 @@ const Student = () => {
                             }
                             {
                                 messages && messages != null &&
-                                <div className='col-lg-10 chat-container'>
+                                <div className='col-lg-12 chat-container'>
                                     {
                                         messages.docs.map((item) => (
-                                            <div className='row chat-container-1'>
+                                            <div className='chat-container-2'>
                                                 <div className='col-lg-3 Avatar'>
-                                                    <span className='Avatar-1' title='Teacher Name'>{item.class.subject} Teacher</span>
+                                                    <span className='Avatar-1'>
+                                                        {item.postedBy.firstName+" "+item.postedBy.lastName} - Teacher
+                                                    </span>
                                                 </div>
                                                 <div className='col-lg-8 message-content'>
                                                     <p className='Avatar-2'>{item.message}</p>
-                                                    <p className='timer'>a day ago</p>
+                                                    <p className='timer'>{moment(new Date(item.postedOn), "YYYYMMDD").fromNow()}</p>
                                                 </div>
                                             </div>
                                         ))
