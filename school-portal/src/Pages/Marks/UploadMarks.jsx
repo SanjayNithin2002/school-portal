@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMarks, postMarks, postManyFile, delMarks, postMany, getMarksCSV } from '../../actions/marks';
 import { getAnswers, getAssessments } from '../../actions/assessments';
-import {requestClassStudents} from '../../actions/students';
+import { requestClassStudents } from '../../actions/students';
+import { getClass } from "../../actions/class";
+import { getStudentExam } from "../../actions/exam";
+import { getMarksByAssessmentID, getMarksByExamID } from "../../actions/marks";
+
 const UploadMarks = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -17,49 +21,113 @@ const UploadMarks = () => {
     const [assessment, setAssessment] = useState("");
     const [step, setStep] = useState(0);
     const [file, setFile] = useState();
-    const [assessmentId, setAssessmentId] = useState("");
-    const [examId, setExamId] = useState("");
+    const [assessmentID, setAssessmentID] = useState("");
+    const [examID, setExamID] = useState("");
     const [studentData, setStudentData] = useState([]);
-    const [classId, setClassId] = useState("");
-    useEffect(() => {
-        dispatch(getMarks({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
-        dispatch(getMarksCSV({ token: localStorage.getItem('token') }));
-        dispatch(getAnswers({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
-        dispatch(requestClassStudents({id: localStorage.getItem('id')}));
-    }, [dispatch]);
+    const [classID, setClassID] = useState("");
 
-    const m = useSelector((state) => state.marksReducer)
+    useEffect(() => {
+        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getStudentExam({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        if(standard && section)
+        dispatch(getMarksCSV({ standard:"V", section: section }));
+        if (classID)
+            dispatch(requestClassStudents(classID));
+    }, [dispatch, classID])
+    
+    let classes = useSelector((state) => state.allClassReducer) // get classes
+    let students = useSelector((state) => state.allStudentsReducer) //get students
+    let assessments = useSelector((state) => state.assessmentsReducer) //get assessments of that class
+    let exams = useSelector((state) => state.examReducer)  //get exams of that class
+    // console.log(classes)
+    // console.log(students)
+    // console.log(assessments)
+    // console.log(exams)
+
+    //Set classID
+    useEffect(() => {
+        if (classes && standard && section) {
+            const filteredItems = classes.docs.filter(item => {
+                return (
+                    item.standard === parseInt(standard) &&
+                    item.section === section &&
+                    item.subject !== "Class Teacher"
+                );
+            });
+            if (filteredItems.length > 0) {
+                setClassID(filteredItems[0]._id)
+            }
+        }
+    }, [classes, standard, section])
+    //Set assessmentID
+    useEffect(() => {
+        if (classes && assessments && assessment) {
+            const filteredAssessments = Array.from(new Set(assessments.docs.filter((i) => i.title === assessment))).map((j) => {
+                return j._id;
+            })
+            if (filteredAssessments.length > 0)
+                setAssessmentID(filteredAssessments)
+        }
+    }, [assessment, standard, section])
+    //Set examID
+    useEffect(() => {
+        if (classes && exams && exam) {
+            const filteredExams = Array.from(new Set(exams.docs.filter((i) => i.examName.name === exam))).map((j) => {
+                return j._id;
+            })
+
+            if (filteredExams.length > 0) {
+                setExamID(filteredExams)
+                console.log(examID)
+            }
+        }
+    }, [exam, standard, section])
+
+    //get ass && exam marks
+    useEffect(() => {
+        if (assessmentID) {
+            dispatch(getMarksByAssessmentID({ id: assessmentID }));
+        }
+        if (examID) {
+            dispatch(getMarksByExamID({ id: examID }));
+        }
+    }, [assessmentID, examID]);
+
+    let StudentAssessmentMarks = useSelector((state) => state.marksReducer)
+    // console.log(StudentAssessmentMarks)
+    let StudentExamMarks = useSelector((state) => state.marksReducer)
+    // console.log(StudentExamMarks)
+
     const csvData = useSelector((state) => state.marksCSVReducer)
-    const answers = useSelector((state) => state.marksReducer)
-    const classList = useSelector((state)=>state.allStudentsReducer)
-    console.log(m)
+    // const answers = useSelector((state) => state.marksReducer)
+    const classList = useSelector((state) => state.allStudentsReducer)
     // console.log(answers)
     // console.log(csvData)
-    // console.log(localStorage.getItem('token'))
-    // console.log(classList)
+    console.log(classList)
 
     //download ans for marks
     const handleAnswerDownload = (studentId) => {
-        const studentAnswers = answers && answers.docs.filter((item) =>
-            item.assessment._id === assessmentId && item.student._id === studentId
-        );
-        if (studentAnswers.length > 0) {
-            const item1 = studentAnswers[0];
-            const blobUrl = URL.createObjectURL(item1.answerFile);
+        // const studentAnswers = answers && answers.docs.filter((item) =>
+        //     item.assessment._id === assessmentID && item.student._id === studentID
+        // );
+        // if (studentAnswers.length > 0) {
+        //     const item1 = studentAnswers[0];
+        //     const blobUrl = URL.createObjectURL(item1.answerFile);
 
-            const link = document.createElement('a');
-            link.href = blobUrl;
-            link.download = 'downloaded-file-name.extension'; // Change the file name and extension accordingly
-            link.style.display = 'none';
+        //     const link = document.createElement('a');
+        //     link.href = blobUrl;
+        //     link.download = 'downloaded-file-name.extension'; // Change the file name and extension accordingly
+        //     link.style.display = 'none';
 
-            document.body.appendChild(link);
-            link.click();
+        //     document.body.appendChild(link);
+        //     link.click();
 
-            document.body.removeChild(link);
-            URL.revokeObjectURL(blobUrl);
-        }
+        //     document.body.removeChild(link);
+        //     URL.revokeObjectURL(blobUrl);
+        // }
     }
-const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
+    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
     const handleStudentListDownload = () => {
         const blob = new Blob([csvData.data.toString()], { type: 'text/csv' });
@@ -79,7 +147,7 @@ const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { lab
         if (file) {
             const formData = new FormData();
             formData.append('type', "assessment");
-            formData.append('assessment', "64923d1b6255f24e230a6c60");
+            formData.append('assessment', assessmentID);
             formData.append('marks', file);
             dispatch(postManyFile(formData))
         }
@@ -129,95 +197,95 @@ const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { lab
     //         setStudentData(constructedStudentData);
     //     }
     // }, [assessment, exam, standard, section, subject, m]);
-    
-    useEffect(() => {
-        if (assessment && standard && section && subject) {
-            const studentDataFromAssessment = m.docs.assessmentMarks
-                .filter(item => (
-                    item.class.standard === parseInt(standard) &&
-                    item.class.section === section &&
-                    item.class.subject === subject &&
-                    item.title === assessment
-                ));
-            setAssessmentId(studentDataFromAssessment[0]._id);
-            setClassId(studentDataFromAssessment[0].class._id);
 
-            // const constructedStudentData = {
-            //     type: "assessment",
-            //     assessment: studentDataFromAssessment[0]._id,
-            //     marks: studentDataFromAssessment.map(item => ({
-            //         student: item.student._id,
-            //         scoredMarks: "",
-            //         remarks: "None"
-            //     }))
-            // };
-            // setStudentData(constructedStudentData);
-            
-        } else if (exam) {
-            const studentDataFromExam = m.docs.examMarks
-                .filter(item => (
-                    item.standard === parseInt(standard) &&
-                    item.section === section &&
-                    item.subject === subject &&
-                    item.examName === exam
-                ));
-                console.log(studentDataFromExam)
-            setExamId(studentDataFromExam[0]._id);
+    // useEffect(() => {
+    //     if (assessment && standard && section && subject) {
+    //         const studentDataFromAssessment = m.docs.assessmentMarks
+    //             .filter(item => (
+    //                 item.class.standard === parseInt(standard) &&
+    //                 item.class.section === section &&
+    //                 item.class.subject === subject &&
+    //                 item.title === assessment
+    //             ));
+    //         setAssessmentId(studentDataFromAssessment[0]._id);
+    //         setClassId(studentDataFromAssessment[0].class._id);
 
-            // const constructedStudentData = {
-            //     type: "exam",
-            //     exam: studentDataFromExam[0].exam._id,
-            //     marks: studentDataFromExam.map(item => ({
-            //         student: item.student._id,
-            //         scoredMarks: "",
-            //         remarks: "None"
-            //     }))
-            // };
-            // setStudentData(constructedStudentData);
+    //         // const constructedStudentData = {
+    //         //     type: "assessment",
+    //         //     assessment: studentDataFromAssessment[0]._id,
+    //         //     marks: studentDataFromAssessment.map(item => ({
+    //         //         student: item.student._id,
+    //         //         scoredMarks: "",
+    //         //         remarks: "None"
+    //         //     }))
+    //         // };
+    //         // setStudentData(constructedStudentData);
 
-        }
-    }, [assessment, exam, standard, section, subject, m]);
+    //     } else if (exam) {
+    //         const studentDataFromExam = m.docs.examMarks
+    //             .filter(item => (
+    //                 item.standard === parseInt(standard) &&
+    //                 item.section === section &&
+    //                 item.subject === subject &&
+    //                 item.examName === exam
+    //             ));
+    //         console.log(studentDataFromExam)
+    //         setExamId(studentDataFromExam[0]._id);
+
+    //         // const constructedStudentData = {
+    //         //     type: "exam",
+    //         //     exam: studentDataFromExam[0].exam._id,
+    //         //     marks: studentDataFromExam.map(item => ({
+    //         //         student: item.student._id,
+    //         //         scoredMarks: "",
+    //         //         remarks: "None"
+    //         //     }))
+    //         // };
+    //         // setStudentData(constructedStudentData);
+
+    //     }
+    // }, [assessment, exam, standard, section, subject, m]);
 
 
     const handleMarkChange = (id, newMark) => {
-        setStudentData(prevStudentData => {
-            const updatedMarks = prevStudentData.marks.map(student => {
-                if (student.student === id) {
-                    return { ...student, scoredMarks: newMark };
-                }
-                return student;
-            });
-            return { ...prevStudentData, marks: updatedMarks };
-        });
+        // setStudentData(prevStudentData => {
+        //     const updatedMarks = prevStudentData.marks.map(student => {
+        //         if (student.student === id) {
+        //             return { ...student, scoredMarks: newMark };
+        //         }
+        //         return student;
+        //     });
+        //     return { ...prevStudentData, marks: updatedMarks };
+        // });
     };
 
     const handleRemarksChange = (id, newRemarks) => {
-        setStudentData(prevStudentData => {
-            const updatedMarks = prevStudentData.marks.map(student => {
-                if (student.student === id) {
-                    return { ...student, remarks: newRemarks };
-                }
-                return student;
-            });
-            return { ...prevStudentData, marks: updatedMarks };
-        });
+        // setStudentData(prevStudentData => {
+        //     const updatedMarks = prevStudentData.marks.map(student => {
+        //         if (student.student === id) {
+        //             return { ...student, remarks: newRemarks };
+        //         }
+        //         return student;
+        //     });
+        //     return { ...prevStudentData, marks: updatedMarks };
+        // });
     };
 
 
     const handleSubmit2 = () => {
-        if (studentData && studentData.marks) {
-            const filteredMarks = studentData.marks.filter(student => (
-                student.scoredMarks !== "" && student.remarks !== ""
-            ));
+        // if (studentData && studentData.marks) {
+        //     const filteredMarks = studentData.marks.filter(student => (
+        //         student.scoredMarks !== "" && student.remarks !== ""
+        //     ));
 
-            const updatedStudentData = {
-                ...studentData,
-                marks: filteredMarks
-            };
+        //     const updatedStudentData = {
+        //         ...studentData,
+        //         marks: filteredMarks
+        //     };
 
-            console.log(updatedStudentData);
-        dispatch(postMany(updatedStudentData))
-        }
+        //     console.log(updatedStudentData);
+        //     dispatch(postMany(updatedStudentData))
+        // }
     };
 
 
@@ -250,127 +318,93 @@ const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { lab
                         {step === 0 &&
                             <div className='row'>
                                 <div className='col-lg-12 justify-content-center'>
-                                    <Table className='AddStudent-Table-List-1'>
-                                        <tbody>
-                                            <tr>
-                                                <td>Select Assessment</td>
-                                                <td>
-                                                    <select className="selectPicker3" value={assessment} onChange={(e) => { setAssessment(e.target.value); setExam("") }}>
-                                                        <option value="" disabled>Select Assessment</option>
-                                                        {m ?
-                                                            Array.from(new Set(m.docs.assessmentMarks.map((i) => i.title))).map((i) => {
-                                                                return <option value={i}>{i}</option>
-                                                            })
-                                                            : <></>
-                                                        }
-                                                    </select>
-                                                </td>
-                                                <td>Select Exam</td>
-                                                <td>
-                                                    <select className="selectPicker3" value={exam} onChange={(e) => { setExam(e.target.value); setAssessment("") }}>
-                                                        <option value="" disabled>Select Exam</option>
-                                                        {m ?
-                                                            Array.from(new Set(m.docs.examMarks.map((i) => i.examName))).map((i) => {
-                                                                return <option value={i}>{i}</option>
-                                                            })
-                                                            : <></>
-                                                        }
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            {assessment ?
-                                                <>
-                                                    <tr>
-                                                        <td>Select Class </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={standard} onChange={(e) => setStandard(e.target.value)}>
-                                                                <option value="" disabled>Select Class</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.assessmentMarks.map((i) => i.class.standard))).map((i) => {
-                                                                        const item = standardList.find(item => item.value === 5);
-                                                                        return <option value={i}>{item.label}</option>
-                                                                    })
 
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Select Section </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={section} onChange={(e) => setSection(e.target.value)}>
-                                                                <option value="" disabled>Select Section</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.assessmentMarks.map((i) => i.class.section))).map((i) => {
-                                                                        return <option value={i}>{i}</option>
-                                                                    })
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Select Subject </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={subject} onChange={(e) => setSubject(e.target.value)}>
-                                                                <option value="" disabled>Select Subject</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.assessmentMarks.map((i) => i.class.subject))).map((i) => {
-                                                                        return <option value={i}>{i}</option>
-                                                                    })
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr></>
-                                                : <></>
-                                            }
-                                            {exam ?
-                                                <>
-                                                    <tr>
-                                                        <td>Select Class </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={standard} onChange={(e) => setStandard(e.target.value)}>
-                                                                <option value="" disabled>Select Class</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.examMarks.map((i) => i.standard))).map((i) => {
-                                                                        const item = standardList.find(item => item.value === 5);
-                                                                        return <option value={i}>{item.label}</option>
-                                                                    })
+                                    <div className="row">
+                                        <div className="col-lg-3">
+                                            <h4>Select Standard : </h4>
+                                        </div>
+                                        <div className="col-lg-3">
+                                            <select
+                                                className="selectPicker3"
+                                                value={standard}
+                                                onChange={(e) => { setStandard(e.target.value); setAssessment(""); setExam("");}}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Standard
+                                                </option>
+                                                {
+                                                    classes &&
+                                                    Array.from(new Set(classes.docs.map((element) => element.standard))).map((item) => (
+                                                        standardList.filter((class1) => class1.value === item).map((class1) => (
+                                                            <option value={class1.value}>{class1.label}</option>
+                                                        ))
+                                                    ))
+                                                }
+                                            </select>
+                                        </div>
 
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Select Section </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={section} onChange={(e) => setSection(e.target.value)}>
-                                                                <option value="" disabled>Select Section</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.examMarks.map((i) => i.section))).map((i) => {
-                                                                        return <option value={i}>{i}</option>
-                                                                    })
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Select Subject </td>
-                                                        <td>
-                                                            <select className="selectPicker3" value={subject} onChange={(e) => setSubject(e.target.value)}>
-                                                                <option value="" disabled>Select Subject</option>
-                                                                {m ?
-                                                                    Array.from(new Set(m.docs.examMarks.map((i) => i.subject))).map((i) => {
-                                                                        return <option value={i}>{i}</option>
-                                                                    })
-                                                                    : <></>}
-                                                            </select>
-                                                        </td>
-                                                    </tr></>
-                                                : <></>
-                                            }
+                                        <div className="col-lg-3">
+                                            <h4>Select Section : </h4>
+                                        </div>
+                                        <div className="col-lg-3">
+                                            <select
+                                                className="selectPicker3"
+                                                value={section}
+                                                onChange={(e) => { setSection(e.target.value); setAssessment(""); setExam(""); }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Section
+                                                </option>
+                                                {
+                                                    classes &&
+                                                    Array.from(new Set(classes.docs.filter((item) => parseInt(standard) === item.standard).map((element) => element.section))).map((item) => (
+                                                        <option value={item}>{item}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </div>
 
-                                        </tbody>
-                                    </Table>
+                                        <div className="col-lg-3">
+                                            <h4>Select Exam : </h4>
+                                        </div>
+                                        <div className="col-lg-3">
+                                            <select
+                                                className="selectPicker3"
+                                                value={exam}
+                                                onChange={(e) => { setExam(e.target.value); setAssessment(""); }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Exam
+                                                </option>
+                                                {
+                                                    exams && classes &&
+                                                    Array.from(new Set(exams.docs.filter((i) => i.class._id === classID))).map((j) => {
+                                                        return <option value={j.examName.name}>{j.examName.name}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div className="col-lg-3">
+                                            <h4>Select Assessment : </h4>
+                                        </div>
+                                        <div className="col-lg-3">
+                                            <select
+                                                className="selectPicker3"
+                                                value={assessment}
+                                                onChange={(e) => { setAssessment(e.target.value); setExam(""); }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select Assessment
+                                                </option>
+                                                {assessments && classes &&
+                                                    Array.from(new Set(assessments.docs.filter((i) => i.class._id === classID))).map((j) => {
+                                                        return <option value={j.title}>{j.title}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -393,36 +427,7 @@ const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { lab
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {
-                                                    standard && section && subject ?
-                                                        <>
-
-                                                            {m.docs.assessmentMarks
-                                                                .filter((item) => {
-                                                                    return (
-                                                                        item.class.standard === parseInt(standard) &&
-                                                                        item.class.section === section &&
-                                                                        item.class.subject === subject &&
-                                                                        item.title === assessment
-                                                                    );
-                                                                }).map((item, index) => {
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <td>{index + 1}</td>
-                                                                            <td>{item.student.firstName}</td>
-                                                                            <td>{item.student.lastName}</td>
-                                                                            <td><button className='btn btn-primary' onClick={() => handleAnswerDownload(item.student._id)}>File</button></td>
-                                                                            <td><input type="number" value={item.mark} onChange={(e) => handleMarkChange(item.student._id, e.target.value)} ></input></td>
-                                                                            <td>{item.assessment.maxMarks}</td>
-                                                                            <td><input type="text" value={item.mark} onChange={(e) => handleRemarksChange(item.student._id, e.target.value)}></input></td>                                                                        </tr>
-                                                                    )
-                                                                })}
-                                                        </>
-                                                        :
-                                                        <tr>
-                                                            <td style={{ textAlign: "center" }} colSpan={12}>No Data</td>
-                                                        </tr>
-                                                }
+                                                //
                                             </tbody>
                                         </Table>
                                         : <></>}
@@ -436,42 +441,13 @@ const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { lab
                                                     <th>S.No.</th>
                                                     <th>First Name</th>
                                                     <th>Last Name</th>
-                                                    <th>File Uploaded</th>
                                                     <th>Marks Scored</th>
                                                     <th>Max Marks</th>
                                                     <th>Remarks</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {
-                                                    standard && section && subject ?
-                                                        <>
-                                                            {m.docs.examMarks
-                                                                .filter((item) => {
-                                                                    return (
-                                                                        item.student.standard === parseInt(standard) &&
-                                                                        item.student.section === section &&
-                                                                        item.exam.class.subject === subject &&
-                                                                        item.exam.examName === exam
-                                                                    );
-                                                                }).map((item, index) => {
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <td>{index + 1}</td>
-                                                                            <td>{item.student.firstName}</td>
-                                                                            <td>{item.student.lastName}</td>
-                                                                            <td><button className='btn btn-primary' onClick={() => handleAnswerDownload()}>File</button></td>
-                                                                            <td><input type="number" value={item.mark} onChange={(e) => handleMarkChange(index, e.target.value)} ></input></td>
-                                                                            <td>{item.assessment.maxMarks}</td>
-                                                                            <td><input type="text" value={item.mark} onChange={(e) => handleRemarksChange(index, e.target.value)}></input></td>                                                                        </tr>
-                                                                    )
-                                                                })}
-                                                        </>
-                                                        :
-                                                        <tr>
-                                                            <td style={{ textAlign: "center" }} colSpan={8}>No Data</td>
-                                                        </tr>
-                                                }
+                                                //
                                             </tbody>
                                         </Table>
                                         : <></>}

@@ -30,6 +30,17 @@ export const getMarksByAssessmentID = (userData) => async (dispatch) => {
         console.log(err)
     }
 }
+export const getMarksByExamID = (userData) => async (dispatch) => {
+    try {
+        const { data } = await api.getMarksByExamID(userData)
+        // console.log(data);
+        dispatch({ type: "FETCH_MARKS", payload: data })
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
 export const getMarksByID = (userData) => async (dispatch) => {
     try{
         const { data } = await api.getMarksByID(userData)

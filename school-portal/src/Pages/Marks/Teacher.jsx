@@ -116,7 +116,7 @@ const MarksTeacher = () => {
                   <select
                     className="selectPicker3"
                     value={standard}
-                    onChange={(e) => { setStandard(e.target.value); setAssessment(""); }}
+                    onChange={(e) => { setStandard(e.target.value); setAssessment(""); setExam(""); }}
                   >
                     <option value="" disabled>
                       Select Standard
@@ -139,7 +139,7 @@ const MarksTeacher = () => {
                   <select
                     className="selectPicker3"
                     value={section}
-                    onChange={(e) => { setSection(e.target.value); setAssessment("") }}
+                    onChange={(e) => { setSection(e.target.value); setAssessment(""); setExam(""); }}
                   >
                     <option value="" disabled>
                       Select Section
@@ -231,7 +231,7 @@ const MarksTeacher = () => {
                                   <td>{student.lastName}</td>
                                   <td>{examMark ? examMark.scoredMarks : "-"}</td>
                                   <td>{examMark ? examMark.exam.maxMarks : "-"}</td>
-                                  <td>{examMark ? examMark.weightageScoredMarks : "-"}</td>
+                                  <td>{examMark ? examMark.weightageScoredMarks.toFixed(2) : "-"}</td>
                                   <td>{examMark ? examMark.exam.weightageMarks : "-"}</td>
                                   <td>{examMark ? examMark.remarks : "-"}</td>
                                 </tr>
@@ -277,7 +277,7 @@ const MarksTeacher = () => {
                                   <td>{student.firstName}</td>
                                   <td>{student.lastName}</td>
                                   <td>{AssessmentMark ? AssessmentMark.scoredMarks : "-"}</td>
-                                  <td>{AssessmentMark ? AssessmentMark.weightageScoredMarks : "-"}</td>
+                                  <td>{AssessmentMark ? AssessmentMark.weightageScoredMarks.toFixed(2) : "-"}</td>
                                   <td>{AssessmentMark ? AssessmentMark.remarks : "-"}</td>
                                 </tr>
                               );
