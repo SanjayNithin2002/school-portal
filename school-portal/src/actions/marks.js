@@ -53,10 +53,9 @@ export const getMarksByID = (userData) => async (dispatch) => {
 }
 
 
-export const getMarksForStudent = (userData) => async (dispatch) => {
+export const getMarksByStudentID = (userData) => async (dispatch) => {
     try {
-        const { data } = await api.getMarksForStudent(userData)
-        // console.log(data);
+        const { data } = await api.getMarksByStudentID(userData)
         dispatch({ type: "FETCH_STUDENT_MARKS", payload: data })
     }
     catch (err) {

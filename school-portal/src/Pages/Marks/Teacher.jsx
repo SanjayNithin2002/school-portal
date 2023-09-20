@@ -17,20 +17,23 @@ const MarksTeacher = () => {
   const dispatch = useDispatch();
   const [standard, setStandard] = useState("");
   const [section, setSection] = useState("");
-  const [classID, setClassID] = useState("");
   const [exam, setExam] = useState("");
-  const [examID, setExamID] = useState("");
   const [assessment, setAssessment] = useState("");
+  const [classID, setClassID] = useState("");
+  const [examID, setExamID] = useState("");
   const [assessmentID, setAssessmentID] = useState("");
   const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
+
+  useEffect(() => {
+    if (classID)
+      dispatch(requestClassStudents(classID));
+  }, [dispatch, classID])
 
   useEffect(() => {
     dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     dispatch(getStudentExam({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    if (classID)
-      dispatch(requestClassStudents(classID));
-  }, [dispatch, classID])
+  }, [dispatch])
 
   let classes = useSelector((state) => state.allClassReducer) // get classes
   let students = useSelector((state) => state.allStudentsReducer) //get students
@@ -59,36 +62,39 @@ const MarksTeacher = () => {
   //Set assessmentID
   useEffect(() => {
     if (classes && assessments && assessment) {
-      const filteredAssessments = Array.from(new Set(assessments.docs.filter((i) => i.title === assessment))).map((j) => {
+      const filteredAssessments = Array.from(new Set(assessments.docs.filter((i) => i.title === assessment && i.class.section === section))).map((j) => {
         return j._id;
       })
       if (filteredAssessments.length > 0)
-        setAssessmentID(filteredAssessments)
+        setAssessmentID(filteredAssessments[0])
     }
-  }, [assessment, standard, section])
+  }, [assessment, standard, section, exam])
   //Set examID
   useEffect(() => {
     if (classes && exams && exam) {
-      const filteredExams = Array.from(new Set(exams.docs.filter((i) => i.examName.name === exam))).map((j) => {
+      //filter by name seq no and section
+      const filteredExams = Array.from(new Set(exams.docs.filter((i) => i.examName.name + " " + i.examName.sequence === exam && i.class.section === section))).map((j) => {
         return j._id;
       })
 
       if (filteredExams.length > 0) {
-        setExamID(filteredExams)
-        console.log(examID)
+        setExamID(filteredExams[0])
       }
     }
-  }, [exam, standard, section])
-
-  //get ass && exam marks
+  }, [exam, standard, section, assessment])
+  //get ass marks
   useEffect(() => {
     if (assessmentID) {
       dispatch(getMarksByAssessmentID({ id: assessmentID }));
     }
+  }, [assessmentID]);
+
+  //get exam marks
+  useEffect(() => {
     if (examID) {
       dispatch(getMarksByExamID({ id: examID }));
     }
-  }, [assessmentID, examID]);
+  }, [examID])
 
   let StudentAssessmentMarks = useSelector((state) => state.marksReducer)
   // console.log(StudentAssessmentMarks)
@@ -104,11 +110,12 @@ const MarksTeacher = () => {
             <div className='d-flex justify-content-between'>
               <h2>Marks View</h2>
               <Link to="/UploadMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Upload Marks</Link>
-              <Link to="/EditMarks" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Edit Marks</Link>
+              {/* <Link to="/EditMarks" className='btn btn-primary'><FondtAwesomeIcon icon={solid.faPlus} /> Edit Marks</Link> */}
             </div>
             <hr style={{ border: "1px solid gray" }} />
             <div>
               <div className="row">
+
                 <div className="col-lg-3">
                   <h4>Select Standard : </h4>
                 </div>
@@ -139,7 +146,7 @@ const MarksTeacher = () => {
                   <select
                     className="selectPicker3"
                     value={section}
-                    onChange={(e) => { setSection(e.target.value); setAssessment(""); setExam(""); }}
+                    onChange={(e) => { setSection(e.target.value); setAssessment(null); setExam(""); }}
                   >
                     <option value="" disabled>
                       Select Section
@@ -160,7 +167,7 @@ const MarksTeacher = () => {
                   <select
                     className="selectPicker3"
                     value={exam}
-                    onChange={(e) => { setExam(e.target.value); setAssessment(""); }}
+                    onChange={(e) => { setExam(e.target.value); setAssessment(""); setAssessmentID(null) }}
                   >
                     <option value="" disabled>
                       Select Exam
@@ -168,7 +175,7 @@ const MarksTeacher = () => {
                     {
                       exams && classes &&
                       Array.from(new Set(exams.docs.filter((i) => i.class._id === classID))).map((j) => {
-                        return <option value={j.examName.name}>{j.examName.name}</option>
+                        return <option value={j.examName.name + " " + j.examName.sequence}>{j.examName.name + " " + j.examName.sequence}</option>
                       })
                     }
                   </select>
@@ -181,7 +188,7 @@ const MarksTeacher = () => {
                   <select
                     className="selectPicker3"
                     value={assessment}
-                    onChange={(e) => { setAssessment(e.target.value); setExam(""); }}
+                    onChange={(e) => { setAssessment(e.target.value); setExam(""); setExamID(null) }}
                   >
                     <option value="" disabled>
                       Select Assessment
@@ -244,7 +251,7 @@ const MarksTeacher = () => {
                         <></>
                     }
                   </tbody>
-                  
+
                 </Table>
                 : <></>}
               {assessment ?
@@ -260,7 +267,7 @@ const MarksTeacher = () => {
                     </tr>
                   </thead>
                   <tbody>
-                  {
+                    {
                       StudentAssessmentMarks && students ?
                         <>
                           {

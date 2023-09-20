@@ -1,0 +1,43 @@
+.upload-marks-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.upload-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    padding: 8px 16px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.table-row {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style the input fields */
+.custom-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+/* Style the table cells (optional) */
+td {
+    padding: 8px;
+}

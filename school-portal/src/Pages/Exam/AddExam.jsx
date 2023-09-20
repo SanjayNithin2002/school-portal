@@ -141,7 +141,7 @@ const AddExam = () => {
             }
         }
         if (step === 1) {
-            dispatch(getExam(standard));
+            dispatch(getExam({standard}));
             if(subjectList.filter((item)=>item.date==="" || item.time==="").length>0){
                 flag=0;
                 alert("Kindly select the date and time for each subject");
