@@ -5,18 +5,46 @@ import './Profile.css';
 import { setCurrentUser } from "../../actions/currentUser";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "react-bootstrap/Table"
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
+function Teacher({status,onLoading}) {
 
-function Teacher() {
-
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
+    const [fetchStatus, setFetchStatus] = useState(true);
     const [buttonType, setButtonType] = useState("personal");
     useEffect(() => {
-        dispatch(setCurrentUser({ type: localStorage.getItem("type"), id: localStorage.getItem("id") }))
-    }, [dispatch])
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(setCurrentUser("/Profile", navigate,{ type: localStorage.getItem("type"), id: localStorage.getItem("id") }))
+        }
+    }, [dispatch, fetchStatus, navigate])
 
     const currentUser = useSelector(state => state.currentUserReducer);
     console.log(currentUser)
+
+    useEffect(() => {
+        if (currentUser) {
+            onLoading(false);
+        }
+    }, [currentUser])
+
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                    Error Code: {location.state.status},<br />{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, { placement: 'topCenter' })
+            navigate('/Profile', { state: null });
+        }
+    }, [location.state, toaster, navigate])
     
     const handleDateFormat = (date1) => {
         const date = new Date(date1);
@@ -43,12 +71,8 @@ function Teacher() {
                                 <img alt="no img" src="https://via.placeholder.com/240x240" height="240" />
                                 <table>
                                     <tr>
-                                        <td align='left'>First Name</td>
-                                        <td align='right'>{currentUser.docs.firstName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td align='left'>Last Name</td>
-                                        <td align='right'>{currentUser.docs.lastName}</td>
+                                        <td style={{fontWeight:"bolder"}} align='left'>Name</td>
+                                        <td align='left'>{currentUser.docs.firstName} {currentUser.docs.lastName}</td>
                                     </tr>
                                 </table>
                             </Panel>

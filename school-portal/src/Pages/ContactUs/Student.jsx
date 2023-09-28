@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Form, ButtonToolbar, Button, Input} from "rsuite";
 import LocationIcon from "@rsuite/icons/Location";
@@ -6,7 +6,8 @@ import TimeIcon from "@rsuite/icons/Time";
 import EmailIcon from "@rsuite/icons/Email";
 import PhoneIcon from "@rsuite/icons/Phone";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"
+import {Notification,useToaster} from 'rsuite';
 import "./ContactUs.css";
 import { requestContact } from "../../actions/auth";
 
@@ -26,18 +27,61 @@ const PhIcon = ({ size }) => (
     <PhoneIcon style={{ fontSize: size, marginRight: 10 }} />
 );
 
-function ContactUsStudent() {
+function ContactUsStudent({status,onLoading}) {
     const [request, setRequest] = useState({
         name: "",
         email: "",
         subject: "",
         message: "",
     });
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const handleSubmit = () => {
-        dispatch(requestContact(request, navigate));
+        if(request.name && request.email && request.subject && request.message){
+            onLoading(true);
+            dispatch(requestContact(request, navigate));
+        }
+        else{
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                  Kindly fill all the details.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+        }
     };
+
+    useEffect(()=>{
+        if(location.state){
+            onLoading(false);
+            if(location.state.status==200){
+                setRequest({
+                    name: "",
+                    email: "",
+                    subject: "",
+                    message: "",
+                })
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/ContactUs',{state:null});
+            }
+            else{
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/ContactUs',{state:null});
+            }
+        }
+      },[location.state,navigate,toaster,onLoading])
 
     return (
         <div className="Main">
@@ -80,6 +124,13 @@ function ContactUsStudent() {
                         </div>
                         <div className="row col-xl-6 col-lg-6 Contact-Container-2">
                         <Form fluid>
+                            <div className="col-xl-12 col-lg-12 col-md-6" >
+                                <Form.Group controlId="email-1">
+                                    <Form.ControlLabel><h6>Name</h6></Form.ControlLabel>
+                                    <Form.Control defaultValue={request.name} onChange={(value) => setRequest((prev)=>({...prev,name:value}))} name="name" type="text" />
+                                    <Form.HelpText>Required</Form.HelpText>
+                                </Form.Group>
+                            </div>
                             <div className="col-xl-12 col-lg-12 col-md-6" >
                                 <Form.Group controlId="email-1">
                                     <Form.ControlLabel><h6>Email ID</h6></Form.ControlLabel>

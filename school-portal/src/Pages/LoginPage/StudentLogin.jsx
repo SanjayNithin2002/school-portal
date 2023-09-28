@@ -11,7 +11,7 @@ import {Notification,useToaster} from 'rsuite';
 
 import "../../App.css"
 
-const StudentLogin = ({handleBack}) => {
+const StudentLogin = ({handleBack,status,onLoading}) => {
     const [Studentuserid, setStudentUserid] = useState("");
     const [Studentpassword, setStudentPassword] = useState("");
     const [visible, setVisible] = React.useState(false);
@@ -21,11 +21,13 @@ const StudentLogin = ({handleBack}) => {
 
     const toaster = useToaster();
     const handleSubmit = (type) => {
+        onLoading(true);
         dispatch(StudentlogIn({ userID: Studentuserid, password: Studentpassword }, navigate));
     };
 
     useEffect(()=>{
         if(location.state){
+            onLoading(false);
             const message = (
                 <Notification type="error" header="error" closable>
                   Error Code: {location.state.status},<br/>{location.state.message}
@@ -34,7 +36,7 @@ const StudentLogin = ({handleBack}) => {
             toaster.push(message, {placement:'topCenter'})
             navigate('/',{state:null});
         }
-    },[location.state,navigate,toaster])
+    },[location.state,navigate,toaster,onLoading])
 
     return (
         <div style={{width:"100%"}} className='row justify-content-center '>

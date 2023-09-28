@@ -3,6 +3,17 @@
     justify-content: space-between ;
 }
 
+.rs-anim-fade.rs-anim-in {
+  z-index: 3000;
+}
+
+.exam-edit{
+  width:100%;
+}
+
+.exam-edit td{
+  padding:5px;
+}
 
 .ExamSchedule-content-table {
     border-collapse: separate;

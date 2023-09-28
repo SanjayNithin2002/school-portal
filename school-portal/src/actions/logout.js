@@ -1,0 +1,27 @@
+export const logout = () => async (dispatch) => {
+  window.location.href='/';
+  dispatch({ type: "FETCH_ALL_ADMINS", payload: null });
+  dispatch({ type: "ALL_ADMIN_FETCH_ATTENDANCE", payload: null });
+  dispatch({ type: "FETCH_ALL_CLASSES", payload: null });
+  dispatch({ type: "FETCH_ALL_LEAVE_REQUEST", payload: null });
+  dispatch({ type: "FETCH_ALL_STUDENTS", payload: null });
+  dispatch({ type: "FETCH_USER_ANSWERS", payload: null });
+  dispatch({ type: "FETCH_USER_ASSESSMENTS", payload: null });
+  dispatch({ type: "USER_FETCH_ATTENDANCE", payload: null });
+  dispatch({ type: "FETCH_CLASS_MESSAGE", payload: null });
+  dispatch({ type: "FETCH_CURRENT_USER", payload: null });
+  dispatch({ type: "FETCH_EXAM_DETAILS", payload: null });
+  dispatch({ type: "FETCH_ALL_FEES", payload: null });
+  dispatch({ type: "FETCH_MARKS", payload: null });
+  dispatch({ type: "FETCH_MARKS_CSV", payload: null });
+  dispatch({ type: "FETCH_STUDENT_PAYMENT", payload: null });
+  dispatch({ type: "FETCH_ALL_RECORDS", payload: null });
+  dispatch({ type: "FETCH_USER_SPOTLIGHT", payload: null });
+  dispatch({ type: "FETCH_STANDARD_CLASS", payload: null });
+  dispatch({ type: "ALL_STUDENT_FETCH_ATTENDANCE", payload: null });
+  dispatch({ type: "FETCH_TEACHER", payload: null });
+  dispatch({ type: "ALL_TEACHER_FETCH_ATTENDANCE", payload: null });
+  dispatch({ type: "FETCH_ALL_TIMETABLE", payload: null });
+  dispatch({ type: "FETCH_LEAVE_REQUEST", payload: null });
+  localStorage.clear();
+};

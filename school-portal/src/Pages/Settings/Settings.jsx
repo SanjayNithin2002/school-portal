@@ -5,8 +5,8 @@ import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { useLocation, useNavigate } from "react-router-dom"
+import {Notification,useToaster} from 'rsuite';
 
 import "./Settings.css";
 import { changePassword, changeUserID, setCurrentUser } from '../../actions/currentUser';
@@ -18,12 +18,17 @@ const styles = {
 
 function Settings() {
 
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const [fetchStatus, setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(setCurrentUser({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
-    }, [dispatch])
+        if(fetchStatus){
+            dispatch(setCurrentUser("/Setting",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
+        }
+    }, [dispatch,navigate])
 
     const currentUser = useSelector((state) => state.currentUserReducer)
 
@@ -46,24 +51,68 @@ function Settings() {
         newPassword: "",
     })
 
-    if (currentUser && request1.id === "") {
-        console.log(currentUser.docs)
-        setRequest1((prev) => ({ ...prev, id: currentUser.docs._id }))
-    }
+    useEffect(()=>{
+        if (currentUser) {
+            console.log(currentUser)
+            setRequest1((prev) => ({ ...prev, id: currentUser.docs._id }))
+            setRequest2((prev) => ({ ...prev, id: currentUser.docs._id }))
+        }
+    },[currentUser])
 
-    if (currentUser && request2.id === "") {
-        console.log(currentUser.docs)
-        setRequest2((prev) => ({ ...prev, id: currentUser.docs._id }))
-    }
-
-
+    useEffect(()=>{
+        if(location.state && fetchStatus){
+            if(location.state.status==200){
+                setRequest1({id: "",currentUserID: "",newUserID: "",password: ""})
+                setRequest2({id: "",currentPassword: "",newPassword: ""})
+                setConfirmPassword("");
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Setting',{state:null});
+            }
+            else{
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Setting',{state:null});
+            }
+        }
+      },[location.state,navigate,toaster])
 
     const handleSubmit1 = () => {
-        dispatch(changeUserID(localStorage.getItem("type"), request1, navigate))
+        console.log(request1);
+        if(request1.id && request1.currentUserID && request1.newUserID && request1.password ){
+            dispatch(changeUserID(localStorage.getItem("type"), request1, navigate))
+        }
+        else{
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                  Kindly fill all the details.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+        }
     }
 
     const handleSubmit2 = () => {
-        dispatch(changePassword(localStorage.getItem("type"), request2, navigate))
+        if(request2.id && request2.currentPassword && request2.newPassword){
+            dispatch(changePassword(localStorage.getItem("type"), request2, navigate))
+        }
+        else{
+            const message = (
+                <Notification type="error" header="Error" closable>
+                  Kindly fill all the details.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+        }
     }
 
     return (
@@ -114,7 +163,7 @@ function Settings() {
                                             </div>
                                             <div className='row'>
                                                 <div className='col-lg-2'>
-                                                    <button className='btn btn-primary' onClick={handleSubmit1}>Change</button>
+                                                    <button className='btn btn-primary' onClick={()=>handleSubmit1()}>Change</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -159,7 +208,7 @@ function Settings() {
                                             </div>
                                             <div className='row'>
                                                 <div className='col-lg-2'>
-                                                    <button className='btn btn-primary' onClick={handleSubmit2}>Change</button>
+                                                    <button className='btn btn-primary' onClick={()=>handleSubmit2()}>Change</button>
                                                 </div>
                                             </div>
                                         </div>

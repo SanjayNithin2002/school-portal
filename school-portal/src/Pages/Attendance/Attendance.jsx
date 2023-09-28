@@ -8,13 +8,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import "./Attendance.css"
+import { Notification, useToaster } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
 import { getAttendance } from "../../actions/attendance";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const locales = {
+export const locales = {
     "en-US": require("date-fns/locale/en-US"),
 };
-const localizer = dateFnsLocalizer({
+export const localizer = dateFnsLocalizer({
     format,
     parse,
     startOfWeek,
@@ -22,58 +24,68 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
-function Attendance() {
+function Attendance({ status, onLoading }) {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const [events, setEvents] = useState(null);
+    const [fetchStatus, setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(getAttendance({ id: localStorage.getItem('id'), type: localStorage.getItem('type') }))
-    }, [dispatch])
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(getAttendance('/Attendance', navigate, { id: localStorage.getItem('id'), type: localStorage.getItem('type') }))
+        }
+    }, [dispatch, fetchStatus])
 
     const event = useSelector(state => state.attendanceReducer)
     console.log(event)
 
-    if (!events && event) {
-        let result = []
-        if (event.docs && event.docs.length > 0) {
-            event.docs.map((item) => {
-                result.push({
-                    title1: item.count !== 0 ? "Present" : "Absent",
-                    count: item.count,
-                    start: item.date,
-                    end: item.date
+    useEffect(() => {
+        if (event) {
+            let result = []
+            if(event && event.docs){
+                onLoading(false);
+            }
+            if (event.docs && event.docs.length > 0) {
+                event.docs.map((item) => {
+                    result.push({
+                        title1: item.count !== 0 ? "Present" : "Absent",
+                        count: item.count,
+                        start: item.date,
+                        end: item.date
+                    })
+                    return true;
                 })
-                return true;
-            })
+            }
+            console.log(result);
+            setEvents(result);
         }
-        console.log(result);
-        setEvents(result);
-    }
+    }, [event])
 
-    // const events = [{
-    //     title1: "present",
-    //     count:1,
-    //     start: "2023-05-22",
-    //     end: "2023-05-22",
-    // }, {
-    //     title1: "absent",
-    //     count:0,
-    //     start: "2023-05-21",
-    //     end: "2023-05-21",
-    // }, {
-    //     title1: "present",
-    //     count:2,
-    //     start: "2023-05-20",
-    //     end: "2023-05-20",
-    // }]
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            onLoading(false);
+            setFetchStatus(false)
+            const message = (
+                <Notification type="error" header="error" closable>
+                    Error Code: {location.state.status},<br />{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, { placement: 'topCenter' })
+            navigate('/Attendance', { state: null });
+        }
+    }, [location.state, navigate, toaster])
 
     const CustomEvent = ({ event }) => {
         return (
-            <>{
-                event.count === 0 &&
-                <div className="attendance-status-view" style={{ backgroundColor: "red" }}>{event.title1}</div>
-            }
+            <>
+                {
+                    event.count === 0 &&
+                    <div className="attendance-status-view" style={{ backgroundColor: "red" }}>{event.title1}</div>
+                }
                 {
                     event.count === 1 &&
                     <div className="attendance-status-view" style={{ backgroundColor: "orange" }}>{event.title1}</div>
@@ -81,7 +93,8 @@ function Attendance() {
                 {
                     event.count === 2 &&
                     <div className="attendance-status-view" style={{ backgroundColor: "green" }}>{event.title1}</div>
-                }</>
+                }
+            </>
         )
     }
 
@@ -101,7 +114,8 @@ function Attendance() {
                         No of Absent Days : {events !== null ? events.filter((item) => item.count === 0).length : 0}
                     </div> */}
                     <div className="Attendance-Container">
-                        {events &&
+                        {
+                            events &&
                             <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
                         }
                     </div>

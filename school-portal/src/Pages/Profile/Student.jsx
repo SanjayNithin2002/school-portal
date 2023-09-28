@@ -5,20 +5,47 @@ import './Profile.css';
 import { setCurrentUser } from "../../actions/currentUser";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "react-bootstrap/Table"
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
+function Student({ status, onLoading }) {
 
-function Home() {
-
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
+    const [fetchStatus, setFetchStatus] = useState(true);
     const [buttonType, setButtonType] = useState("personal");
     useEffect(() => {
-        if(localStorage.getItem("token")){
-        dispatch(setCurrentUser({ type: localStorage.getItem("type"), id: localStorage.getItem("id") }))
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(setCurrentUser("/Profile", navigate,{ type: localStorage.getItem("type"), id: localStorage.getItem("id") }))
         }
-    }, [dispatch])
+    }, [dispatch, fetchStatus, navigate])
 
     const currentUser = useSelector(state => state.currentUserReducer);
     console.log(currentUser)
+
+    useEffect(() => {
+        if (currentUser) {
+            onLoading(false);
+        }
+    }, [currentUser])
+
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                    Error Code: {location.state.status},<br />{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, { placement: 'topCenter' })
+            navigate('/Profile', { state: null });
+        }
+    }, [location.state, toaster, navigate])
+
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
 
     const handleDateFormat = (date1) => {
@@ -37,7 +64,7 @@ function Home() {
         currentUser &&
         <div className="Main">
             <div className="Home">
-                <div style={{padding:"20px 40px"}} class="container1 container rounded bg-white">
+                <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Profile</h2>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className='Profile-Container row'>
@@ -66,7 +93,6 @@ function Home() {
                                     <div className="Profile-tab-1 ">
                                         <button onClick={() => setButtonType("personal")} className={buttonType === "personal" ? "btn btn-primary" : "btn btn-outline-primary"}>Personal Details</button>&ensp;
                                         <button onClick={() => setButtonType("parents")} className={buttonType === "parents" ? "btn btn-primary" : "btn btn-outline-primary"}>Parents Details</button>&ensp;
-                                        <button onClick={() => setButtonType("bus_hostel")} className={buttonType === "bus_hostel" ? "btn btn-primary" : "btn btn-outline-primary"}>Bus & Hostel Details</button>&ensp;
                                     </div>
                                 </div>
                             </div>
@@ -253,65 +279,6 @@ function Home() {
 
 
                                                 </Table>
-
-
-                                            </div>
-                                        </>
-                                    }
-                                    {
-                                        buttonType === "bus_hostel" &&
-                                        <>
-                                            <h4>Parents Details</h4>
-                                            <div className='table-responsive bdr'>
-                                                <Table className='Profile-content-table'>
-                                                    <tr>
-                                                        <th colSpan={2}>Bus Details</th>
-                                                    </tr>
-                                                    {
-                                                        currentUser.docs.busDetails.isNeeded ?
-                                                            <>
-                                                                <tr>
-                                                                    <td>Bus No</td>
-                                                                    <td></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Timing</td>
-                                                                    <td></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Bus Stop</td>
-                                                                    <td>{currentUser.docs.busDetails.busStop },{currentUser.docs.busDetails.busStopArea}</td>
-                                                                </tr>
-                                                            </>
-                                                            :
-                                                            <tr>
-                                                                <td colSpan={2}>No Data</td>
-                                                            </tr>
-                                                    }
-                                                    <tr>
-                                                        <th colSpan={2}>Hostel</th>
-                                                    </tr>
-                                                    {currentUser.docs.hostelDetails.isNeeded ?
-                                                            <>
-                                                                <tr>
-                                                                    <td>Room No</td>
-                                                                    <td></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Room Type</td>
-                                                                    <td>{currentUser.docs.hostelDetails.roomType}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Mess</td>
-                                                                    <td>{currentUser.docs.hostelDetails.foodType}</td>
-                                                                </tr>
-                                                            </>
-                                                            :
-                                                            <tr>
-                                                                <td colSpan={2}>No Data</td>
-                                                            </tr>
-}
-                                                </Table>
                                             </div>
                                         </>
                                     }
@@ -325,4 +292,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Student;

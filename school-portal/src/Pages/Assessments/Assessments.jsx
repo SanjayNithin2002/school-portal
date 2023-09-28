@@ -3,29 +3,33 @@ import Accordion from 'react-bootstrap/Accordion'
 import "./Assessments.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnswers, getAssessments } from '../../actions/assessments'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import * as Solid from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Student from './Student'
 import Teacher from './Teacher'
+import { Notification, useToaster } from 'rsuite';
 
-function Assessments() {
+function Assessments({ status, onLoading }) {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
+    const dispatch = useDispatch();
     const [display, setDisplay] = useState(false);
     const [assessmentID, setAssessmentID] = useState(false);
     const [teacherID, setTeacherID] = useState(false);
-
+    const [fetchStatus, setFetchStatus] = useState(true);
+    console.log(fetchStatus)
     useEffect(() => {
-        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        if(localStorage.getItem('type')==="student"){
-        dispatch(getAnswers({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(getAssessments("/Assessment", navigate, { type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+            if (localStorage.getItem('type') === "student") {
+                dispatch(getAnswers("/Assessment", navigate, { type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+            }
         }
-        else{
-            dispatch({type:"FETCH_ASSESSMENT_ANSWERS",payload:null})
-        }
-    }, [dispatch])
+    }, [dispatch, fetchStatus, navigate])
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
     const assessments = useSelector((state) => state.assessmentsReducer)
@@ -33,6 +37,38 @@ function Assessments() {
 
     console.log(answers);
     console.log(assessments)
+
+    useEffect(() => {
+        if (assessments !== null || answers !== null) {
+            onLoading(false);
+        }
+    }, [assessments, answers])
+
+    useEffect(() => {
+        if (location.state) {
+            if (location.state.status === 200) {
+                onLoading(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                        {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                navigate('/Assessment', { state: null });
+            }
+            else {
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                        Error Code: {location.state.status},<br />{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                navigate('/Assessment', { state: null });
+            }
+        }
+    }, [location.state, navigate, toaster])
 
     const handleDateFormat = (date1) => {
         const date = new Date(date1);
@@ -62,9 +98,12 @@ function Assessments() {
         setTeacherID(tID);
         setAssessmentID(aID);
         setDisplay(true);
-        dispatch({type:'FETCH_MARKS',payload:null})
-        dispatch({type:"FETCH_CLASS_STUDENTS",payload:null})
-        dispatch({type:"FETCH_ASSESSMENT_ANSWERS",payload:null})
+        onLoading(true);
+        if (localStorage.getItem("type") === "teacher") {
+            dispatch({ type: 'FETCH_MARKS', payload: null })
+            dispatch({ type: "FETCH_CLASS_STUDENTS", payload: null })
+            dispatch({ type: "FETCH_ASSESSMENT_ANSWERS", payload: null })
+        }
     }
 
     const close = () => {
@@ -95,7 +134,6 @@ function Assessments() {
                                             }
                                             {
                                                 assessments && assessments.docs.filter((item) => { return checkDueDate(item.lastDate) }).map((item) => (
-
                                                     <div onClick={() => handleClick(item._id, item.class.teacher)} style={{ color: 'inherit', textDecoration: "none" }}>
                                                         <div className='Assessment-tab'>
                                                             <div className='Assessment-tab-1'>
@@ -111,7 +149,7 @@ function Assessments() {
                                                                                 answers && answers.docs.filter((item1) => item1.assessment._id === item._id).length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === item._id).map((item1) => (
                                                                                     item1.answerFile !== null ?
                                                                                         <span style={{ color: "green" }}>
-                                                                                            
+
                                                                                             File Uploaded
                                                                                         </span>
                                                                                         :
@@ -212,9 +250,9 @@ function Assessments() {
                     <>
                         {
                             localStorage.getItem("type") === "student" ?
-                                <Student assessments={assessments} answers={answers} teacherID={teacherID} assessmentID={assessmentID} close={() => close()} />
+                                <Student onLoading={(status1) => onLoading(status1)} assessments={assessments} answers={answers} teacherID={teacherID} assessmentID={assessmentID} close={() => close()} />
                                 :
-                                <Teacher assessments={assessments} assessmentID={assessmentID} close={() => close()} />
+                                <Teacher onLoading={(status1) => onLoading(status1)} assessments={assessments} assessmentID={assessmentID} close={() => close()} />
                         }
                     </>
 

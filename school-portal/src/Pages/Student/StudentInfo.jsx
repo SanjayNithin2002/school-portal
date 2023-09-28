@@ -1,23 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import { useDispatch, useSelector } from 'react-redux'
 
 import "./Student.css"
 import { requestStudents } from '../../actions/students'
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
-function StudentInfo() {
+function StudentInfo({ status, onLoading }) {
 
-    const [search, setSearch] = React.useState('');
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
+    const [search, setSearch] = useState('');
     const dispatch = useDispatch();
+    const [fetchStatus, setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(requestStudents());
-    }, [dispatch])
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(requestStudents("/StudentInfo", navigate));
+        }
+    }, [dispatch, fetchStatus])
 
     const allStudents = useSelector((state) => state.allStudentsReducer)
-    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
+    useEffect(() => {
+        if (allStudents) {
+            onLoading(false);
+        }
+    }, [allStudents])
+
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            navigate('/StudentInfo', { state: null });
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                    Error Code: {location.state.status},<br />{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, { placement: 'topCenter' })
+        }
+    }, [location.state,toaster])
+
+    const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
     return (
         <div className="Main">
@@ -43,28 +71,28 @@ function StudentInfo() {
                                             <th>Section</th>
                                             <th>Action</th>
                                         </tr>
-                                            {
-                                                search === '' ?
-                                                    <tr>
-                                                        <td style={{textAlign:"center"}} colSpan={6}>
-                                                            No Data
-                                                        </td>
-                                                    </tr> : <>{
-                                                        allStudents.docs.filter((item) => (item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase())).map((item, i) => (
-                                                            <tr key={item}>
-                                                                <td>{i + 1}</td>
-                                                                <td>{item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()}</td>
-                                                                <td>{item.gender}</td>
-                                                                <td>
-                                                                    {
-                                                                        standardList.filter((standard) => standard.value === item.standard).map((standard) => (<>{standard.label}</>))}
-                                                                </td>
-                                                                <td>{item.section}</td>
-                                                                <td><button className='btn btn-primary'>View</button></td>
-                                                            </tr>
-                                                        ))}
-                                                    </>
-                                            }
+                                        {
+                                            search === '' ?
+                                                <tr>
+                                                    <td style={{ textAlign: "center" }} colSpan={6}>
+                                                        No Data
+                                                    </td>
+                                                </tr> : <>{
+                                                    allStudents.docs.filter((item) => (item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase())).map((item, i) => (
+                                                        <tr key={item}>
+                                                            <td>{i + 1}</td>
+                                                            <td>{item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()}</td>
+                                                            <td>{item.gender}</td>
+                                                            <td>
+                                                                {
+                                                                    standardList.filter((standard) => standard.value === item.standard).map((standard) => (<>{standard.label}</>))}
+                                                            </td>
+                                                            <td>{item.section}</td>
+                                                            <td><button onClick={()=>navigate(`/Student/${item._id}`,{state:{student:item}})} className='btn btn-primary'>View</button></td>
+                                                        </tr>
+                                                    ))}
+                                                </>
+                                        }
                                     </Table>
                                 </div>
                             </div>

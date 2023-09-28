@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import { Popover, Whisper, Button, Header } from 'rsuite';
-import SideNavBar from "../../components/SideNavBar/SideNavBar";
 import "./Leave.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as solid from "@fortawesome/free-solid-svg-icons";
@@ -8,42 +7,137 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../../actions/currentUser";
 import { deleteLeave, getLeave, postLeave } from "../../actions/leave";
 import Table from "react-bootstrap/Table"
-function Leave() {
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
+function Leave({status,onLoading}) {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const [reason, setReason] = useState('');
     const [type, setType] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [fetchStatus,setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(setCurrentUser({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getLeave({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
+        if(fetchStatus){
+            onLoading(true);
+            dispatch(setCurrentUser("/Leave",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+            dispatch(getLeave("/Leave",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,navigate,fetchStatus])
 
     const currentUser = useSelector((state) => state.currentUserReducer)
     const leave = useSelector((state) => state.userLeaveReducer)
     console.log(currentUser);
     console.log(leave)
 
+    useEffect(()=>{
+        if(currentUser && leave){
+            onLoading(false);
+        }
+    },[currentUser,leave])
+
+    useEffect(()=>{
+        if (location.state && fetchStatus) {
+            if (location.state.status === 200) {
+                setReason("");
+                setType("")
+                setStartDate("")
+                setEndDate("")
+                onLoading(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Leave',{state:null});
+            }
+            else{
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Leave',{state:null});
+            }
+        }
+    },[location.state,toaster,navigate])
+
     const handleSubmit = () => {
-        if (localStorage.getItem('type') === "teacher") {
-            dispatch(postLeave({
-                user: "teacher",
-                teacher: currentUser.docs._id,
-                startDate,
-                endDate,
-                type,
-                reason
-            }))
+        if(startDate && endDate && type && reason)
+        {
+            if (localStorage.getItem('type') === "teacher") {
+                onLoading(true);
+                console.log({
+                    user: "teacher",
+                    teacher: currentUser.docs._id,
+                    startDate,
+                    endDate,
+                    type,
+                    reason
+                })
+                dispatch(postLeave(navigate,{
+                    user: "teacher",
+                    teacher: currentUser.docs._id,
+                    startDate,
+                    endDate,
+                    type,
+                    reason
+                }))
+            }
+            else{
+                onLoading(true);
+                console.log({
+                    user: "admin",
+                    admin: currentUser.docs._id,
+                    startDate,
+                    endDate,
+                    type,
+                    reason
+                })
+                dispatch(postLeave(navigate,{
+                    user: "admin",
+                    admin: currentUser.docs._id,
+                    startDate,
+                    endDate,
+                    type,
+                    reason
+                }))
+            }
+        }
+        else{
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                  Kindly fill all the data
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
         }
     }
 
     const handleDelete = (leaveID) => {
-        dispatch(deleteLeave({
-            user:localStorage.getItem('type'),
-            id:leaveID
-        }))
+        onLoading(true);
+        dispatch(deleteLeave("/Leave",navigate,{user:localStorage.getItem('type'),id:leaveID}));
+    }
+
+    const handleDateFormat = (date1) => {
+        const date = new Date(date1);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
+        const userLocale = navigator.language || navigator.userLanguage;
+        const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
+        return formattedDate
     }
 
     const DefaultPopover = React.forwardRef(({ ...props }, ref) => {
@@ -133,10 +227,9 @@ function Leave() {
                             <h2>History</h2>
                             <br />
                             <div className="table-responsive">
-                                <Table className='Leave-content-table'>
+                                <Table className='UpdateLeave-content-table'>
                                     <tr>
                                         <th>Sno</th>
-                                        <th>Applied Date</th>
                                         <th>Reason</th>
                                         <th>Type</th>
                                         <th>From Date</th>
@@ -149,11 +242,10 @@ function Leave() {
                                             leave.docs.map((item, index) => (
                                                 <tr>
                                                     <td>{index + 1}</td>
-                                                    <td>-</td>
-                                                    <td>{item.reason}</td>
+                                                    <td style={{minWidth:"200px"}}>{item.reason}</td>
                                                     <td>{item.type === "sickLeave" ? "Medical Leave" : item.type === "earnedLeave" ? "EL" : "CL"}</td>
-                                                    <td>{item.startDate}</td>
-                                                    <td>{item.endDate}</td>
+                                                    <td>{handleDateFormat(item.startDate)}</td>
+                                                    <td>{handleDateFormat(item.endDate)}</td>
                                                     <td>{item.status}</td>
                                                     <td><button onClick={()=>handleDelete(item._id)} style={{backgroundColor:"#DC3545"}} className="btn btn-danger">Delete</button></td>
                                                 </tr>

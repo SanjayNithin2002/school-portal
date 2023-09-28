@@ -7,18 +7,33 @@ import { deleteAnswers, postAnswers } from '../../actions/assessments'
 import { requestTeacher } from '../../actions/teachers';
 import { viewBonafide } from '../../actions/bonafide';
 import Table from "react-bootstrap/Table"
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 const Student = (props) => {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch()
     const [selectedFile, setSelectedFile] = useState(null)
     const allAssessments = props.assessments
     const answers = props.answers
+    const [fetchStatus,setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(requestTeacher(props.teacherID))
+        if(fetchStatus){
+            dispatch(requestTeacher(props.teacherID))
+        }
     }, [dispatch, props.teacherID])
 
     const teacher = useSelector((state) => state.teacherReducer)
+
+    useEffect(()=>{
+        if(teacher){
+            props.onLoading(false);
+        }
+    },[teacher])
 
     console.log(allAssessments)
     console.log(answers)
@@ -54,10 +69,16 @@ const Student = (props) => {
             formData.append('student', localStorage.getItem('id'));
             formData.append('answerFile', selectedFile.blobFile, selectedFile.blobFile.name);
             console.log(formData)
-            dispatch(postAnswers(formData))
+            props.onLoading(true);
+            dispatch(postAnswers("/Assessment",navigate,formData))
         }
         else {
-            alert('Kindly upload the file')
+            const message = (
+                <Notification type="error" header="Error" closable>
+                  Kindly upload the answer file to submit the assessment.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
         }
     }
 
@@ -71,7 +92,8 @@ const Student = (props) => {
     }
 
     const handleDelete = (answerID) => {
-        dispatch(deleteAnswers(answerID));
+        props.onLoading(true);
+        dispatch(deleteAnswers("/Assessment",navigate,answerID));
     }
 
     const handleFile = (request) => {
@@ -92,7 +114,7 @@ const Student = (props) => {
                             <div style={{fontSize:"18px"}} dangerouslySetInnerHTML={{ __html: item.description }} />
                             <br />
                             {
-                                answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                answers && answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                     item1.answerFile !== null ?
                                         <div style={{ display: "flex", alignItems: "center" }}>
                                             <button className='btn btn-primary' onClick={() => handleFile(item1.answerFile)}>View Answer</button>
@@ -148,9 +170,9 @@ const Student = (props) => {
                                 <tr>
                                     <td>Uploaded On</td>
                                     {
-                                        answers && answers.docs.length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
+                                        answers && answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).length !== 0 ? answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                             item1.answersFile !== null ?
-                                                <td>date</td>
+                                                <td>{handleDateFormat(item1.postedOn)}</td>
                                                 :
                                                 <td>---</td>
                                         ))
@@ -159,7 +181,7 @@ const Student = (props) => {
                                     }
                                 </tr>
                                 {
-                                    answers && answers.docs.length !== 0 ?
+                                    answers && answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).length !== 0 ?
                                         answers.docs.filter((item1) => item1.assessment._id === props.assessmentID).map((item1) => (
                                             item1.answersFile === null ?
                                                 <tr>

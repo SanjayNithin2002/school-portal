@@ -1,25 +1,24 @@
 import React from 'react'
 import Student from './student'
 import Admin from './admin'
-import Error from "../Error404"
 
-const Assessments = () => {
+const Exam = ({status,onLoading}) => {
   return (
     <>
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="student" &&
-        <Student />
+        <Student status={status} onLoading={(status1)=>onLoading(status1)} />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Admin />
+        <Admin status={status} onLoading={(status1)=>onLoading(status1)} />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Admin />
+        <Admin status={status} onLoading={(status1)=>onLoading(status1)} />
     }
     </>
   )
 }
 
-export default Assessments
+export default Exam

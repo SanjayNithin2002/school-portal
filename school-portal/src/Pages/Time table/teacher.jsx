@@ -1,24 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getClass } from '../../actions/class';
-import { setCurrentUser } from '../../actions/currentUser';
 import { Table } from "react-bootstrap";
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
-const Teacher = () => {
+const Teacher = ({status,onLoading1}) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const [day, setDay] = useState("");
-    const [timetableData, setTimetableData] = useState([]);
+    const [fetchStatus,setFetchStatus] = useState(true);
+    const [timetableData, setTimetableData] = useState(null)
     const class1 = useSelector((state) => state.allClassReducer);
-    const currentUser = useSelector((state) => state.currentUserReducer);
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 
     useEffect(() => {
-        dispatch(setCurrentUser({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
+        if(fetchStatus){
+            onLoading1(true)
+            dispatch(getClass("/TimeTable",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,onLoading1,navigate,fetchStatus])
+
+    useEffect(()=>{
+        if (location.state && fetchStatus) {
+                onLoading1(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/TimeTable',{state:null});
+            
+        }
+    },[location.state,fetchStatus,toaster,navigate])
 
     const checkDate = (a, b) => {
         const startTimeA = new Date(`2000-01-01T${a.startTime}`);
@@ -27,38 +48,45 @@ const Teacher = () => {
     }
 
     console.log(timetableData);
-    if (class1 && timetableData.length === 0) {
-        let day = []
-        let slot = {};
-        let days1 = Array.from(new Set(class1.docs.map((obj) => obj.timings.map((obj1) => obj1.day))));
-        days1.map((item) => {
-            item.map((item1) => {
-                if (!day.includes(item1)) {
-                    day.push(item1);
-                    slot[item1] = [];
-                }
-                return true;
-            })
-            return true;
-        })
-        class1.docs.map((class2) => {
-            class2.timings.map((slot1) => {
-                slot[slot1.day].push({
-                    standard: class2.standard,
-                    section: class2.section,
-                    subject: class2.subject,
-                    startTime: slot1.startTime,
-                    endTime: slot1.endTime,
+    useEffect(()=>{
+        if (class1) {
+            let day = []
+            let slot = {};
+            let days1 = Array.from(new Set(class1.docs.map((obj) => obj.timings.map((obj1) => obj1.day))));
+            days1.map((item) => {
+                item.map((item1) => {
+                    if (!day.includes(item1)) {
+                        day.push(item1);
+                        slot[item1] = [];
+                    }
+                    return true;
                 })
                 return true;
             })
-            return true;
-        })
+            class1.docs.map((class2) => {
+                class2.timings.map((slot1) => {
+                    slot[slot1.day].push({
+                        standard: class2.standard,
+                        section: class2.section,
+                        subject: class2.subject,
+                        startTime: slot1.startTime,
+                        endTime: slot1.endTime,
+                    })
+                    return true;
+                })
+                return true;
+            })
+            setTimetableData(slot);
+            onLoading1(false)
+        }
+    },[class1,onLoading1])
 
-        console.log(day);
-        console.log(slot);
-        setTimetableData(slot);
-    }
+    useEffect(()=>{
+        if(day==="" && timetableData!==null){
+            setDay(Object.keys(timetableData)[0]);
+        }
+    },[day,timetableData])
+    console.log(day)
 
 
 
@@ -77,7 +105,7 @@ const Teacher = () => {
                         <div className='timetable-main-content-1' >
                             {days.map((day1, index1) => (
                                 timetableData[day1] &&
-                                <><button className={day === day1 && "active1"} onClick={() => setDay(day1)}>{day1}</button>&emsp;</>
+                                <><button className={(day === day1 || (day==="" && index1===0) ) && "active1"} onClick={() => setDay(day1)}>{day1}</button>&emsp;</>
                             ))}
                         </div>
                         <div className='timetable-main-content-2 table-responsive'>

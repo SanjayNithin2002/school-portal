@@ -41,6 +41,11 @@
     font-weight: 800;
 }
 
+.Main .rs-picker-has-value .rs-btn .rs-picker-toggle-value, 
+.Main .rs-picker-has-value .rs-picker-toggle .rs-picker-toggle-value {
+  color: black;
+}
+
 .Bonafide-content-table,
 .AdminBonafide-content-table {
     border-collapse: separate;

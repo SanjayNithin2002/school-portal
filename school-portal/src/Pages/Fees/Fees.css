@@ -30,6 +30,18 @@
     justify-content: space-evenly;
 }
 
+.fees-post{
+  width:100%;
+}
+
+.fees-post input,
+.fees-post .rs-picker-toggle-wrapper{
+  width:60%;
+}
+
+.fees-post td{
+  padding:5px;
+}
 
 .Payment-content-table-1 {
     border-collapse: separate;
@@ -42,10 +54,6 @@
   .Payment-content-table-1 tr td {
     border-bottom: 1px solid #cadeef;
     padding: 5px;
-  }
-  .Payment-content-table-1 tr th:nth-child(even),
-  .Payment-content-table-1 tr td:nth-child(even) {
-    border-right: 1px solid #cadeef;
   }
   .Payment-content-table-1 tr th:nth-child(5n),
   .Payment-content-table-1 tr td:nth-child(5n) {

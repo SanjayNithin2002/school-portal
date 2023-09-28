@@ -3,56 +3,77 @@ import Table from 'react-bootstrap/Table';
 import "./Teacher.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { getClass } from '../../actions/class';
+import {Notification,useToaster} from 'rsuite';
+import { useLocation, useNavigate } from "react-router-dom"
 
-function Teacher() {
+function Teacher({status,onLoading}) {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
-    const [edit, setEdit] = useState(true);
-    const [handleSubject, setHandleSubject] = useState(false);
-    const [classTeacher, setClassTeacher] = useState(null);
+    const [fetchStatus,setFetchStatus] = useState(true);
     const [teacherList, setTeacherList] = useState(null);
     useEffect(() => {
-        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
+        if(fetchStatus){
+            onLoading(true);
+            dispatch(getClass("/Teachers",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,onLoading,fetchStatus,navigate])
+
+    useEffect(()=>{
+        if(location.state){
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/Teachers',{state:null});
+        }
+      },[location.state,navigate,toaster,onLoading])
 
     const class1 = useSelector((state) => state.allClassReducer);
     console.log(class1);
     console.log(teacherList);
-
-    if (class1!==null && teacherList===null && edit) {
-        let id = "";
-        let teachers = [];
-        class1.docs.filter((item) => item.subject === "Class Teacher" && item.teacher!==null).map((item) => {
-            id = item.teacher._id;
-            return true;
-        })
-        if (class1.docs.filter((item) => item.teacher !== null && (item.teacher._id === id || id==="") && item.subject !== "Class Teacher").length === 0) {
-            let empID, name, email
-            class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject === "Class Teacher").map((item) => {
-                empID = item.teacher.empID
-                name = item.teacher.firstName + " " + item.teacher.lastName
-                email = item.teacher.email
+    useEffect(()=>{
+        if (class1!==null) {
+            let id = "";
+            let teachers = [];
+            class1.docs.filter((item) => item.subject === "Class Teacher" && item.teacher!==null).map((item) => {
+                id = item.teacher._id;
+                return true;
             })
-            teachers.push({
-                subject: "Class Teacher",
-                empID,
-                name,
-                email,
+            if (class1.docs.filter((item) => item.teacher !== null && (item.teacher._id === id || id==="") && item.subject !== "Class Teacher").length === 0) {
+                let empID, name, email
+                class1.docs.filter((item) => item.teacher !== null && item.teacher._id === id && item.subject === "Class Teacher").map((item) => {
+                    empID = item.teacher.empID
+                    name = item.teacher.firstName + " " + item.teacher.lastName
+                    email = item.teacher.email
+                    return true;
+                })
+                teachers.push({
+                    subject: "Class Teacher",
+                    empID,
+                    name,
+                    email,
+                })
+            }
+            class1.docs.filter((item) => item.teacher !== null && item.subject !== "Class Teacher").map((item) => {
+                teachers.push({
+                    subject: item.teacher._id === id ? "Class Teacher$" + item.subject : item.subject,
+                    empID: item.teacher.empID,
+                    name: item.teacher.firstName + " " + item.teacher.lastName,
+                    email: item.teacher.email,
+                })
+                return true;
             })
+            setTeacherList(teachers);
+            onLoading(false);
         }
-        class1.docs.filter((item) => item.teacher !== null && item.subject !== "Class Teacher").map((item) => {
-            teachers.push({
-                subject: item.teacher._id === id ? "Class Teacher$" + item.subject : item.subject,
-                empID: item.teacher.empID,
-                name: item.teacher.firstName + " " + item.teacher.lastName,
-                email: item.teacher.email,
-            })
-            return true;
-        })
-        setTeacherList(teachers);
-        setClassTeacher(id);
-        setEdit(false);
-    }
+    },[class1,onLoading])
 
     return (
         <div className='Main'>

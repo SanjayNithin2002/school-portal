@@ -19,7 +19,11 @@ import adminAttendanceReducer from "./AdminAttendance"
 import teacherAttendanceReducer from "./teacherAttendance"
 import studentAttendanceReducer from "./StudentAttendance"
 import spotlightReducer from "./Spotlight"
+import standardClassReducer from "./StandardClass"
+import recordsReducer from "./Records"
+import feesReducer from "./Fees"
+import paymentReducer from "./Payment"
 
 export default combineReducers({
-    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer,adminAttendanceReducer,teacherAttendanceReducer,studentAttendanceReducer,spotlightReducer
+    currentUserReducer,marksCSVReducer,attendanceReducer,classmessageReducer,allStudentsReducer,bonafideReducer,assessmentsReducer,answersReducer,teacherReducer,adminReducer,timeTableReducer,allClassReducer,examReducer,allLeaveReducer,userLeaveReducer,marksReducer,adminAttendanceReducer,teacherAttendanceReducer,studentAttendanceReducer,spotlightReducer,standardClassReducer,recordsReducer,feesReducer,paymentReducer
 })

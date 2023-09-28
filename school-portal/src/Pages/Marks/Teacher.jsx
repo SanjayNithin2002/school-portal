@@ -11,10 +11,15 @@ import matchers from '@testing-library/jest-dom/matchers';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import * as solid from "@fortawesome/free-solid-svg-icons"
 import { Link } from 'react-router-dom'
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 const MarksTeacher = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toaster = useToaster();
   const [standard, setStandard] = useState("");
   const [section, setSection] = useState("");
   const [exam, setExam] = useState("");
@@ -26,13 +31,13 @@ const MarksTeacher = () => {
 
   useEffect(() => {
     if (classID)
-      dispatch(requestClassStudents(classID));
+      dispatch(requestClassStudents("/Marks",navigate,classID));
   }, [dispatch, classID])
 
   useEffect(() => {
-    dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    dispatch(getStudentExam({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    dispatch(getClass("/Marks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    dispatch(getAssessments("/Marks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    dispatch(getStudentExam("/Marks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
   }, [dispatch])
 
   let classes = useSelector((state) => state.allClassReducer) // get classes

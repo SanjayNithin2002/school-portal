@@ -8,18 +8,22 @@ import { getAllClass } from '../../actions/class';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTimeTable } from '../../actions/timetable';
 import { createExam, getExam } from '../../actions/exam';
-import { useNavigate } from 'react-router-dom';
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
-const AddExam = () => {
+const AddExam = ({ status, onLoading }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const [step, setStep] = useState(0);
     const [title, setTitle] = useState("");
     const [edit1, setEdit1] = useState(false);
     const [maxMark, setMaxMark] = useState("");
     const [duration, setDuration] = useState("");
     const [standard, setStandard] = useState("");
+    const [fetchStatus, setFetchStatus] = useState(true);
     const [subjectList, setSubjectList] = useState(null);
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
@@ -27,20 +31,45 @@ const AddExam = () => {
     const durationList = [45, 50, 60, 75, 90, 120, 150, 180];
 
     useEffect(() => {
-        dispatch(getAllClass());
-    }, [dispatch])
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(getAllClass("/AddSchedule", navigate));
+        }
+    }, [dispatch, fetchStatus, navigate])
 
     const class1 = useSelector((state) => state.allClassReducer);
     const timetable = useSelector((state) => state.timeTableReducer);
     const exams = useSelector((state) => state.examReducer);
 
+    useEffect(() => {
+        if (class1) {
+            onLoading(false);
+        }
+    }, [class1])
+
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                    Error Code: {location.state.status},<br />{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, { placement: 'topCenter' })
+            navigate('/AddSchedule', { state: null });
+        }
+    }, [location.state, toaster, navigate])
+
     if (standard && edit1) {
-        dispatch(getTimeTable(standard));
+        onLoading(true);
+        dispatch(getTimeTable("/AddSchedule", navigate, standard));
         setSubjectList(null);
         setEdit1(false);
     }
 
     if (class1 && !subjectList && standard) {
+        onLoading(false);
         const updatedList = []
         Array.from(new Set(class1.docs.filter((item) => parseInt(standard) === item.standard && item.subject !== "Class Teacher").map(obj => obj.subject))).map((item, index) => {
             let subjects = {
@@ -89,7 +118,7 @@ const AddExam = () => {
         let max = 0;
         if (exams !== null) {
             Array.from(new Set(exams.docs.filter((item) => item.class.standard === parseInt(standard) && item.examName.name === title).map((item) => item.examName.sequence))).map((seq) => {
-                if (max < seq) {
+                if (max <= seq) {
                     max = seq;
                 }
                 return 0;
@@ -126,33 +155,45 @@ const AddExam = () => {
             return true;
         })
         console.log(request);
-        dispatch(createExam(request, navigate));
+        onLoading(true);
+        dispatch(createExam("/Exam",navigate,request));
     }
 
     const onChange = nextStep => {
         setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
     };
     const onNext = () => {
-        let flag=1;
-        if(step === 0){
-            if(!title || !standard || !maxMark || !duration){
-                alert("Kindly fill all the details");
-                flag=0;    
+        let flag = 1;
+        if (step === 0) {
+            if (!title || !standard || !maxMark || !duration) {
+                const message = (
+                    <Notification type="warning" header="Warning" closable>
+                        Kindly fill all the details
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                flag = 0;
             }
         }
         if (step === 1) {
-            dispatch(getExam({standard}));
-            if(subjectList.filter((item)=>item.date==="" || item.time==="").length>0){
-                flag=0;
-                alert("Kindly select the date and time for each subject");
+            dispatch(getExam("/AddSchedule",navigate,{ standard }));
+            if (subjectList.filter((item) => item.date === "" || item.time === "").length > 0) {
+                flag = 0;
+                const message = (
+                    <Notification type="warning" header="Warning" closable>
+                        Kindly select the date and time for each subject
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
             }
-            
+
         }
-        if(flag===1)
+        if (flag === 1)
             onChange(step + 1);
     }
     const onPrevious = () => onChange(step - 1);
 
+    console.log(exams)
     console.log(subjectList)
     console.log(timetable)
 
@@ -174,7 +215,7 @@ const AddExam = () => {
                             </Steps>
                             <br /><br />
                             {step === 0 &&
-                                <div className='row' style={{width:"100%",margin:"0px auto"}}>
+                                <div className='row' style={{ width: "100%", margin: "0px auto" }}>
                                     <div className='col-lg-7 justify-content-center'>
                                         <Table className='AddStudent-Table-List'>
                                             <tbody>
@@ -232,7 +273,7 @@ const AddExam = () => {
                                 </div>
                             }
                             {step === 1 &&
-                                <div className='row' style={{width:"100%",margin:"0px auto"}}>
+                                <div className='row' style={{ width: "100%", margin: "0px auto" }}>
                                     <div className='col-lg-8 justify-content-center'>
                                         <Table className='ExamSchedule-content-table'>
                                             <thead>
@@ -267,7 +308,7 @@ const AddExam = () => {
                                 </div>
                             }
                             {step === 2 &&
-                                <div className='row' style={{width:"100%",margin:"0px auto"}}>
+                                <div className='row' style={{ width: "100%", margin: "0px auto" }}>
                                     <div className='col-lg-8 justify-content-center'>
                                         <Table className='AddStudent-Table-List-1'>
                                             <tbody>

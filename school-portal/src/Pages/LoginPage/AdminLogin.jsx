@@ -9,7 +9,7 @@ import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import {Notification,useToaster} from 'rsuite';
 
-const AdminLogin = ({handleBack}) => {
+const AdminLogin = ({handleBack,status,onLoading}) => {
     const [Adminuserid, setAdminUserid] = useState("");
     const [Adminpassword, setAdminPassword] = useState("");
     const [visible, setVisible] = React.useState(false);
@@ -19,16 +19,16 @@ const AdminLogin = ({handleBack}) => {
 
     const toaster = useToaster();
 
-    
-
     const handleSubmit = () => {
+        onLoading(true);
         dispatch(
-            AdminlogIn({ userID: Adminuserid, password: Adminpassword }, navigate)
+            AdminlogIn({ userID: Adminuserid, password: Adminpassword }, navigate, onLoading)
         );
     };
 
     useEffect(()=>{
         if(location.state){
+            onLoading(false);
             const message = (
                 <Notification type="error" header="error" closable>
                   Error Code: {location.state.status},<br/>{location.state.message}
@@ -37,7 +37,7 @@ const AdminLogin = ({handleBack}) => {
             toaster.push(message, {placement:'topCenter'})
             navigate('/',{state:null});
         }
-    },[location.state,navigate,toaster])
+    },[location.state,navigate,toaster,onLoading])
     
     console.log(location);
     return (

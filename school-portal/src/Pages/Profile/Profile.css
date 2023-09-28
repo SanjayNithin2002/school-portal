@@ -26,13 +26,6 @@
   width: -webkit-fill-available;
 }
 
-.Profile-Container-1 table td:nth-child(odd) {
-  text-align: left;
-  font-weight: bolder;
-}
-.Profile-Container-1 table td:nth-child(even) {
-  text-align: right;
-}
 .Profile-Container-2 {
   display: flex;
   flex-direction: column;
@@ -101,8 +94,8 @@
   text-align: left;
   padding: 5px;
 }
-.Profile-content-table tr th:nth-child(even),
-.Profile-content-table tr td:nth-child(even) {
+.bdr .Profile-content-table tr th:nth-child(even),
+.bdr .Profile-content-table tr td:nth-child(even) {
   border-right: 1px solid #cadeef;
   text-align: right;
 }

@@ -17,22 +17,17 @@
     border: 1.5px solid #cadeef;
 }
 
-.CreateClass-subTable td{
-    background-color: white;
-    font-size: initial;
-    font-style: initial;
-    font-weight: initial;
 
-}
-
+.AddStudent-Table-List .CreateClass-subTable,
 .CreateClass-subTable{
     border:1px solid black;
 }
-.CreateClass-subTable td{
+.AddStudent-Table-List .CreateClass-subTable td:nth-child(n),
+.CreateClass-subTable td:nth-child(n){
     border:1px solid black;
 }
-.CreateClass-subTable tr:nth-child(odd) td:nth-child(odd),
-.CreateClass-subTable tr:nth-child(even) td:nth-child(odd){
+.AddStudent-Table-List .CreateClass-subTable td:nth-child(n),
+.CreateClass-subTable td:nth-child(n){
     
     background-color: white;
     font-size: initial;

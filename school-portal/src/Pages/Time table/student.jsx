@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTimeTable } from '../../actions/timetable';
 import { getClass } from '../../actions/class';
 import { setCurrentUser } from '../../actions/currentUser';
 import { Table } from "react-bootstrap";
+import {Notification,useToaster} from 'rsuite';
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Student = () => {
+const Student = ({status,onLoading1}) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
-
     const timetableData = [];
+    const [fetchStatus,setFetchStatus] = useState(true);
     const timetable = useSelector((state) => state.timeTableReducer);
     const class1 = useSelector((state) => state.allClassReducer);
     const currentUser = useSelector((state) => state.currentUserReducer);
@@ -17,10 +22,12 @@ const Student = () => {
 
 
     useEffect(() => {
-
-        dispatch(setCurrentUser({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
+        if(fetchStatus){
+        onLoading1(true);
+        dispatch(setCurrentUser('/TimeTable',navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getClass('/TimeTable',navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,onLoading1,navigate,fetchStatus])
 
     const addMin = (time1, duration) => {
         const sdate = new Date();
@@ -35,7 +42,76 @@ const Student = () => {
         return result;
     }
 
-    if (timetableData.length === 0 && class1 && timetable!==null && currentUser) {
+    useEffect(()=>{
+        if(location.state){
+            onLoading1(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/TimeTable',{state:null});
+        }
+      },[location.state,navigate,toaster,onLoading1])
+
+    useEffect(()=>{
+        if ( class1 && timetable!==null && currentUser) {
+            
+            let sec = Array.from(new Set(class1.docs.filter((item1) => item1.standard === currentUser.docs.standard).map((obj) => obj.section)));
+            sec.map((item1) => {
+                let subjectList1 = { standard: currentUser.docs.standard, section: item1 };
+                class1.docs.filter((class2) => class2.standard === currentUser.docs.standard && class2.section === item1 && class2.subject !== "Class Teacher").map((class2) => {
+                    subjectList1[class2.subject] = class2.teacher;
+                    return true;
+                })
+                days.map((day1, index1) => {
+                    if (index1 < parseInt(timetable.docs[0].workingDays)) {
+                        var temp1 = [];
+                        timetable.docs.map((item2) => {
+                            let startTime = item2.startTime;
+                            while (startTime !== item2.endTime) {
+                                let slot = {};
+                                let flag = 0;
+                                if (item2.break.filter((item3) => item3.startTime === startTime).length > 0) {
+                                    flag = 1;
+                                    let temp = item2.break.filter((item3) => item3.startTime === startTime);
+                                    slot["startTime"] = startTime
+                                    startTime = temp[0]["endTime"];
+                                    slot["endTime"] = startTime;
+                                    slot["subject"] = temp[0]["title"];
+                                    slot["teacher"] = "Break";
+                                }
+                                if (flag === 0) {
+                                    let subTeacher = [];
+                                    slot["startTime"] = startTime;
+                                    subTeacher = class1.docs.filter((class2) => class2.standard === currentUser.docs.standard && class2.section === item1 && class2.timings.filter((slot1) => slot1.startTime === startTime && slot1.day === day1 && slot1.endTime === addMin(startTime, item2.duration)).length > 0)
+                                    startTime = addMin(startTime, item2.duration);
+                                    slot["endTime"] = startTime;
+                                    slot["subject"] = subTeacher.length !== 0 ? subTeacher[0].subject : "-";
+                                    slot["teacher"] = subTeacher.length !== 0 ? subTeacher[0].teacher : "-";
+                                }
+                                temp1.push(slot);
+                            }
+                            return true;
+                        })
+                        let result = {};
+                        result["standard"] = currentUser.docs.standard;
+                        result["section"] = item1;
+                        result["day"] = day1;
+                        result["slot"] = temp1;
+                        timetableData.push(result);
+                    }
+                    return true;
+                })
+                return true;
+            })
+            onLoading1(false);            
+        }
+    },[class1,currentUser,days,timetable,onLoading1])
+
+    if ( class1 && timetable!==null && currentUser) {
 
         let sec = Array.from(new Set(class1.docs.filter((item1) => item1.standard === currentUser.docs.standard).map((obj) => obj.section)));
         sec.map((item1) => {
@@ -88,7 +164,7 @@ const Student = () => {
     }
 
     if (currentUser && currentUser.docs.standard && !timetable) {
-        dispatch(getTimeTable(currentUser.docs.standard))
+        dispatch(getTimeTable("/TimeTable",navigate,currentUser.docs.standard))
     }
     console.log(timetable);
     console.log(class1);
@@ -104,7 +180,7 @@ const Student = () => {
                     <br />
                     <div className='table-responsive table-preview'>
                         {
-                            timetableData && currentUser && timetable &&
+                            timetableData && currentUser && timetable && class1 &&
                             <Table className='timetable-preview'>
                                 <tr>
                                     <td>From</td>

@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as solid from "@fortawesome/free-solid-svg-icons"
 import { Link } from 'react-router-dom'
 import Table from "react-bootstrap/Table"
 import { Stack,Divider } from 'rsuite'
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import "./Spotlight.css"
 import { useDispatch } from 'react-redux'
 import { postSpotlight } from '../../actions/spotlight'
 
-const Spotlight = () => {
+const Spotlight = ({status,onLoading}) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     
     const [content, setContent] = useState('');
@@ -19,7 +26,12 @@ const Spotlight = () => {
 
     const handleTitle = (value) => {
         if(value.length>=100){
-            alert("Title can't exceed 100 letters");
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                  Title can't exceed 100 letters
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
         }
         else{
             setTitle(value);
@@ -32,13 +44,41 @@ const Spotlight = () => {
         setUser('');
     }
 
-    const handleSubmit = () =>{
-        dispatch(postSpotlight({title,users,description:content}))
-    }
+    useEffect(()=>{
+        if (location.state) {
+            if (location.state.status === 200) {
+                handleClear();
+                onLoading(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Spotlight',{state:null});
+            }
+            else{
+                onLoading(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/Spotlight',{state:null});
+            }
+        }
+    },[location.state,toaster,navigate])
 
-    const handleFormat = (command) => {
-        document.execCommand(command, false, null);
+    const handleSubmit = () =>{
+        onLoading(true);
+        dispatch(postSpotlight('/Spotlight',navigate,{title,users,description:content}))
+    }
+    var toolbarOptions = [[{ 'list': 'bullet' }, 'bold', 'italic', 'underline', { 'list': 'ordered' }, 'link']];
+    const module = {
+        toolbar: toolbarOptions,
     };
+
     return (
         <div className="Main">
             <div className="Home">
@@ -56,27 +96,7 @@ const Spotlight = () => {
                                     <tr>
                                         <td style={{verticalAlign:"top"}}>Message</td>
                                         <td>
-                                            <div className="text-area-editor" style={{ border: "1px solid black" }}>
-                                                <div className="format-buttons">
-                                                    <Stack divider={<Divider vertical />}>
-                                                        <button onClick={() => handleFormat('insertUnorderedList')}> <FontAwesomeIcon icon={solid.faListUl} /> </button>
-                                                        <button onClick={() => handleFormat('bold')}><b>B</b></button>
-                                                        <button onClick={() => handleFormat('italic')}><i>I</i></button>
-                                                        <button onClick={() => handleFormat('underline')}><u>U</u></button>
-                                                        <button onClick={() => handleFormat('insertOrderedList')}> <FontAwesomeIcon icon={solid.faListOl} /></button>
-                                                    </Stack>
-
-                                                </div>
-                                                <div
-                                                    className="editor"
-                                                    contentEditable
-                                                    onInput={(e) => setContent(e.target.innerHTML)}
-                                                >
-                                                    <bdo dir="rtl">{content}</bdo>
-
-                                                </div>
-                                                {console.log(content)}
-                                            </div>
+                                        <ReactQuill style={{backgroundColor:"white"}} onChange={(value)=>setContent(value)} theme="snow" modules={module} value={content} />
                                         </td>
                                     </tr>
                                     <tr>

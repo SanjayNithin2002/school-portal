@@ -3,12 +3,12 @@ import Student from './Student'
 import Admin from './Admin'
 import Error404 from '../Error404'
 
-const Bonafide = () => {
+const Bonafide = ({status,onLoading}) => {
   return (
     <>
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="student" &&
-        <Student/>
+        <Student status={status} onLoading={(status1)=>onLoading(status1)} />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
@@ -16,7 +16,7 @@ const Bonafide = () => {
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Admin/>
+        <Admin status={status} onLoading={(status1)=>onLoading(status1)} />
     }
     </>
   )

@@ -2,21 +2,30 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { SelectPicker } from 'rsuite';
 import { useDispatch, useSelector } from "react-redux";
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 import { deleteAdminAttendance, getAdminAttendances, postAdminAttendance, updateAdminAttendance } from "../../actions/attendance";
 
 const AddTeacher = (props) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const [edit, setEdit] = useState(true);
     const [default1, setDefault1] = useState("Present");
     const [attendance, setAttendance] = useState(null);
+    const [fetchStatus, setFetchStatus] = useState(true);
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const statusType = [{ label: "Present", value: "Present" }, { label: "Absent", value: "Absent" }, { label: "No Attendance", value: "No Attendance" }]
 
     useEffect(() => {
-        dispatch(getAdminAttendances({ date: props.date }));
-    }, [dispatch,props.date])
+        if(fetchStatus){
+            props.onLoading(true);
+            dispatch(getAdminAttendances("/PostTeacherAttendance", navigate, { date: props.date }));
+        }
+    }, [dispatch,fetchStatus,navigate])
 
     let attendances = useSelector((state) => state.adminAttendanceReducer)
 
@@ -24,14 +33,6 @@ const AddTeacher = (props) => {
     console.log(attendance)
     console.log(props)
 
-    if (!attendance && props.admins) {
-        let att = [];
-        props.admins.docs.map((item) => {
-            att.push({ admin: item._id, status: default1 });
-            return true;
-        })
-        setAttendance(att);
-    }
 
     const checkDate = (a, b) => {
         let date1 = new Date(a);
@@ -41,23 +42,11 @@ const AddTeacher = (props) => {
         return date1.getTime() === date2.getTime();
     }
 
-
-    if (attendance && attendances && attendances.docs.length > 0 && edit) {
-        let att = [];
-        attendances.docs.filter((item) => checkDate(item.date, props.date)).map((item) => {
-            att.push({ admin: item.admin, status: item.status === 'Present' ? "Present" : "Absent" });
-            return true;
-        })
-        attendance.map((item) => {
-            if (att.filter((item1) => item1.admin === item.admin).length === 0) {
-                att.push({ admin: item.admin, status: "No Attendance" });
-            }
-            return true;
-        })
-        console.log(att);
-        setAttendance(att);
-        setEdit(false);
-    }
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            setFetchStatus(false);
+        }
+    }, [location.state, fetchStatus])
 
     const handleInputChange = (value, index) => {
         setAttendance(prev => {
@@ -112,27 +101,63 @@ const AddTeacher = (props) => {
         console.log(request1);
         console.log(request2);
         console.log(request3);
+        if(request1.length>0 || request2.length>0 || request3.length>0){
+            props.onLoading(true);
+            handleBack();
+        }
         if (request1.length > 0) {
-            dispatch(updateAdminAttendance(request1, { date: props.date }));
+            dispatch(updateAdminAttendance("/PostTeacherAttendance", navigate, request1, { date: props.date }));
         }
         if (request2.length > 0) {
-            dispatch(postAdminAttendance({ date: props.date, attendances: request2 }))
+            dispatch(postAdminAttendance("/PostTeacherAttendance", navigate, { date: props.date, attendances: request2 }))
         }
         if(request3.length > 0) {
-            dispatch(deleteAdminAttendance(request3));
+            dispatch(deleteAdminAttendance("/PostTeacherAttendance", navigate, request3));
         }
     }
 
     const handleSubmit = () => {
         if (attendance) {
+            props.onLoading(true);
             let att = [];
             attendance.filter((item) => item.status !== "No Attendance").map((item) => {
                 att.push({ admin: item.admin, status: item.status })
                 return true;
             })
             console.log(att);
-            dispatch(postAdminAttendance({ date: props.date, attendances: att }))
+            dispatch(postAdminAttendance("/PostTeacherAttendance", navigate,{ date: props.date, attendances: att }))
+            handleBack();
         }
+    }
+
+    
+    if (!attendance && props.admins) {
+        let att = [];
+        props.admins.docs.map((item) => {
+            att.push({ admin: item._id, status: default1 });
+            return true;
+        })
+        setAttendance(att);
+    }
+
+    if (attendances && edit) {
+        props.onLoading(false);
+    }
+    if (attendance && attendances && attendances.docs.length > 0 && edit) {
+        let att = [];
+        attendances.docs.filter((item) => checkDate(item.date, props.date)).map((item) => {
+            att.push({ admin: item.admin._id, status: item.status === 'Present' ? "Present" : "Absent" });
+            return true;
+        })
+        attendance.map((item) => {
+            if (att.filter((item1) => item1.admin === item.admin).length === 0) {
+                att.push({ admin: item.admin, status: "No Attendance" });
+            }
+            return true;
+        })
+        console.log(att);
+        setAttendance(att);
+        setEdit(false);
     }
 
     return (

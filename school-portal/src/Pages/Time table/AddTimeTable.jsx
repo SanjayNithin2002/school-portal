@@ -10,15 +10,18 @@ import Modal from 'react-bootstrap/Modal';
 import { SelectPicker } from 'rsuite';
 import { Steps, ButtonGroup, Button as Button1 } from 'rsuite';
 
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 import "./timetable.css";
 import { getTimeTables } from '../../actions/timetable'
 import { requestTeachers } from '../../actions/teachers'
-import { useNavigate } from 'react-router-dom'
 
-const AddTimeTable = () => {
+const AddTimeTable = ({status,onLoading}) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const [step, setStep] = useState(0);
     const [edit, setEdit] = useState(false);
     const [day, setDay] = useState("Monday");
@@ -27,6 +30,7 @@ const AddTimeTable = () => {
     const [showTimeTable, setShowTimeTable] = useState(false);
     const [standard, setStandard] = useState("");
     const [subjectList, setSubjectList] = useState([]);
+    const [fetchStatus,setFetchStatus] = useState(true);
     const [displaySubject, setDisplaySubject] = useState([]);
     const [teachersList, setTeachersList] = useState([]);
     const [timetableData2, setTimetableData2] = useState([]);
@@ -35,10 +39,13 @@ const AddTimeTable = () => {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     useEffect(() => {
-        dispatch(getAllClass());
-        dispatch(getTimeTables());
-        dispatch(requestTeachers());
-    }, [dispatch])
+        if(fetchStatus){
+            onLoading(true);
+            dispatch(getAllClass("/AddTimeTable",navigate));
+            dispatch(getTimeTables("/AddTimeTable",navigate));
+            dispatch(requestTeachers("/AddTimeTable",navigate));
+        }
+    }, [dispatch,fetchStatus,navigate])
 
     const class1 = useSelector((state) => state.allClassReducer);
     const timetable = useSelector((state) => state.timeTableReducer);
@@ -46,6 +53,26 @@ const AddTimeTable = () => {
     console.log(class1);
     console.log(timetable);
     console.log(teacher1);
+
+    useEffect(()=>{
+        if(class1 && timetable && teacher1){
+            onLoading(false);
+        }
+    },[class1,timetable,teacher1])
+
+    useEffect(()=>{
+        if (location.state && fetchStatus) {
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="Error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/AddTimeTable',{state:null});
+        }
+    },[location.state,toaster,navigate])
 
     const onChange = nextStep => setStep(nextStep < 0 ? 0 : nextStep > 1 ? 1 : nextStep);
 
@@ -174,9 +201,6 @@ const AddTimeTable = () => {
                         req._id = class2._id;
                         req["teacher"] = info.classTeacher._id;
                     }
-                    else {
-                        console.log("error");
-                    }
                 }
                 else {
                     info.slot.filter((slot) => class2.subject === slot.subject).map((slot) => {
@@ -204,7 +228,8 @@ const AddTimeTable = () => {
         })
 
         console.log(request1);
-        dispatch(updateClassDetails(request1, navigate));
+        onLoading(true);
+        dispatch(updateClassDetails("/TimeTable",navigate,request1));
     }
 
     if (class1 && timetableData2.length === 0 && timetable !== null) {

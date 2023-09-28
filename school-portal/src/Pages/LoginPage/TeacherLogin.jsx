@@ -9,7 +9,7 @@ import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import {Notification,useToaster} from 'rsuite';
 
-const TeacherLogin = ({handleBack}) => {
+const TeacherLogin = ({handleBack,status,onLoading}) => {
     
     const [Teacheruserid, setTeacherUserid] = useState("");
     const [Teacherpassword, setTeacherPassword] = useState("");
@@ -20,11 +20,13 @@ const TeacherLogin = ({handleBack}) => {
 
     const toaster = useToaster();
     const handleSubmit = () => {
+        onLoading(true);
         dispatch(TeacherlogIn({ userID: Teacheruserid, password: Teacherpassword },navigate))
     };
 
     useEffect(()=>{
         if(location.state){
+            onLoading(false);
             const message = (
                 <Notification type="error" header="error" closable>
                   Error Code: {location.state.status},<br/>{location.state.message}
@@ -33,7 +35,7 @@ const TeacherLogin = ({handleBack}) => {
             toaster.push(message, {placement:'topCenter'})
             navigate('/',{state:null});
         }
-    },[location.state,navigate,toaster])
+    },[location.state,navigate,toaster,onLoading])
   return (
     <div style={{width:"100%"}} className='row justify-content-center '>
         <div style={{borderTop:"3px solid #0d6efd"}} className='col-sm-8 col-md-6 col-lg-5 col-xl-4 Login-Content'>

@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Header } from 'rsuite';
 import Table from "react-bootstrap/Table";
 import Accordion from 'react-bootstrap/Accordion'
 import { useDispatch } from 'react-redux';
 import { updateStatusLeave } from '../../actions/leave';
+import { useNavigate } from "react-router-dom"
 
 const ViewLeave = (props) => {
+
+    const navigate = useNavigate();
 	const dispatch = useDispatch()
 	const leave = props.leave.docs.filter((item) => item._id === props.leaveID);
 
@@ -24,12 +27,14 @@ const ViewLeave = (props) => {
 	}
 
 	const handleApproval = () => {
-		dispatch(updateStatusLeave({ user: leave[0].user, id: leave[0]._id, status: "Approved" }))
+		dispatch(updateStatusLeave("/PostLeave",navigate,{ user: leave[0].user, id: leave[0]._id, status: "Approved" }))
+		props.onLoading(true);
 		props.close()
 	}
 
 	const handleRejection = () => {
-		dispatch(updateStatusLeave({ user: leave[0].user, id: leave[0]._id, status: "Rejected" }))
+		dispatch(updateStatusLeave("/PostLeave",navigate,{ user: leave[0].user, id: leave[0]._id, status: "Rejected" }))
+		props.onLoading(true);
 		props.close()
 	}
 
@@ -53,11 +58,11 @@ const ViewLeave = (props) => {
 									<tbody>
 										<tr>
 											<td>Staff Name</td>
-											<td>{item[item.user]}</td>
+											<td>{item[item.user].firstName+" "+item[item.user].lastName}</td>
 										</tr>
 										<tr>
 											<td>Staff ID</td>
-											<td>{item[item.user]}</td>
+											<td>{item[item.user].empID}</td>
 										</tr>
 										<tr>
 											<td>Leave Type</td>
@@ -111,7 +116,7 @@ const ViewLeave = (props) => {
 												</tr>
 												{
 													leave &&
-													props.leave.docs.filter((item) => item[item.user] === leave[0][leave[0].user]).map((item, index) => (
+													props.leave.docs.filter((item) => item[item.user]._id === leave[0][leave[0].user]._id).map((item, index) => (
 														<tr>
 															<td>{index + 1}</td>
 															<td>{item.type}</td>

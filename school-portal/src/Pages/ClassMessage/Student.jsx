@@ -1,20 +1,48 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import "./ClassMessage.css"
 import { getClassMessage } from '../../actions/classMessage';
 import moment from "moment";
+import {Notification,useToaster} from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
-const Student = () => {
+const Student = ({status,onLoading}) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
+    const [fetchStatus,setFetchStatus] = useState(true);
 
     useEffect(() => {
-        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-    }, [dispatch])
-
+        if(fetchStatus){
+            onLoading(true);
+            dispatch(getClassMessage("/ClassMessage",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,onLoading,navigate,fetchStatus])
 
     const messages = useSelector((state) => state.classmessageReducer)
     console.log(messages);
+
+    useEffect(()=>{
+        if(messages!==null){
+            onLoading(false);
+        }
+    },[onLoading,messages])
+
+    useEffect(()=>{
+        if(location.state){
+            onLoading(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/ClassMessage',{state:null});
+            setFetchStatus(false);
+        }
+    },[location.state,navigate,toaster,onLoading])
 
     return (
         <div className="Main">

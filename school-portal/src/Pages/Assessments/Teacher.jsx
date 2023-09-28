@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
 import * as Solid from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { viewBonafide } from '../../actions/bonafide';
@@ -7,16 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteAssessment, getAssessmentAnswers, updateAssessment, updateQuestionPaper } from '../../actions/assessments';
 import { Accordion, Table, Button, Modal } from 'react-bootstrap';
 import { requestClassStudents } from '../../actions/students';
-import { getMarksByID } from '../../actions/marks';
+import { getMarksByAssessmentID, getMarksByExamID, postMany, postMarks } from '../../actions/marks';
 import { Uploader } from 'rsuite';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 const Teacher = (props) => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const [show, setShow] = useState(false);
     const [marksEntry, setMarksEntry] = useState([]);
+    const [fetchStatus,setFetchStatus] = useState(true);
     const [assessmentData, setAssessmentData] = useState(null);
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
     const assessments = props.assessments;
@@ -27,23 +31,44 @@ const Teacher = (props) => {
     const studentList = useSelector((state) => state.allStudentsReducer)
     const marks = useSelector((state) => state.marksReducer)
     const answers = useSelector((state) => state.answersReducer)
+
     console.log(marks)
     console.log(answers)
+    console.log(classID)
     console.log(marksEntry)
     console.log(studentList)
 
-    useEffect(() => {
-        dispatch(requestClassStudents(classID));
-        dispatch(getAssessmentAnswers(props.assessmentID));
-        dispatch(getMarksByID(props.assessmentID));
-    }, [dispatch, classID, props.assessmentID])
+    useEffect(()=>{
+        if(fetchStatus){
+            props.onLoading(true);
+        }
+    },[fetchStatus])
 
     useEffect(() => {
-        if (studentList && marks && marks.docs) {
+        if(fetchStatus){
+            dispatch(getAssessmentAnswers("/Assessments",navigate,props.assessmentID));
+            dispatch(getMarksByAssessmentID({id:props.assessmentID}));
+        }
+    }, [dispatch, props.assessmentID, fetchStatus])
+
+    useEffect(() => {
+        if(fetchStatus){
+            dispatch(requestClassStudents("/Assessments",navigate,classID));
+        }
+    }, [dispatch, classID, fetchStatus])
+
+    useEffect(()=> {
+        if (marks && marks.docs) {
+            props.onLoading(false);
+        }
+    },[marks])
+
+    useEffect(() => {
+        if (studentList) {
             let temp = [];
             studentList.docs.map((stu) => {
                 let mark1 = 0
-                if (marks.docs.length > 0) {
+                if (marks && marks.docs && marks.docs.length > 0) {
                     marks.docs.filter((mark) => mark.assessment._id === props.assessmentID && stu._id === mark.student._id).map((mark) => {
                         mark1 = mark.scoredMarks;
                         return true;
@@ -57,17 +82,21 @@ const Teacher = (props) => {
                 return true;
             })
             setMarksEntry(temp);
+            props.onLoading(false);
         }
     }, [studentList, marks, props.assessmentID])
 
-    if(!assessmentData && assessments){
-        let temp = {};
-        assessments.docs.filter((ass)=>ass._id===props.assessmentID).map((ass)=>{
-            temp = ass;
-            return true;
-        })
-        setAssessmentData(temp);
-    }
+
+    useEffect(()=>{
+        if(assessments){
+            let temp = {};
+            assessments.docs.filter((ass)=>ass._id===props.assessmentID).map((ass)=>{
+                temp = ass;
+                return true;
+            })
+            setAssessmentData(temp);
+        }
+    },[assessments,props.assessmentID])
     
     var toolbarOptions = [[{ 'list': 'bullet' }, 'bold', 'italic', 'underline', { 'list': 'ordered' }, 'link']];
     const module = {
@@ -89,17 +118,9 @@ const Teacher = (props) => {
         return formattedDate
     }
 
-    const checkDueDate = (date1) => {
-        const startDate = new Date();
-        const endDate = new Date(date1);
-        if (endDate.getTime() - startDate.getTime() > 0)
-            return true;
-        else
-            return false;
-    }
-
     const handleDelete = () => {
-        dispatch(deleteAssessment(props.assessmentID, navigate));
+        props.onLoading(true);
+        dispatch(deleteAssessment("/Assessment",navigate,props.assessmentID, navigate));
         props.close();
     }
 
@@ -147,18 +168,25 @@ const Teacher = (props) => {
                     formData.append('questionPaper', assessmentData.questionPaper[0].blobFile, assessmentData.questionPaper[0].blobFile.name);
                     formData.append('class', classID);
                     console.log(assessmentData.questionPaper)
-                    dispatch(updateQuestionPaper(props.assessmentID,formData))
+                    props.onLoading(true);
+                    dispatch(updateQuestionPaper("/Assessment",navigate,props.assessmentID,formData))
                 }
                 else{
                     flag=0;
-                    alert("File can't be empty");
+                    const message = (
+                    <Notification type="warning" header="Warning" closable>
+                        File can't be empty
+                    </Notification>
+                    );
+                    toaster.push(message, {placement:'topCenter'})
                 }
                 
             }
             return true;
         })
         if(request1.length>0 && flag===1){
-            dispatch(updateAssessment(props.assessmentID,request1))
+            props.onLoading(true);
+            dispatch(updateAssessment("/Assessment",navigate,props.assessmentID,request1))
         }
     }
 
@@ -166,27 +194,37 @@ const Teacher = (props) => {
         let request1 = [];
         let request2 = [];
         marksEntry.map((stu) => {
-            if(marks.docs.filter((mark) => mark.assessment._id === props.assessmentID && stu.id === mark.student._id && stu.scoredMarks!==mark.scoredMarks).length>0){
+            if(!marks){
+                request2.push({
+                    student: stu.id,
+                    scoredMarks: stu.scoredMarks,
+                    remarks: "",
+                })
+            }
+            else if(marks && marks.docs.filter((mark) => mark.assessment._id === props.assessmentID && stu.id === mark.student._id && stu.scoredMarks!==mark.scoredMarks).length>0){
                 request1.push({
                     propName: "scoredMarks",
                     value: stu.scoredMarks,
                 })
                 return true;
             }
-            if (marks.docs.filter((mark1) => mark1.student._id === stu.id).length === 0) {
+            else if (marks && marks.docs.filter((mark1) => mark1.student._id === stu.id).length === 0) {
                 request2.push({
-                    type: "assessment",
-                    id: stu.id,
+                    student: stu.id,
                     scoredMarks: stu.scoredMarks,
                     remarks: "",
                 })
             }
             return true;
         })
-        if (request1.length > 0)
+        if (request1.length > 0){
             console.log(request1);//patch request
-        if (request2.length > 0)
+        }
+        if (request2.length > 0){
             console.log(request2);//post request
+            dispatch(postMany({type:"assessment",assessment:props.assessmentID,marks:request2}))
+        }
+        console.log(request2);//post request
     }
 
     const handleFile = (request) => {
@@ -204,11 +242,21 @@ const Teacher = (props) => {
 
     const checkInput = (index, value) => {
         if (value > assessments.docs.filter((ass) => ass._id === props.assessmentID)[0].maxMarks) {
-            alert("Mark can't be more than the maximum mark");
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                    Mark can't be more than the maximum mark
+                </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
             handleInputChange(0, index, "scoredMarks");
         }
         else if (value < 0) {
-            alert("Mark can't be less than zero");
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                    Mark can't be less than zero
+                </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
             handleInputChange(0, index, "scoredMarks");
         }
     }
@@ -243,7 +291,7 @@ const Teacher = (props) => {
                             <div className='row' style={{ width: "100%", minWidth: "600px" }}>
                                 <div className='float-md-right col-lg-7 col-xl-8'>
                                     <div style={{fontSize:"18px"}} dangerouslySetInnerHTML={{ __html: item.description }} />
-                                    <Accordion defaultActiveKey="0">
+                                    <Accordion>
                                         <Accordion.Item eventKey="0">
                                             <Accordion.Header style={{ padding: "initial" }}>Student List</Accordion.Header>
                                             <Accordion.Body>
@@ -253,7 +301,7 @@ const Teacher = (props) => {
                                                             <tr>
                                                                 <th>S.No</th>
                                                                 <th>Name</th>
-                                                                <th>Status</th>
+                                                                <th>File</th>
                                                                 <th>Date</th>
                                                                 <th>Mark</th>
                                                             </tr>
@@ -266,8 +314,23 @@ const Teacher = (props) => {
                                                                             <tr>
                                                                                 <td>{index + 1}</td>
                                                                                 <td>{stu.firstName + " " + stu.lastName}</td>
-                                                                                <td>Not Uploaded</td>
-                                                                                <td>-</td>
+                                                                                {
+                                                                                    answers && answers.docs.filter((answer)=>answer.student._id===stu._id).length>0 ?
+                                                                                    answers.docs.filter((answer)=>answer.student._id===stu._id).map((answer)=>(
+                                                                                    <>
+                                                                                    <td>
+                                                                                        <span style={{color:"blue",cursor:"pointer",textDecoration:"underline"}} onClick={() => handleFile(answer.answerFile)}>Download</span>
+                                                                                    </td>
+                                                                                    <td>{handleDateFormat(answer.postedOn)}</td>
+                                                                                    </>
+                                                                                    ))
+                                                                                    :
+                                                                                    <>
+                                                                                    <td>Not Uploaded</td>
+                                                                                    <td>-</td>
+                                                                                    </>
+                                                                                }
+                                                                                
                                                                                 <td><input value={marks.scoredMarks} onBlur={(e) => checkInput(index, e.target.value)} onChange={(e) => handleInputChange(e.target.value, index, "scoredMarks")} type="number" min={0} max={item.maxMarks} /></td>
                                                                             </tr>
                                                                         ))

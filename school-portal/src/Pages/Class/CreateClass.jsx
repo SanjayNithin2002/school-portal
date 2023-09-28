@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
 import "./Class.css"
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import { Steps, ButtonGroup, Button } from 'rsuite';
 import Table from 'react-bootstrap/esm/Table';
 import { useDispatch, useSelector } from "react-redux";
 import { requestStudents, updateSection } from '../../actions/students';
 import { createClass } from "../../actions/class"
-import { useNavigate } from 'react-router-dom';
 import { postTimeTable } from '../../actions/timetable';
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
-function CreateClass() {
+function CreateClass({ status, onLoading }) {
     const [request1, setRequest1] = useState([])
     const [request2, setRequest2] = useState([])
     const [request3, setRequest3] = useState([])
@@ -32,13 +32,70 @@ function CreateClass() {
     const [sections, setSection] = useState([]);
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
     const [auto, setAuto] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch()
+    const [fetchStatus, setFetchStatus] = useState(true);
     var students = [{}]
     const allStudents = useSelector(state => state.allStudentsReducer);
     useEffect(() => {
-        dispatch(requestStudents());
-    }, [dispatch])
+        if (fetchStatus) {
+            onLoading(true);
+            dispatch(requestStudents("/CreateClass", navigate));
+        }
+    }, [dispatch, fetchStatus, navigate])
+
+    useEffect(() => {
+        if (allStudents) {
+            onLoading(false);
+        }
+    }, [allStudents])
+
+    useEffect(() => {
+        if (location.state && fetchStatus) {
+            if (location.state.status === 200) {
+                setRequest1([])
+                setRequest2([])
+                setRequest3([])
+                setTimings([])
+                setEdit1(false);
+                setEdit2(false);
+                setStep(0);
+                setStandard('')
+                setWorkingDay('')
+                setStartTime('')
+                setEndTime('')
+                setDuration('')
+                setNoClass(0)
+                setNoBreak(0)
+                setNoSubject(0)
+                setBreak1([])
+                setSubject([])
+                setNoSections(0);
+                setSection([]);
+                onLoading(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                        {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                navigate('/CreateClass', { state: null });
+            }
+            else {
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                        Error Code: {location.state.status},<br />{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                navigate('/CreateClass', { state: null });
+            }
+        }
+    }, [location.state, toaster, navigate])
 
     if (allStudents && standard) {
         students = allStudents.docs.filter((item) => item.standard === parseInt(standard));
@@ -46,6 +103,19 @@ function CreateClass() {
 
     const onChange = nextStep => setStep(nextStep < 0 ? 0 : nextStep > 2 ? 2 : nextStep);
     const onNext = () => {
+        if(step === 0){
+            if(!standard || !workingDays || !startTime || !duration || noClass<=0 || noBreak<=0 || noSubject<=0){
+                const message = (
+                    <Notification type="warning" header="Warning" closable>
+                        Kindly fill all the details.
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+            }
+            else{
+                onChange(step + 1);
+            }
+        }
         if (step === 1) {
             sections.map((section, index) => {
                 subject.map((subject) => {
@@ -62,30 +132,20 @@ function CreateClass() {
                     teacher: null,
                     standard,
                     section,
-                    subject:"Class Teacher",
+                    subject: "Class Teacher",
                     timings: []
                 })
                 boys[index].map((student) => {
                     request2.push({
-                        student,
-                        request: [{
-
-                            propName: "section",
-                            value: section
-
-                        }]
+                        _id:student,
+                        section
                     })
                     return true
                 })
                 girls[parseInt(noSections) - index - 1].map((student) => {
                     request2.push({
-                        student,
-                        request: [{
-
-                            propName: "section",
-                            value: section
-
-                        }]
+                        _id:student,
+                        section
                     })
                     return true
                 })
@@ -111,8 +171,6 @@ function CreateClass() {
 
             onChange(step + 1);
         }
-
-        onChange(step + 1);
     }
     const onPrevious = () => {
         if (step === 2) {
@@ -260,9 +318,10 @@ function CreateClass() {
         console.log(request1)
         console.log(request2)
         console.log(request3)
-        dispatch(createClass(request1, navigate))
-        //dispatch(updateSection(request2,navigate))
-        //dispatch(postTimeTable(request3,navigate))
+        onLoading(true);
+        dispatch(createClass("/CreateClass",navigate,request1))
+        dispatch(updateSection("/CreateClass",navigate,request2))
+        dispatch(postTimeTable("/CreateClass",navigate,request3))
     }
 
     const durationList = [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
@@ -540,7 +599,7 @@ function CreateClass() {
                         }
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
-                    <div style={{width:"100%"}} className="AddStudent-container">
+                    <div style={{ width: "100%" }} className="AddStudent-container">
                         <div style={{ minWidth: "600px" }}>
                             <Steps current={step}>
                                 <Steps.Item title="Class" />
@@ -550,7 +609,7 @@ function CreateClass() {
                             <br />
                             {
                                 step === 0 &&
-                                <div className='row' style={{width:"100%"}}>
+                                <div className='row' style={{ width: "100%" }}>
                                     <div className='col-lg-10 justify-content-center'>
                                         <Table className='AddStudent-Table-List'>
                                             <tbody>
@@ -722,7 +781,7 @@ function CreateClass() {
                             }
                             {
                                 step === 1 &&
-                                <div className='row' style={{width:"100%"}}>
+                                <div className='row' style={{ width: "100%" }}>
                                     <div className='col-lg-8 justify-content-center'>
                                         <Table className='AddStudent-Table-List'>
                                             <tbody>
@@ -761,7 +820,7 @@ function CreateClass() {
                                                         <td style={{ textAlign: "center", backgroundColor: "white" }} colSpan={2}>
                                                             <p>Preview</p>
                                                             <div className='row'>
-                                                                <div className='col-lg-6'>
+                                                                <div className='col-xl-6 col-lg-6'>
 
                                                                     <Table className='CreateClass-subTable'>
                                                                         <thead>
@@ -800,7 +859,7 @@ function CreateClass() {
                             }
                             {
                                 step === 2 &&
-                                <div className='row' style={{width:"100%"}}>
+                                <div className='row' style={{ width: "100%" }}>
                                     <div className='col-lg-8 justify-content-center'>
                                         <Table>
                                             <tbody>
@@ -809,7 +868,7 @@ function CreateClass() {
                                                 </tr>
                                                 <tr>
                                                     <td>Standard</td>
-                                                    <td>{standard}</td>
+                                                    <td>{standardList[standard-1].label}</td>
                                                     <td>No of Working Days</td>
                                                     <td>{workingDays}</td>
                                                 </tr>
@@ -853,8 +912,10 @@ function CreateClass() {
                                                     <td colSpan={4} style={{ fontWeight: "bold" }}>Subject Details</td>
                                                 </tr>
                                                 <tr>
-                                                    <td colSpan={2}>No of Subjects ?</td>
-                                                    <td colSpan={2}>{noSubject}</td>
+                                                    <td>No of Subjects ?</td>
+                                                    <td>{noSubject}</td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Subject List</td>
@@ -889,7 +950,7 @@ function CreateClass() {
                                                         <td style={{ backgroundColor: "white" }} colSpan={4}>
                                                             <h4>Preview</h4>
                                                             <div style={{ textAlign: "center" }} className='row'>
-                                                                <div className='col-lg-6 d-flex justify-content-center'>
+                                                                <div className='col-xl-6 col-lg-6 d-flex justify-content-center'>
                                                                     <Table className='CreateClass-subTable'>
                                                                         <thead>
                                                                             <th>Sections</th>
@@ -938,7 +999,7 @@ function CreateClass() {
                             Previous
                         </Button>
                         <Button onClick={onNext} disabled={step === 3}>
-                            Next{step}
+                            Next
                         </Button>
                     </ButtonGroup>
                 </div>
@@ -949,33 +1010,3 @@ function CreateClass() {
 
 export default CreateClass
 
-// {
-//     class:"VII",
-//     sections:[{
-//         section:"A",
-//         Boys:[students._id],
-//         Girls:[students._id],
-//     }],
-//     subject:[
-//         "English",
-//         "Tamil",
-//         "Maths",
-//         "Science",
-//         "Social",
-//         "Computer",
-//         "Hindi",
-//     ],
-//     startTime:"9:00am",
-//     endTime:"4:15pm",
-//     duration:"45min",
-//     break:[{
-//         title:"break1"
-//         startTime:"10:30am",
-//         endTime:"10:45am",
-//     },{
-//         title:"Lunch"
-//         startTime:"1:00pm",
-//         endTime:"1:45pm",
-//     }],
-//     workingDays:5
-//     }

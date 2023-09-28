@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Icon } from '@rsuite/icons';
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { getClass } from '../../actions/class';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -9,9 +8,11 @@ import { TagPicker } from 'rsuite';
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import * as solid from "@fortawesome/free-solid-svg-icons"
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 import "./ClassMessage.css"
-import { deleteClassMessage, getClassMessage, postClassMessage, postClassMessage1 } from '../../actions/classMessage';
+import { deleteClassMessage, deleteClassMessage1, getClassMessage, postClassMessage, postClassMessage1 } from '../../actions/classMessage';
 import { requestClassStudents } from '../../actions/students';
 
 const Send = React.forwardRef((props, ref) => (
@@ -20,40 +21,47 @@ const Send = React.forwardRef((props, ref) => (
     </svg>
 ));
 
-const Teacher = () => {
+const Teacher = ({status,onLoading}) => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
+    const dispatch = useDispatch();
     const [classID, setClassID] = useState(null)
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [message, setMessage] = useState("");
     const [deleteID, setDeleteID] = useState("");
+    const [fetchStatus,setFetchStatus] = useState(true);
     const [showDialog, setShowDialog] = useState(false);
     const [selectedValues, setSelectedValues] = useState([]);
 
-
-
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
-
     useEffect(() => {
-        dispatch(getClassMessage({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        if(fetchStatus){
+            onLoading(true);
+            dispatch(getClassMessage("/ClassMessage",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+            dispatch(getClass("/ClassMessage",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        }
+    }, [dispatch,fetchStatus])
 
-    }, [dispatch])
+    console.log({ type: localStorage.getItem('type'), id: localStorage.getItem('id') });
 
     const class1 = useSelector((state) => state.allClassReducer)
     const messages = useSelector((state) => state.classmessageReducer)
     const studentlist = useSelector((state) => state.allStudentsReducer)
 
-    if (!studentlist && classID) {
-        dispatch(requestClassStudents(classID))
-    }
+    useEffect(() => {
+        if(class1 && messages){
+            onLoading(false);
+        }
+    },[class1,messages])
+
+    useEffect(()=>{
+        if (classID) {
+            dispatch(requestClassStudents("/ClassMessage",navigate,classID))
+        }
+    },[classID])
 
     console.log(class1);
     console.log(classID)
@@ -65,19 +73,46 @@ const Teacher = () => {
         setSelectedValues(newSelectedValues);
     };
 
-    if (standard && section && classID === null) {
-        if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length > 1) {
-            class1.docs.map((item) => {
-                if (item.standard === parseInt(standard) && item.section === section && item.subject !== "Class Teacher") {
-                    setClassID(item._id);
-                }
-                return true;
-            })
+    useEffect(()=>{
+        if (standard && section) {
+            if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length > 1) {
+                class1.docs.map((item) => {
+                    if (item.standard === parseInt(standard) && item.section === section && item.subject !== "Class Teacher") {
+                        setClassID(item._id);
+                    }
+                    return true;
+                })
+            }
+            else if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length === 1) {
+                setClassID(class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]._id);
+            }
         }
-        else if (class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section).length === 1) {
-            setClassID(class1.docs.filter((item) => item.standard === parseInt(standard) && item.section === section)[0]._id);
+    },[standard,section,class1])
+
+    useEffect(()=>{
+        if (location.state && fetchStatus) {
+            if (location.state.status === 200) {
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/ClassMessage',{state:null});
+            }
+            else{
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/ClassMessage',{state:null});
+            }
         }
-    }
+    },[location.state,toaster,fetchStatus])
 
     const handleSubmit = () => {
         if(selectedValues.length===0){
@@ -88,17 +123,25 @@ const Teacher = () => {
                 }
                 return true;
             })
-            dispatch(postClassMessage({ class: ClassID, message, postedBy: localStorage.getItem('id'),postedOn:new Date() }, navigate));
+            dispatch(postClassMessage("/ClassMessage",navigate,{ class: ClassID, message, postedBy: localStorage.getItem('id'),postedOn:new Date() }, navigate));
         }
         else{
-            dispatch(postClassMessage1({student:selectedValues,postedBy:localStorage.getItem("id"),message,postedOn:new Date()}, navigate));
+            dispatch(postClassMessage1("/ClassMessage",navigate,{student:selectedValues,postedBy:localStorage.getItem("id"),message,postedOn:new Date()}, navigate));
         }
+        onLoading(true);
         
     }
 
     const handleConfirm = () => {
-        dispatch(deleteClassMessage(deleteID));
+        messages.docs.filter((item)=>item._id===deleteID).map((item)=>{
+            if(item.student)
+                dispatch(deleteClassMessage1("/ClassMessage",navigate,deleteID));
+            else
+                dispatch(deleteClassMessage("/ClassMessage",navigate,deleteID));
+            return true;
+        })
         setShowDialog(false);
+        onLoading(true);
     };
 
     const checkDate = (a,b) =>{
@@ -122,7 +165,7 @@ const Teacher = () => {
                                         <h4>Select Standard : </h4>
                                     </div>
                                     <div className="col-lg-5 col-md-6 col-sm-6">
-                                        <select className="selectPicker3" value={standard} onChange={(e) => { setStandard(e.target.value); setClassID(null); }}>
+                                        <select className="selectPicker3" value={standard} onChange={(e) => setStandard(e.target.value)}>
                                             <option value="" disabled>
                                                 Select Standard
                                             </option>
@@ -142,7 +185,7 @@ const Teacher = () => {
                                         <h4>Select Section : </h4>
                                     </div>
                                     <div className="col-lg-5 col-md-6 col-sm-6">
-                                        <select className="selectPicker3" value={section} onChange={(e) => { setSection(e.target.value); setClassID(null); }}>
+                                        <select className="selectPicker3" value={section} onChange={(e) => setSection(e.target.value)}>
                                             <option value="" disabled>
                                                 Select Section
                                             </option>

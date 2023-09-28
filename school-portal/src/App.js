@@ -10,7 +10,7 @@ import StudentLogin from "./Pages/LoginPage/StudentLogin";
 import TeacherLogin from "./Pages/LoginPage/TeacherLogin";
 import AdminLogin from "./Pages/LoginPage/AdminLogin";
 
-function App() {
+function App({status,onLoading}) {
 
     const [userType,setUserType] = useState("");
     
@@ -76,13 +76,13 @@ function App() {
                 </>
                 }
                 {
-                    userType==="student" && <StudentLogin handleBack={()=>setUserType("")}/>
+                    userType==="student" && <StudentLogin status={status} onLoading={(status1)=>onLoading(status1)} handleBack={()=>setUserType("")}/>
                 }
                 {
-                    userType==="teacher" && <TeacherLogin handleBack={()=>setUserType("")}/>
+                    userType==="teacher" && <TeacherLogin status={status} onLoading={(status1)=>onLoading(status1)} handleBack={()=>setUserType("")}/>
                 }
                 {
-                    userType==="admin" && <AdminLogin handleBack={()=>setUserType("")}/>
+                    userType==="admin" && <AdminLogin status={status} onLoading={(status1)=>onLoading(status1)} handleBack={()=>setUserType("")}/>
                 }
             </div>
         </div>

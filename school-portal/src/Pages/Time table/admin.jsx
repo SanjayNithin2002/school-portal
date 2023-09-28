@@ -6,28 +6,80 @@ import * as solid from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 import { getTimeTable } from '../../actions/timetable';
 import { Table } from "react-bootstrap"
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
+const Admin = ({status,onLoading1}) => {
 
-const Admin = () => {
-
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
-    const [edit, setEdit] = useState(false);
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
+    const [fetchStatus,setFetchStatus] = useState(true);
     const [timetableData, setTimetableData] = useState([]);
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }];
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     useEffect(() => {
-        dispatch(getAllClass());
-    }, [dispatch])
+        if(fetchStatus){
+            onLoading1(true);
+            dispatch(getAllClass("/TimeTable",navigate));
+        }
+    }, [dispatch,fetchStatus,navigate])
 
     const class1 = useSelector((state) => state.allClassReducer);
     const timetable = useSelector((state) => state.timeTableReducer);
     console.log(class1);
     console.log(timetable);
     console.log(timetableData);
+
+    useEffect(()=>{
+        if(class1){
+            onLoading1(false);
+        }
+    },[class1])
+
+    useEffect(()=>{
+        if(timetable){
+            onLoading1(false);
+        }
+    },[timetable])
+
+    useEffect(()=>{
+        if(fetchStatus && standard){
+            onLoading1(true);
+            dispatch(getTimeTable("/TimeTable",navigate,standard));
+        }
+    },[standard,dispatch,fetchStatus,navigate])
+
+    useEffect(()=>{
+        if (location.state && fetchStatus) {
+            if (location.state.status === 200) {
+                onLoading1(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/TimeTable',{state:null});
+            }
+            else{
+                onLoading1(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="Error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/TimeTable',{state:null});
+            }
+        }
+    },[location.state,toaster,navigate])
 
     const addMin = (time1, duration) => {
         const sdate = new Date();
@@ -44,7 +96,6 @@ const Admin = () => {
 
     const handleStandard = (value) => {
         setStandard(value);
-        setEdit(true);
         dispatch({ type: "FETCH_CLASS_TIMETABLE", payload: null });
         setTimetableData([]);
     }
@@ -101,10 +152,7 @@ const Admin = () => {
         })
     }
 
-    if (edit && standard) {
-        dispatch(getTimeTable(standard));
-        setEdit(false);
-    }
+
 
     return (
         <div className='Main'>

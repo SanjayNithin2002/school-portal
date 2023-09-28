@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes,Route,BrowserRouter} from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom"
 import App from "./App"
 import Navbar from "./components/NavBar/Navbar";
 import Home from "./Pages/Dashboard/Home";
@@ -35,47 +35,96 @@ import AddTimeTable from "./Pages/Time table/AddTimeTable";
 import SideNavBar from "./components/SideNavBar/SideNavBar";
 import Profile from "./Pages/Profile/Profile"
 import Spotlight from "./Pages/Spotlight/Spotlight";
+import Loading from "./Pages/Loading/Loading";
+import Records from "./Pages/Records/Records";
+import { useDispatch } from "react-redux";
+import { logout } from "./actions/logout";
+import ViewStudent from "./Pages/Profile/ViewStudent";
+import ViewTeacher from "./Pages/Profile/ViewTeacher";
+
+
 
 const AllRoutes = () => {
-    return(
+
+    const [status, setStatus] = useState(false);
+    const dispatch = useDispatch();
+    console.log(status);
+
+    const checkForInactivity = () => {
+        const expireTime = localStorage.getItem("expireTime");
+        if (expireTime < Date.now()) {
+            dispatch(logout());
+        }
+    }
+
+    const updateExpireTime = () => {
+        const expireTime = Date.now() + 9000000;
+        localStorage.setItem("expireTime", expireTime);
+    }
+
+    useEffect(() => {
+        updateExpireTime();
+        window.addEventListener("click", updateExpireTime);
+        window.addEventListener("keypress", updateExpireTime);
+        window.addEventListener("scroll", updateExpireTime);
+        window.addEventListener("mousemove", updateExpireTime);
+        return () => {
+            window.removeEventListener("click", updateExpireTime);
+            window.removeEventListener("keypress", updateExpireTime);
+            window.removeEventListener("scroll", updateExpireTime);
+            window.removeEventListener("mousemove", updateExpireTime);
+        }
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            checkForInactivity();
+        }, 60000);
+        return () => clearInterval(interval);
+    }, [])
+
+    return (
         <BrowserRouter>
-            <Navbar/>
-            <SideNavBar/>
+            <Navbar />
+            <SideNavBar />
+            <Loading status={status} />
             <Routes>
-                <Route path='/' element={<App/>}/>
-                <Route path='/Home' element={<Home/>}/>
-                <Route path='/Attendance' element={<Attendance/>}/>
-                <Route path='/Leave' element={<Leave/>}/>
-                <Route path='/ContactUs' element={<ContactUs/>}/>                
-                <Route path='/Assessment' element={<Assessments/>}/>
-                <Route path='/PostAssessment' element={<NewAssessment/>}/>
-                <Route path='/Marks' element={<Marks/>}/>
-                <Route path='/Teachers' element={<Teacher/>}/>
-                <Route path='/Setting' element={<Settings/>}/>
-                <Route path='/Bonafide' element={<Bonafide/>}/>
-                <Route path='/StudentInfo' element={<StudentInfo/>}/>
-                <Route path='/AddStudent' element={<AddStudent/>}/>
-                <Route path='/StaffInfo' element={<TeacherInfo/>}/>
-                <Route path='/StudentList' element={<StudentList/>}/>
-                <Route path='/PostStudentAttendance' element={<PostStudent/>}/>
-                <Route path='/PostTeacherAttendance' element={<PostTeacher/>}/>
-                <Route path='/ClassMessage' element={<ClassMessage/>}/>
-                <Route path='/timetable' element={<Timetable/>}/> 
-                <Route path='*' element={<Error404/>}/>
-                <Route path='/Exam' element={<Exam/>}/>
-                <Route path='/AddStaff' element={<AddTeacher/>}/>
-                <Route path='/Payment' element={<Fees/>}/>
-                <Route path='/AddSchedule' element={<AddExam/>} />
-                <Route path='/UploadMarks' element={<UploadMarks/>} />
-                <Route path='/EditMarks' element={<EditMarks/>} />
-                <Route path='/CreateClass' element={<CreateClass/>} />
-                <Route path='/ClassInfo' element={<ClassInfo/>} />
-                <Route path='/ViewBonafide' element={<ViewBonafide/>} />
-                <Route path='/PostLeave' element={<UpdateLeave/>}/>
-                <Route path='/AddTimeTable' element={<AddTimeTable/>}/>
-                <Route path='/Profile' element={<Profile/>} />
-                <Route path='/Spotlight' element={ <Spotlight/> }/>
-                
+                <Route path='/' element={<App status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Home' element={<Home status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Attendance' element={<Attendance status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Leave' element={<Leave status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/ContactUs' element={<ContactUs status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Assessment' element={<Assessments status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/PostAssessment' element={<NewAssessment status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Marks' element={<Marks />} />
+                <Route path='/Teachers' element={<Teacher status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Setting' element={<Settings status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Bonafide' element={<Bonafide status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/StudentInfo' element={<StudentInfo status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/AddStudent' element={<AddStudent status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/StaffInfo' element={<TeacherInfo status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/StudentList' element={<StudentList status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/PostStudentAttendance' element={<PostStudent status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/PostTeacherAttendance' element={<PostTeacher status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/ClassMessage' element={<ClassMessage status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/timetable' element={<Timetable status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='*' element={<Error404 />} />
+                <Route path='/Exam' element={<Exam status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/AddStaff' element={<AddTeacher status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Payment' element={<Fees status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/AddSchedule' element={<AddExam status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/UploadMarks' element={<UploadMarks />} />
+                <Route path='/EditMarks' element={<EditMarks />} />
+                <Route path='/CreateClass' element={<CreateClass status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/ClassInfo' element={<ClassInfo status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/ViewBonafide' element={<ViewBonafide status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/PostLeave' element={<UpdateLeave status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/AddTimeTable' element={<AddTimeTable status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Profile' element={<Profile status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Spotlight' element={<Spotlight status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Records' element={<Records status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Student/:id' element={<ViewStudent status={status} onLoading={(status1) => setStatus(status1)} />} />
+                <Route path='/Staff/:id' element={<ViewTeacher status={status} onLoading={(status1) => setStatus(status1)} />} />
             </Routes>
         </BrowserRouter>
     )

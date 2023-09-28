@@ -99,3 +99,8 @@
   .UpdateLeave-content-table .btn:hover{
     background-color: #0b5ed7;
   }
+
+  .custome-filter button{
+    background-color: #0b5ed7;
+    color:white;
+  }

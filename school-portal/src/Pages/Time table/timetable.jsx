@@ -2,22 +2,21 @@ import React from 'react'
 import Student from './student'
 import Admin from './admin'
 import Teacher from './teacher'
-import Error from "../Error404"
 
-const timetable = () => {
+const timetable = ({status,onLoading}) => {
   return (
     <>
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="student" &&
-        <Student />
+        <Student status={status} onLoading1={(status1)=>onLoading(status1)} />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="teacher" &&
-        <Teacher />
+        <Teacher status={status} onLoading1={(status1)=>onLoading(status1)} />
     }
     {
     localStorage.getItem('type') && localStorage.getItem('type')==="admin" &&
-        <Admin />
+        <Admin status={status} onLoading1={(status1)=>onLoading(status1)} />
     }
     </>
   )

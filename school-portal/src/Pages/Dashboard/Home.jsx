@@ -1,28 +1,64 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import './Home.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteSpotlight, getSpotlight } from '../../actions/spotlight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as solid from "@fortawesome/free-solid-svg-icons"
+import {Notification,useToaster} from 'rsuite';
+import { useLocation, useNavigate } from "react-router-dom"
 
-function Home() {
-
+function Home({status,onLoading}) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toaster = useToaster();
+  const [fetchStatus,setFetchStatus] = useState(true);
+  
 
  const handleSubmit = (ID) => {
-    if(window.confirm("Are you sure, you want to delete the message?"))
-      dispatch(deleteSpotlight(ID));
+    if(window.confirm("Are you sure, you want to delete the message?")){
+      onLoading(true);
+      dispatch(deleteSpotlight("/Home",navigate,ID));
+    }
   }
 
-
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (localStorage.getItem("token"))
-      dispatch(getSpotlight());
-  }, [dispatch])
-  const spotlight = useSelector((state) => state.spotlightReducer);
-  console.log(spotlight)
+      if(fetchStatus)
+      dispatch(getSpotlight("/Home",navigate));
+  }, [dispatch,fetchStatus])
+
+  useEffect(()=>{
+    if (location.state && fetchStatus) {
+        if (location.state.status === 200) {
+            onLoading(false);
+            const message = (
+                <Notification type="success" header="Success" closable>
+                  {location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/Home',{state:null});
+        }
+        else{
+            onLoading(false);
+            setFetchStatus(false);
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/Home',{state:null});
+        }
+    }
+},[location.state,toaster,navigate])
+
+  const spotlight = useSelector((state) => state.spotlightReducer)
+
+  if(spotlight!==null && status){
+    onLoading(false);
+  }
 
   const checkDate = (a, b) => {
     let date1 = new Date(a);
@@ -32,7 +68,7 @@ function Home() {
   return (
     <div className="Main">
       <div className="Home">
-        <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
+        <div style={{ padding: "20px 40px" }} className="container1 container rounded bg-white">
           <h2>Dashboard</h2>
           <hr style={{ border: "1px solid gray" }} />
           <div style={{ width: "100%" }} className="AddStudent-container">

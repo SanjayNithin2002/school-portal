@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import SideNavBar from '../../components/SideNavBar/SideNavBar'
 import Table from "react-bootstrap/Table";
 import { getMarksByStudentID } from '../../actions/marks';
 import { getClass } from '../../actions/class';
 import Accordion from 'react-bootstrap/Accordion';
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 const MarksStudent = () => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toaster = useToaster();
   const dispatch = useDispatch();
   const [subject, setSubject] = useState("");
   const [assessment, setAssessment] = useState("");
@@ -17,7 +21,7 @@ const MarksStudent = () => {
   const [subjectID, setSubjectID] = useState("");
   useEffect(() => {
     dispatch(getMarksByStudentID({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }));
-    dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+    dispatch(getClass("/Marks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
   }, [dispatch])
 
   const studentMarks = useSelector((state) => state.marksReducer)

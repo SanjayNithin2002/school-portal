@@ -3,17 +3,20 @@ import { Steps, ButtonGroup, Button, Uploader } from 'rsuite';
 import Table from 'react-bootstrap/Table'
 import "./Marks.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { getMarks, postMarks, postManyFile, delMarks, postMany, getMarksCSV } from '../../actions/marks';
 import { getAnswers, getAssessments } from '../../actions/assessments';
 import { requestClassStudents } from '../../actions/students';
 import { getClass } from "../../actions/class";
 import { getStudentExam } from "../../actions/exam";
 import { getMarksByAssessmentID, getMarksByExamID } from "../../actions/marks";
+import { Notification, useToaster } from 'rsuite';
+import { useNavigate, useLocation } from "react-router-dom"
 
 const UploadMarks = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const [standard, setStandard] = useState("");
     const [section, setSection] = useState("");
     const [exam, setExam] = useState("");
@@ -29,13 +32,13 @@ const UploadMarks = () => {
         if (standard && section)
             dispatch(getMarksCSV({ standard: standard, section: section }));
         if (classID)
-            dispatch(requestClassStudents(classID));
+            dispatch(requestClassStudents("/UploadMarks",navigate,classID));
     }, [dispatch, classID])
 
     useEffect(() => {
         dispatch(getClass({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getAssessments({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
-        dispatch(getStudentExam({ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getAssessments("/UploadMarks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
+        dispatch(getStudentExam("/UploadMarks",navigate,{ type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
     }, [dispatch])
 
     let classes = useSelector((state) => state.allClassReducer) // get classes

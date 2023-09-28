@@ -3,21 +3,48 @@ import Table from 'react-bootstrap/Table'
 import "./Exam.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentExam } from '../../actions/exam'
+import { useLocation, useNavigate } from "react-router-dom";
+import {Notification,useToaster} from 'rsuite';
 
 
-function Student() {
+function Student({status,onLoading}) {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toaster = useToaster();
     const dispatch = useDispatch();
     const [examList,setExamList] = useState(null);
+    const [fetchStatus,setFetchStatus] = useState(true);
+
     useEffect(()=>{
-        dispatch(getStudentExam({type:localStorage.getItem('type'),id:localStorage.getItem('id')}))
-    },[dispatch])
+        if(fetchStatus){
+        onLoading(true);
+        dispatch(getStudentExam('/Exam',navigate,{type:localStorage.getItem('type'),id:localStorage.getItem('id')}))
+        }
+    },[dispatch,onLoading,fetchStatus,navigate])
 
     const exam  = useSelector((state) => state.examReducer);
     console.log(exam)
-
-    if(exam && !examList){
-        setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName.name+"-"+obj.examName.sequence))));
-    }
+    useEffect(()=>{
+        if(exam){
+            setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName.name+"-"+obj.examName.sequence))));
+            onLoading(false);
+        }
+    },[onLoading,exam])
+    
+    useEffect(()=>{
+        if(location.state){
+            onLoading(false);
+            setFetchStatus(false)
+            const message = (
+                <Notification type="error" header="error" closable>
+                  Error Code: {location.state.status},<br/>{location.state.message}
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+            navigate('/Exam',{state:null});
+        }
+      },[location.state,navigate,toaster,onLoading])
 
     const handleDateFormat = (date1) => {
         const date = new Date(date1);
@@ -62,14 +89,15 @@ function Student() {
 
     }
     const compareTime = (a, b) => {
+        console.log(a.startTime);
         const date1 = new Date();
-        date1.setHours(parseInt(a.StartTime.split(":")[0]));
-        date1.setMinutes(parseInt(a.StartTime.split(":")[1]));
+        date1.setHours(parseInt(a.startTime.split(":")[0]));
+        date1.setMinutes(parseInt(a.startTime.split(":")[1]));
         date1.setSeconds(0);
         date1.setMilliseconds(0);
         const date2 = new Date();
-        date2.setHours(parseInt(b.StartTime.split(":")[0]));
-        date2.setMinutes(parseInt(b.StartTime.split(":")[1]));
+        date2.setHours(parseInt(b.startTime.split(":")[0]));
+        date2.setMinutes(parseInt(b.startTime.split(":")[1]));
         date2.setSeconds(0);
         date2.setMilliseconds(0);
         return date1.getTime() - date2.getTime();
