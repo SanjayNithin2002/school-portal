@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Notification, useToaster } from 'rsuite';
 import { deleteRecords, getRecords, postRecords } from '../../actions/records';
-import { viewBonafide } from '../../actions/bonafide';
+import { viewFile } from '../../actions/bonafide';
 const Records = ({ status, onLoading }) => {
 
     const [title, setTitle] = useState(null);
@@ -107,7 +107,7 @@ const Records = ({ status, onLoading }) => {
     }
     
     const handleFile = (request) => {
-        dispatch(viewBonafide(request));
+        dispatch(viewFile(request));
     }
 
     const handleDelete = (deleteID) => {

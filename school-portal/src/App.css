@@ -182,3 +182,8 @@ input[type="date"]:focus,
 select:focus{
   outline:none;
 }
+
+.modal-dialog .modal-content .modal-body  .rs-picker-toggle-value,
+#root .Main .Home .rs-picker-toggle-value{
+  color:black;
+}

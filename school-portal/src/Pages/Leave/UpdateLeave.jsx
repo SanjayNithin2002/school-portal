@@ -96,8 +96,6 @@ function UpdateLeave({ status, onLoading }) {
         else
             return true
     }
-
-
     console.log(filter)
 
     return (

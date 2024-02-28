@@ -5,8 +5,8 @@ import "./Exam.css"
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClass, getClass } from "../../actions/class"
-import { getExam } from '../../actions/exam'
-import { DatePicker, Input, Notification, SelectPicker, useToaster } from 'rsuite';
+import { deleteExamDetails, getExam, updateExamDetails } from '../../actions/exam'
+import { DatePicker, Input, Notification, SelectPicker, useToaster, Dropdown, Checkbox } from 'rsuite';
 import { useNavigate, useLocation } from "react-router-dom"
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +20,9 @@ function Admin({ status, onLoading }) {
     const location = useLocation();
     const toaster = useToaster();
     const dispatch = useDispatch();
+    const [filter, setFilter] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
+    const [filterItems, setFilterItems] = useState([]);
     const [examID, setExamID] = useState(null);
     const [request, setRequest] = useState([]);
     const [standard, setStandard] = useState("");
@@ -71,9 +73,11 @@ function Admin({ status, onLoading }) {
 
     useEffect(() => {
         if (exam) {
-            onLoading(false);
             console.log(Array.from(new Set(exam.docs.map(obj => obj.examName.name + "-" + obj.examName.sequence))))
             setExamList(Array.from(new Set(exam.docs.map(obj => obj.examName.name + "-" + obj.examName.sequence))));
+            let temp = Array.from(new Set(exam.docs.map((obj) => obj.examName.name))).map((l) => ({ label: l, value: l }))
+            setFilterItems(temp);
+            onLoading(false);
         }
     }, [exam])
 
@@ -81,6 +85,7 @@ function Admin({ status, onLoading }) {
         if (location.state && fetchStatus) {
             if (location.state.status === 200) {
                 onLoading(false);
+                handleClose();
                 const message = (
                     <Notification type="success" header="Success" closable>
                         {location.state.message}
@@ -128,6 +133,33 @@ function Admin({ status, onLoading }) {
         return formattedDate
     }
 
+    const handleSelect = (itemValue) => {
+        console.log(itemValue)
+        if (itemValue === "Clear") {
+            setFilter([])
+        }
+        else {
+            if (filter.includes(itemValue))
+                setFilter(filter.filter((value) => value !== itemValue));
+            else
+                setFilter([...filter, itemValue]);
+        }
+    };
+
+    const handleFilter = (item) => {
+        if (filter.length > 0) {
+            let result = false;
+            filter.map((fil) => {
+                if (item.includes(fil)) {
+                    result = true;
+                }
+            })
+            return result;
+        }
+        else
+            return true
+    }
+
     const duration = (start, end) => {
         const sdate = new Date();
         const edate = new Date();
@@ -136,20 +168,20 @@ function Admin({ status, onLoading }) {
         return (edate.getTime() - sdate.getTime()) / (1000 * 60)
 
     }
-    
+
     const getDates = (day1) => {
-        if(day1===null)
+        if (day1 === null)
             return null;
         var desiredDate = new Date(day1);
         let date = desiredDate.getDate() < 10 ? "0" + desiredDate.getDate() : desiredDate.getDate();
         let month = desiredDate.getMonth() < 10 ? "0" + (desiredDate.getMonth() + 1) : (desiredDate.getMonth() + 1);
-        return desiredDate.getFullYear() + "-" + month + "-" + date ;
+        return desiredDate.getFullYear() + "-" + month + "-" + date;
     }
 
-    const getEndTime = (startTime,duration) => {
+    const getEndTime = (startTime, duration) => {
         let date1 = new Date();
-        console.log(startTime.split(":")[0],startTime.split(":")[1]);
-        date1.setHours(parseInt(startTime.split(":")[0]),parseInt(startTime.split(":")[1]),0,0);
+        console.log(startTime.split(":")[0], startTime.split(":")[1]);
+        date1.setHours(parseInt(startTime.split(":")[0]), parseInt(startTime.split(":")[1]), 0, 0);
         console.log(date1)
         date1.setTime(date1.getTime() + parseInt(duration) * 1000 * 60);
         console.log(date1)
@@ -192,6 +224,8 @@ function Admin({ status, onLoading }) {
                 endTime: item.endTime,
                 subject: item.class.subject,
                 date: getDates(item.date),
+                maxMarks: item.maxMarks,
+                weightageMarks: item.weightageMarks,
             })
             return true;
         })
@@ -208,63 +242,95 @@ function Admin({ status, onLoading }) {
     const handleUpdate = () => {
         console.log(request);
         let error = "";
-        for(let i = 0;i<request.length;i++){
-            if(Object.values(request[i]).includes(null)){
-                alert("error");
-                error="error";
+        for (let i = 0; i < request.length; i++) {
+            if (Object.values(request[i]).includes(null)) {
+                const message = (
+                    <Notification type="warning" header="warning" closable>
+                        Kindly fill all the details.
+                    </Notification>
+                );
+                toaster.push(message, { placement: 'topCenter' })
+                error = "error";
                 break;
             }
         }
         console.log(error);
-        if(error===""){
+        if (error === "") {
             let req1 = [];
-            exam.docs.filter((item) => item.examName.name + "-" + item.examName.sequence === examID && item.class.standard===parseInt(standard) && item.class.subject !== "Class Teacher").map((item, index) => {
-                request.filter((req)=> item.class.subject===req.subject).map((req)=>{
-                    let req2 = {_id:item._id};
-                    if(req.duration!==duration(item.startTime,item.endTime)){
-                        req2["endTime"]=getEndTime(req.startTime,req.duration);
+            exam.docs.filter((item) => item.examName.name + "-" + item.examName.sequence === examID && item.class.standard === parseInt(standard) && item.class.subject !== "Class Teacher").map((item, index) => {
+                request.filter((req) => item.class.subject === req.subject).map((req) => {
+                    let req2 = { _id: item._id };
+                    if(req.maxMarks !== item.maxMarks){
+                        req2["maxMarks"] = req.maxMarks;
                     }
-                    if(req.startTime!==item.startTime){
-                        req2["startTime"]=req.startTime
-                        req2["endTime"]=getEndTime(req.startTime,req.duration);
+                    if(req.weightageMarks !== item.weightageMarks){
+                        req2["weightageMarks"] = req.weightageMarks;
                     }
-                    if(req.date!==getDates(item.date)){
-                        req2["date"]=req.date;
+                    if (req.duration !== duration(item.startTime, item.endTime)) {
+                        req2["endTime"] = getEndTime(req.startTime, req.duration);
                     }
-                    if(Object.keys(req2).length>1){
+                    if (req.startTime !== item.startTime) {
+                        req2["startTime"] = req.startTime
+                        req2["endTime"] = getEndTime(req.startTime, req.duration);
+                    }
+                    if (req.date !== getDates(item.date)) {
+                        req2["date"] = req.date;
+                    }
+                    if (Object.keys(req2).length > 1) {
                         req1.push(req2);
                     }
                     return true;
                 })
                 return true;
             })
-            if(req1.length>0){
-                //pass the update
+            if (req1.length > 0) {
+                onLoading(true);
+                dispatch(updateExamDetails("/Exam",navigate,req1,{ standard }));
                 console.log(req1);
             }
         }
     }
 
     const handleDelete = () => {
-        let req1 = [];
-        exam.docs.filter((item) => item.examName.name + "-" + item.examName.sequence === examID && item.class.standard===parseInt(standard) && item.class.subject !== "Class Teacher").map((item, index) => {
-            req1.push(item._id);
-        })
-        console.log(req1);
+        if(window.confirm("Do you want to delete this exam schedule")){
+            let req1 = [];
+            exam.docs.filter((item) => item.examName.name + "-" + item.examName.sequence === examID && item.class.standard === parseInt(standard) && item.class.subject !== "Class Teacher").map((item, index) => {
+                req1.push(item._id);
+            })
+            onLoading(true);
+            dispatch(deleteExamDetails("/Exam",navigate,req1,{ standard }))
+        }        
     }
 
     return (
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
-                    <div className='row justify-content-between align-items-start'>
-                        <h2 className='col-xl-10 col-lg-8 col-md-8 col-sm-9'>Examination Schedule</h2>
-                        {
-                            localStorage.getItem("type") === "admin" ?
-                                <Link style={{ textDecoration: "none" }} to="/AddSchedule" className='btn btn-primary col-xl-2 col-lg-3 col-md-2 col-sm-3'><FontAwesomeIcon icon={solid.faPlus} /> Add Schedule</Link>
-                                :
-                                <></>
-                        }
+                    <div className='row justify-content-between align-items-center'>
+                        <h2 className='col-xl-7 col-lg-6 col-md-5 col-sm-5'>Examination Schedule</h2>
+
+                        <div className="col-xl-4 col-lg-6 col-md-7 col-sm-7 row" style={{textAlign:"right"}}>
+                            <div className='col-sm-4'>
+                                <Dropdown className="custome-filter" placement="bottom-end" title="Filter" multiple onSelect={handleSelect}>
+                                    {filterItems.map((item) => (
+                                        <Dropdown.Item eventKey={item.value}>
+                                            <Checkbox checked={filter.includes(item.value)}>
+                                                {item.label}
+                                            </Checkbox>
+                                        </Dropdown.Item>
+                                    ))}
+                                    <Dropdown.Item style={{ textAlign: "center" }} eventKey={"Clear"}> <FontAwesomeIcon icon={solid.faTimes} />&emsp;Clear</Dropdown.Item>
+                                </Dropdown>
+                            </div>
+                            {
+                                localStorage.getItem("type") === "admin" ?
+                                    <div className='col-sm-8'>
+                                        <Link style={{ textDecoration: "none" }} to="/AddSchedule" className='btn btn-primary'><FontAwesomeIcon icon={solid.faPlus} /> Add Schedule</Link>
+                                    </div>
+                                    :
+                                    <></>
+                            }
+                        </div>
                     </div>
                     <hr style={{ border: "1px solid gray" }} />
                     <div className="row studentlist-container">
@@ -290,18 +356,20 @@ function Admin({ status, onLoading }) {
                     <br />
                     <br />
                     <div className='table-responsive'>
-                        <Table className='StudentList-content-table'>
+                        <Table className='AdminBonafide-content-table'>
                             <tr>
                                 <th>S.No.</th>
                                 <th>Subject Name</th>
                                 <th>Exam Date</th>
                                 <th>Exam Time</th>
                                 <th>Duration</th>
+                                <th>Max Marks</th>
+                                <th>Weightage Marks</th>
                             </tr>
-                            {examList && standard ? examList.map((examName) => (
+                            {examList && standard ? examList.filter((examName) => handleFilter(examName)).map((examName) => (
                                 <>
                                     <tr>
-                                        <td style={{ backgroundColor: "#add0ed", textAlign: "center" }} colSpan={5} align='center'>
+                                        <td style={{ backgroundColor: "#add0ed", textAlign: "center" }} colSpan={7} align='center'>
                                             {examName}&emsp;
                                             {localStorage.getItem("type") === "admin" ?
                                                 <span onClick={() => handleEdit(examName)}><FontAwesomeIcon style={{ padding: "0px", cursor: "pointer" }} icon={solid.faPencil} /></span>
@@ -318,6 +386,8 @@ function Admin({ status, onLoading }) {
                                                 <td>{handleDateFormat(item.date)}</td>
                                                 <td>{handleTimeFormat(item.startTime)} to {handleTimeFormat(item.endTime)}</td>
                                                 <td>{duration(item.startTime, item.endTime)} min</td>
+                                                <td>{item.maxMarks}</td>
+                                                <td>{item.weightageMarks}</td>
 
                                             </tr>
                                         ))
@@ -353,25 +423,35 @@ function Admin({ status, onLoading }) {
                                     <td>:</td>
                                     <td><SelectPicker value={request[0].duration} onChange={(value) => handleInputChange(value, -1, "duration")} data={durationList.map((item) => ({ label: item + "min", value: item }))} /></td>
                                 </tr>
+                                <tr>
+                                    <th>Max Mark</th>
+                                    <td>:</td>
+                                    <td><Input value={request[0].maxMarks} onChange={(value) => handleInputChange(value, -1, "maxMarks")}/></td>
+                                </tr>
+                                <tr>
+                                    <th>Weightage Mark</th>
+                                    <td>:</td>
+                                    <td><Input value={request[0].weightageMarks} onChange={(value) => handleInputChange(value, -1, "weightageMarks")}/></td>
+                                </tr>
                                 {
-                                    request.map((item,index) => (
+                                    request.map((item, index) => (
                                         <tr>
-                                            <th>{item.subject}{item.date}</th>
+                                            <th>{item.subject}</th>
                                             <td>:</td>
                                             <td>
-                                                <DatePicker oneTap onChange={(value)=> handleInputChange(getDates(value),index,"date")} value={ item.date ? new Date(item.date) : null} placement='auto' />
-                                                <SelectPicker value={item.startTime} onChange={(value) => handleInputChange(value,index,"startTime")} 
+                                                <DatePicker oneTap onChange={(value) => handleInputChange(getDates(value), index, "date")} value={item.date ? new Date(item.date) : null} placement='auto' />
+                                                <SelectPicker value={item.startTime} onChange={(value) => handleInputChange(value, index, "startTime")}
                                                     data={[
                                                         {
-                                                            label:"Morning " + timetable.docs[0].startTime,
-                                                            value:timetable.docs[0].startTime,
+                                                            label: "Morning " + timetable.docs[0].startTime,
+                                                            value: timetable.docs[0].startTime,
                                                         },
                                                         {
-                                                            label:"Afternoon " + timetable.docs[0].break.filter((item) => item.title === "Lunch").map((item) => (item.endTime)),
-                                                            value:timetable.docs[0].break.filter((item) => item.title === "Lunch").map((item) => (item.endTime))[0],
+                                                            label: "Afternoon " + timetable.docs[0].break.filter((item) => item.title === "Lunch").map((item) => (item.endTime)),
+                                                            value: timetable.docs[0].break.filter((item) => item.title === "Lunch").map((item) => (item.endTime))[0],
                                                         }
                                                     ]}
-                                                    searchable={false} 
+                                                    searchable={false}
                                                 />
                                             </td>
                                         </tr>

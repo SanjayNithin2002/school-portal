@@ -4,10 +4,13 @@ import "./Bonafide.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Notification, useToaster } from 'rsuite';
-import { deleteBonafide, postBonafideFile, rejectBonafide, viewBonafide } from '../../actions/bonafide'
+import { deleteBonafide, postBonafideFile, rejectBonafide, viewFile } from '../../actions/bonafide'
+import ViewStudent from '../Profile/ViewStudent'
 const ViewBonafide = ({status,onLoading}) => {
 
     const [message, setMessage] = useState(null);
+    const [display,setDisplay] = useState(true);
+    const [studentID,setStudentID] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -74,7 +77,7 @@ const ViewBonafide = ({status,onLoading}) => {
     };
 
     const handleFile = (request) => {
-        dispatch(viewBonafide(request));
+        dispatch(viewFile(request));
     }
 
     const handleReject = () => {
@@ -98,6 +101,7 @@ const ViewBonafide = ({status,onLoading}) => {
     }
 
     return (
+        display ?
         <div className='Main'>
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
@@ -115,7 +119,7 @@ const ViewBonafide = ({status,onLoading}) => {
                                             <tbody>
                                                 <tr>
                                                     <td>Student Profile</td>
-                                                    <td><button className='btn btn-primary'>View</button></td>
+                                                    <td><button className='btn btn-primary' onClick={()=>{setStudentID(item._id);setDisplay(false);}}>View</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Bonafide Service</td>
@@ -231,6 +235,9 @@ const ViewBonafide = ({status,onLoading}) => {
                 </div>
             </div>
         </div>
+        :
+        <ViewStudent id={studentID} onLoading={(status1)=>onLoading(status1)} status={status} close={()=>setDisplay(true)} />
+
     )
 }
 

@@ -5,7 +5,7 @@ import "./Assessments.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteAnswers, postAnswers } from '../../actions/assessments'
 import { requestTeacher } from '../../actions/teachers';
-import { viewBonafide } from '../../actions/bonafide';
+import { viewFile } from '../../actions/bonafide';
 import Table from "react-bootstrap/Table"
 import { Notification, useToaster } from 'rsuite';
 import { useNavigate, useLocation } from "react-router-dom"
@@ -97,7 +97,7 @@ const Student = (props) => {
     }
 
     const handleFile = (request) => {
-        dispatch(viewBonafide(request));
+        dispatch(viewFile(request));
     }
 
     return (

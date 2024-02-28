@@ -97,7 +97,6 @@ function Teacher({status,onLoading}) {
                                                 <></>
                                         }
                                         <tr>
-                                            <td style={{ width: "30%" }} rowSpan={4}><img src="" alt="No img" width="100px" /></td>
                                             <th style={{ width: "30%" }}>Name</th>
                                             <td style={{ width: "40%" }}>{item.name}</td>
                                         </tr>

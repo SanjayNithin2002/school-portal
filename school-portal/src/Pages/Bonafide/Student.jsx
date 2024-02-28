@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion'
 
 import "./Bonafide.css"
-import { requestBonafide, viewBonafide } from '../../actions/bonafide';
+import { deleteBonafide, requestBonafide, viewFile } from '../../actions/bonafide';
 import { setCurrentUser } from '../../actions/currentUser';
 import { StudentBonafide } from "../../actions/bonafide";
 import { DatePicker, Input, SelectPicker } from 'rsuite';
@@ -58,7 +58,7 @@ function Student({status,onLoading}) {
 
     useEffect(()=>{
         if (location.state) {
-            if (location.state.message === "success") {
+            if (location.state.status === 200) {
                 setPassport({ description: "" });
                 setBusPass({ description: "" });
                 setNCC({ description: "" });
@@ -69,7 +69,7 @@ function Student({status,onLoading}) {
                 onLoading(false);
                 const message = (
                     <Notification type="success" header="Success" closable>
-                      Your request has been sent to the Admin.
+                      {location.state.message}
                     </Notification>
                 );
                 toaster.push(message, {placement:'topCenter'})
@@ -119,7 +119,17 @@ function Student({status,onLoading}) {
             req.service = 'tc';
             req.tc = tc;
         }
+        onLoading(true);
         dispatch(requestBonafide("/Bonafide",navigate,req));
+    }
+
+    const getDates = (day1) => {
+        if (day1 === null)
+            return null;
+        var desiredDate = new Date(day1);
+        let date = desiredDate.getDate() < 10 ? "0" + desiredDate.getDate() : desiredDate.getDate();
+        let month = desiredDate.getMonth() < 10 ? "0" + (desiredDate.getMonth() + 1) : (desiredDate.getMonth() + 1);
+        return desiredDate.getFullYear() + "-" + month + "-" + date;
     }
 
     const handleDateFormat = (date) => {
@@ -143,8 +153,14 @@ function Student({status,onLoading}) {
       };
 
     const handleFile = (request) => {
-        dispatch(viewBonafide(request));
+        dispatch(viewFile(request));
     }
+
+    const handleDelete = (id) => {
+        onLoading(true);
+        dispatch(deleteBonafide("/Bonafide",navigate,id))
+    }
+
     console.log(visa);
     return (
         <div className='Main' onScroll={()=>handleScroll()}>
@@ -196,13 +212,13 @@ function Student({status,onLoading}) {
                                                         <tr>
                                                             <td>From Date{visa.fromDate}<span style={{ color: "red" }}>*</span></td>
                                                             <td>
-                                                                <input type="date" value={visa.fromDate} onChange={(e) => setVisa((prev) => ({ ...prev, fromDate: e.target.value }))} />
+                                                                <DatePicker oneTap onChange={(value) => setVisa((prev) => ({ ...prev, fromDate: getDates(value) }))} value={visa.fromDate ? new Date(visa.fromDate) : null} placement='auto' />
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>To Date<span style={{ color: "red" }}>*</span></td>
                                                             <td>
-                                                                <input type="date" value={visa.toDate} onChange={(e) => setVisa((prev) => ({ ...prev, toDate: e.target.value }))} />
+                                                                <DatePicker oneTap onChange={(value) => setVisa((prev) => ({ ...prev, toDate: getDates(value) }))} value={visa.toDate ? new Date(visa.toDate) : null} placement='auto' />
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -223,28 +239,37 @@ function Student({status,onLoading}) {
                                                     certificate === "Passport" &&
                                                     <tr>
                                                         <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                        <td><textarea value={Passport.description} onChange={(e) => setPassport((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        <td>
+                                                            <Input as="textarea" value={Passport.description} onChange={(value) => setPassport((prev) => ({ ...prev, description: value }))} rows="5" cols="60" />  
+                                                        </td>
                                                     </tr>
                                                 }
                                                 {
                                                     certificate === "BusPass" &&
                                                     <tr>
                                                         <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                        <td><textarea value={busPass.description} onChange={(e) => setBusPass((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        <td>
+                                                            <Input as="textarea" value={busPass.description} onChange={(value) => setBusPass((prev) => ({ ...prev, description: value }))} rows="5" cols="60" />  
+                                                        </td>
                                                     </tr>
                                                 }
                                                 {
                                                     certificate === "NCC Bonafide" &&
                                                     <tr>
                                                         <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                        <td><textarea value={NCC.description} onChange={(e) => setNCC((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        <td>
+                                                            <Input as="textarea" value={NCC.description} onChange={(value) => setNCC((prev) => ({ ...prev, description: value }))} rows="5" cols="60" />  
+                                                        </td>
                                                     </tr>
+                                                    
                                                 }
                                                 {
                                                     certificate === "TC" &&
                                                     <tr>
                                                         <td>Description (about certificate which you are applying..)<span style={{ color: "red" }}>*</span></td>
-                                                        <td><textarea value={tc.description} onChange={(e) => setTc((prev) => ({ ...prev, description: e.target.value }))} rows="5" cols="60" ></textarea></td>
+                                                        <td>
+                                                            <Input as="textarea" value={tc.description} onChange={(value) => setTc((prev) => ({ ...prev, description: value }))} rows="5" cols="60" />  
+                                                        </td>
                                                     </tr>
                                                 }
                                                 <tr>
@@ -274,6 +299,7 @@ function Student({status,onLoading}) {
                                                                 <th>Status</th>
                                                                 <th>Message</th>
                                                                 <th>Certificate</th>
+                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -294,6 +320,7 @@ function Student({status,onLoading}) {
                                                                                 item.requestedFile === null ? <span>no File</span> : <button type="button" className='btn btn-primary' onClick={() => handleFile(item.requestedFile)}>Download</button>
                                                                             }
                                                                         </td>
+                                                                        <td><button className='btn btn-danger' onClick={()=>handleDelete(item._id)}>Delete</button></td>
                                                                     </tr>
                                                                 ))
                                                             }

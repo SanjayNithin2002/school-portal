@@ -28,9 +28,32 @@ export const getExam = (location,navigate,examData) => async(dispatch) =>{
 
 export const getStudentExam = (location,navigate,userData) => async(dispatch) => {
     try{
-        // console.log(userData)
         const {data} = await api.getStudentExam(userData);
         dispatch({type:"FETCH_STUDENT_EXAM",payload:data})
+    }
+    catch(err){
+        console.log(err)
+        navigate(location,{state:{status:err.response.status,message:err.response.data.message ? err.response.data.message :"Kindly refresh the page.\nIf the error cause again contact your admin."}});
+    }
+}
+
+export const updateExamDetails = (location,navigate,examData,callback) => async(dispatch) => {
+    try{
+        await api.updateExamDetails(examData);
+        dispatch(getExam(location,navigate,callback))
+        navigate(location,{state:{status:200,message:"The exam details has been updated"}});
+    }
+    catch(err){
+        console.log(err)
+        navigate(location,{state:{status:err.response.status,message:err.response.data.message ? err.response.data.message :"Kindly refresh the page.\nIf the error cause again contact your admin."}});
+    }
+}
+
+export const deleteExamDetails = (location,navigate,examData,callback) => async(dispatch) => {
+    try{
+        await api.deleteExamDetails(examData);
+        dispatch(getExam(location,navigate,callback))
+        navigate(location,{state:{status:200,message:"The exam details has been deleted"}});
     }
     catch(err){
         console.log(err)

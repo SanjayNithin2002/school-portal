@@ -6,12 +6,16 @@ import "./Student.css"
 import { requestStudents } from '../../actions/students'
 import { Notification, useToaster } from 'rsuite';
 import { useNavigate, useLocation } from "react-router-dom"
+import Student from '../Profile/Student'
+import ViewStudent from '../Profile/ViewStudent'
 
 function StudentInfo({ status, onLoading }) {
 
     const navigate = useNavigate();
     const location = useLocation();
     const toaster = useToaster();
+    const [display,setDisplay] = useState(true);
+    const [studentID,setStudentID] = useState('');
     const [search, setSearch] = useState('');
     const dispatch = useDispatch();
     const [fetchStatus, setFetchStatus] = useState(true);
@@ -33,21 +37,36 @@ function StudentInfo({ status, onLoading }) {
 
     useEffect(() => {
         if (location.state && fetchStatus) {
-            navigate('/StudentInfo', { state: null });
-            onLoading(false);
-            setFetchStatus(false);
-            const message = (
-                <Notification type="error" header="error" closable>
-                    Error Code: {location.state.status},<br />{location.state.message}
-                </Notification>
-            );
-            toaster.push(message, { placement: 'topCenter' })
+            if (location.state.status === 200) {
+                onLoading(false);
+                const message = (
+                    <Notification type="success" header="Success" closable>
+                      {location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/StudentInfo',{state:null});
+            }
+            else{
+                onLoading(false);
+                setFetchStatus(false);
+                const message = (
+                    <Notification type="error" header="error" closable>
+                      Error Code: {location.state.status},<br/>{location.state.message}
+                    </Notification>
+                );
+                toaster.push(message, {placement:'topCenter'})
+                navigate('/StudentInfo',{state:null});
+            }
         }
     }, [location.state,toaster])
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
 
+    console.log(allStudents);
+
     return (
+        display ? 
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
@@ -78,7 +97,7 @@ function StudentInfo({ status, onLoading }) {
                                                         No Data
                                                     </td>
                                                 </tr> : <>{
-                                                    allStudents.docs.filter((item) => (item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase())).map((item, i) => (
+                                                    allStudents && allStudents.docs.filter((item) => (item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()).includes(search.toLowerCase())).map((item, i) => (
                                                         <tr key={item}>
                                                             <td>{i + 1}</td>
                                                             <td>{item.firstName.toLowerCase() + " " + item.lastName.toLowerCase()}</td>
@@ -88,7 +107,7 @@ function StudentInfo({ status, onLoading }) {
                                                                     standardList.filter((standard) => standard.value === item.standard).map((standard) => (<>{standard.label}</>))}
                                                             </td>
                                                             <td>{item.section}</td>
-                                                            <td><button onClick={()=>navigate(`/Student/${item._id}`,{state:{student:item}})} className='btn btn-primary'>View</button></td>
+                                                            <td><button onClick={()=>{setStudentID(item._id);setDisplay(false);}} className='btn btn-primary'>View</button></td>
                                                         </tr>
                                                     ))}
                                                 </>
@@ -101,6 +120,8 @@ function StudentInfo({ status, onLoading }) {
                 </div>
             </div>
         </div>
+        :
+        <ViewStudent id={studentID} onLoading={(status1)=>onLoading(status1)} status={status} close={()=>setDisplay(true)} />
 
     )
 }

@@ -933,3 +933,8 @@ button.rbc-input::-moz-focus-inner {
   align-items: center;
   justify-content: space-evenly;
 }
+
+.custom-calendar .rbc-toolbar-label{
+  font-weight: 700;
+  font-size: 22px;
+}

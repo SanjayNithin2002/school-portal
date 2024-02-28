@@ -82,11 +82,15 @@ function Home({status,onLoading}) {
                         <div>
                           <div className='message-operation'>
                             <div className='message-title'>{item.title}</div>&emsp;
+                            {
+                              localStorage.getItem("type")==="admin" &&
+                            
                             <div className='message-action'>
                               <span onClick={()=>handleSubmit(item._id)} >
                                 <FontAwesomeIcon icon={solid.faTrash} /> Delete
                               </span>
                             </div>
+                            }
 
                           </div>
                           <div className='message-content1'>

@@ -5,6 +5,7 @@ import { requestAdmins } from '../../actions/admins'
 import { requestTeachers } from '../../actions/teachers'
 import { Notification, useToaster } from 'rsuite';
 import { useNavigate, useLocation } from "react-router-dom"
+import ViewTeacher from '../Profile/ViewTeacher'
 
 function TeacherInfo({ status, onLoading }) {
 
@@ -13,6 +14,9 @@ function TeacherInfo({ status, onLoading }) {
     const toaster = useToaster();
     const [search, setSearch] = useState('');
     const [records, setRecords] = useState([]);
+    const [display, setDisplay] = useState(true);
+    const [userID, setUserID] = useState('');
+    const [userType, setUserType] = useState('');
     const dispatch = useDispatch();
     const [fetchStatus, setFetchStatus] = useState(true);
 
@@ -31,11 +35,15 @@ function TeacherInfo({ status, onLoading }) {
         if (allTeachers && allAdmins) {
             let temp = [];
             allTeachers.docs.map((item) => {
-                temp.push(item);
+                let item1=item;
+                item1.type="teacher";
+                temp.push(item1);
                 return true;
             });
             allAdmins.docs.map((item) => {
-                temp.push(item);
+                let item1=item;
+                item1.type="admin";
+                temp.push(item1);
                 return true;
             })
             setRecords(temp);
@@ -57,8 +65,10 @@ function TeacherInfo({ status, onLoading }) {
         }
     }, [location.state, toaster])
 
+    console.log(records);
 
     return (
+        display ?
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
@@ -94,7 +104,7 @@ function TeacherInfo({ status, onLoading }) {
                                                             <td>{item.firstName + " " + item.lastName}</td>
                                                             <td>{item.empID}</td>
                                                             <td>{item.designation}</td>
-                                                            <td><button className='btn btn-primary'>View</button></td>
+                                                            <td><button onClick={()=>{setUserID(item._id);setUserType(item.type);setDisplay(false);}} className='btn btn-primary'>View</button></td>
                                                         </tr>
                                                     ))
                                                     :
@@ -113,8 +123,9 @@ function TeacherInfo({ status, onLoading }) {
                 </div>
             </div>
         </div>
-
-    )
+        :
+        <ViewTeacher type={userType} location1="/StaffInfo" id={userID} onLoading={(status1)=>onLoading(status1)} status={status} close={()=>setDisplay(true)} />
+    );
 }
 
 export default TeacherInfo

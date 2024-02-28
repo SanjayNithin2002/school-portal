@@ -39,8 +39,6 @@ import Loading from "./Pages/Loading/Loading";
 import Records from "./Pages/Records/Records";
 import { useDispatch } from "react-redux";
 import { logout } from "./actions/logout";
-import ViewStudent from "./Pages/Profile/ViewStudent";
-import ViewTeacher from "./Pages/Profile/ViewTeacher";
 
 
 
@@ -123,8 +121,6 @@ const AllRoutes = () => {
                 <Route path='/Profile' element={<Profile status={status} onLoading={(status1) => setStatus(status1)} />} />
                 <Route path='/Spotlight' element={<Spotlight status={status} onLoading={(status1) => setStatus(status1)} />} />
                 <Route path='/Records' element={<Records status={status} onLoading={(status1) => setStatus(status1)} />} />
-                <Route path='/Student/:id' element={<ViewStudent status={status} onLoading={(status1) => setStatus(status1)} />} />
-                <Route path='/Staff/:id' element={<ViewTeacher status={status} onLoading={(status1) => setStatus(status1)} />} />
             </Routes>
         </BrowserRouter>
     )

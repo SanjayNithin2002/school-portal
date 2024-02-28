@@ -15,13 +15,14 @@ if (token) {
 
 
 /* Generals */
-export const getCurrentUser = (userData) => API.get(`/${userData.type}s/${userData.id}`)
+export const getUserDetails = (userData) => API.get(`/${userData.type}s/${userData.id}`)
 export const requestStudents = () => API.get('/students/')
 export const requestTeachers = () => API.get('/teachers');
 export const requestAdmins = () => API.get('/admins');
 export const requestClassStudents = (classID) => API.get(`/students/class/${classID}`)
 export const requestTeacher = (teacherID) => API.get(`/teachers/${teacherID}`)
 export const requestContact = (contactData) => API.post('/sendmail',contactData)
+export const updateStudentDetails = (studentData) => API.patch(`/students/${studentData.id}`,studentData.data)
 export const AddStudent = (authData) => API.post('/students/signup',authData)
 export const AddTeacher = (authData) => API.post('/teachers/signup',authData)
 export const AddAdmin = (authData) => API.post('/admins/signup',authData)
@@ -36,7 +37,7 @@ export const requestBonafide = (requestData) => API.post('/bonafides',requestDat
 export const StudentBonafide = (studentID) => API.get(`/bonafides/students/${studentID}`)
 export const getAllBonafide = () =>API.get('/bonafides/');
 export const postBonafideFile = (bonafideID,formData) => API.patch(`/bonafides/${bonafideID}`,formData)
-export const viewBonafide = (request) => API1.get(request) 
+export const viewFile = (request) => API1.get(request) 
 export const rejectBonafide = (bonafideID,functionData) => API.patch(`/bonafides/${bonafideID}`,functionData) 
 export const deleteBonafide = (bonafideID) => API.delete(`/bonafides/${bonafideID}`)
 
@@ -78,6 +79,8 @@ export const deleteClassMessage1 = (messageID) => API.delete(`/personalmessages/
 export const createExam = (examData) => API.post('/exams/postmany',examData)
 export const getExam = (examData) => API.get(`/exams/standard/${examData.standard}`);
 export const getStudentExam = (userData) => API.get(`/exams/${userData.type}s/${userData.id}`)
+export const updateExamDetails = (examData) => API.patch(`/exams/patchmany`,examData)
+export const deleteExamDetails = (examData) => API.patch(`/exams/deletemany`,examData)
 
 /* Marks */
 export const getMarks = (userData) => API.get(`/assessments/exams/${userData.id}`);
@@ -136,4 +139,4 @@ export const postFees = (FunctionData) => API.post(`/fees`,FunctionData)
 export const deleteFees = (deleteID) => API.delete(`/fees/${deleteID}`)
 export const updateFees = (FunctionData) => API.patch(`/fees/${FunctionData.id}`,FunctionData.data)
 export const getPaymentRequest = (userData) =>API.get(`/payments/${userData.type}s/${userData.id}`);
-
+export const getPaymentRequests = (standard) =>API.get(`/payments/standard/${standard}`);

@@ -71,8 +71,17 @@ const Spotlight = ({status,onLoading}) => {
     },[location.state,toaster,navigate])
 
     const handleSubmit = () =>{
+        if(!title || !users || !content){
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                    Kindly fill all the details.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
+        }else{
         onLoading(true);
         dispatch(postSpotlight('/Spotlight',navigate,{title,users,description:content}))
+        }
     }
     var toolbarOptions = [[{ 'list': 'bullet' }, 'bold', 'italic', 'underline', { 'list': 'ordered' }, 'link']];
     const module = {

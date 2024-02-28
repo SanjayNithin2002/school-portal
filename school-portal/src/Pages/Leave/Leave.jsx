@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Popover, Whisper, Button, Header } from 'rsuite';
+import { Popover, Whisper, Button, Header, SelectPicker, Input, DatePicker } from 'rsuite';
 import "./Leave.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as solid from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +21,7 @@ function Leave({status,onLoading}) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [fetchStatus,setFetchStatus] = useState(true);
+    const leaveData = [{label:"CL",value:"casualLeave"},{label:"EL",value:"earnedLeave"},{label:"Medical",value:"sickLeave"}]
 
     useEffect(() => {
         if(fetchStatus){
@@ -140,6 +141,15 @@ function Leave({status,onLoading}) {
         return formattedDate
     }
 
+    const getDates = (day1) => {
+        if (day1 === null)
+            return null;
+        var desiredDate = new Date(day1);
+        let date = desiredDate.getDate() < 10 ? "0" + desiredDate.getDate() : desiredDate.getDate();
+        let month = desiredDate.getMonth() < 10 ? "0" + (desiredDate.getMonth() + 1) : (desiredDate.getMonth() + 1);
+        return desiredDate.getFullYear() + "-" + month + "-" + date;
+    }
+
     const DefaultPopover = React.forwardRef(({ ...props }, ref) => {
         return (
             currentUser &&
@@ -165,6 +175,13 @@ function Leave({status,onLoading}) {
             </Popover>
         );
     });
+
+    const minDate = (date) =>{
+        let min_date = new Date(startDate);
+        min_date.setHours(0,0,0,0);
+        return date <= min_date;
+    }
+
     return (
         <div className="Main">
             <div className="Home">
@@ -180,18 +197,13 @@ function Leave({status,onLoading}) {
                             <h3>Reason</h3>
                         </div>
                         <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
-                            <input value={reason} onChange={(e) => setReason(e.target.value)} type="text" name="reason" />
+                            <Input value={reason} onChange={(value) => setReason(value)} type="text" name="reason" />
                         </div>
                         <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>Type</h3>
                         </div>
                         <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
-                            <select value={type} onChange={(e) => setType(e.target.value)}>
-                                <option value='' disabled>Select Type</option>
-                                <option value="casualLeave">CL</option>
-                                <option value="earnedLeave">EL</option>
-                                <option value="sickLeave">Medical Leave</option>
-                            </select>
+                            <SelectPicker searchable={false} value={type} data={leaveData} onChange={(value) => setType(value)} placeholder="Select the type"/>
                             &emsp;
                             <Whisper placement="auto" controlId="control-id-hover-enterable" trigger="hover" speaker={<DefaultPopover />} enterable>
                                 <Button appearance="subtle"><FontAwesomeIcon style={{ fontSize: "20px", cursor: "pointer" }} icon={solid.faExclamationCircle} /></Button>
@@ -205,13 +217,13 @@ function Leave({status,onLoading}) {
                             <h3>Start Date</h3>
                         </div>
                         <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
-                            <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" name="start" />
+                            <DatePicker oneTap onChange={(value) => setStartDate(getDates(value))} value={startDate ? new Date(startDate) : null} placement='auto'  />
                         </div>
                         <div className="col-lg-2 col-md-5 col-sm-6 col-xs-6">
                             <h3>End Date</h3>
                         </div>
                         <div className="col-lg-4 col-md-7 col-sm-6 col-xs-6">
-                            <input value={endDate} onChange={(e) => setEndDate(e.target.value)} type="date" name="end" />
+                            <DatePicker shouldDisableDate={minDate} oneTap onChange={(value) => setEndDate(getDates(value))} value={endDate ? new Date(endDate) : null} placement='auto'  />
                         </div>
                     </div>
                     <br />

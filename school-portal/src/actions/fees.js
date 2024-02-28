@@ -62,3 +62,15 @@ export const getPaymentRequest = (location,navigate,userData) => async (dispatch
         navigate(location,{state:{status:err.response.status,message:err.response.data.message ? err.response.data.message :"Kindly refresh the page.\nIf the error cause again contact your admin."}});
     }
 }
+
+export const getPaymentRequests = (location,navigate,standard) => async (dispatch) => {
+    try{
+        const {data} = await api.getPaymentRequests(standard);
+        dispatch({type:"FETCH_STUDENT_PAYMENT",payload:data})
+        console.log(data)
+    }
+    catch(err){
+        console.log(err)
+        navigate(location,{state:{status:err.response.status,message:err.response.data.message ? err.response.data.message :"Kindly refresh the page.\nIf the error cause again contact your admin."}});
+    }
+}

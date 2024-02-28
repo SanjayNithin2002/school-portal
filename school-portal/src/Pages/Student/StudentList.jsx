@@ -6,6 +6,7 @@ import "./Student.css"
 import { requestClassStudents } from '../../actions/students'
 import { getClass } from '../../actions/class'
 import { Notification, useToaster } from 'rsuite';
+import ViewStudent from '../Profile/ViewStudent'
 
 function StudentList({ status, onLoading }) {
     const [standard, setStandard] = useState("");
@@ -15,6 +16,8 @@ function StudentList({ status, onLoading }) {
     const navigate = useNavigate();
     const location = useLocation();
     const toaster = useToaster();
+    const [display,setDisplay] = useState(true);
+    const [studentID,setStudentID] = useState('');
     const [fetchStatus, setFetchStatus] = useState(true);
 
     const class1 = useSelector((state) => state.allClassReducer)
@@ -80,6 +83,7 @@ function StudentList({ status, onLoading }) {
     }
 
     return (
+        display ? 
         <div className="Main">
             <div className="Home">
                 <div style={{ padding: "20px 40px" }} className="container1 container rounded bg-white">
@@ -150,7 +154,7 @@ function StudentList({ status, onLoading }) {
                                                 <td>{item.lastName}</td>
                                                 <td>{item.gender}</td>
                                                 <td>
-                                                    <button onClick={()=>navigate(`/Student/${item._id}`,{state:{student:item}})} className="btn btn-primary">View</button>
+                                                    <button onClick={()=>{setStudentID(item._id);setDisplay(false);}} className="btn btn-primary">View</button>
                                                 </td>
                                             </tr>
                                         ))
@@ -168,6 +172,8 @@ function StudentList({ status, onLoading }) {
                 </div>
             </div>
         </div>
+        :
+        <ViewStudent id={studentID} onLoading={(status1)=>onLoading(status1)} status={status} close={()=>setDisplay(true)} />
     );
 }
 

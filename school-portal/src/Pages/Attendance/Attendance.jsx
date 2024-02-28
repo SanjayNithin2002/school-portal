@@ -42,6 +42,7 @@ function Attendance({ status, onLoading }) {
 
     const event = useSelector(state => state.attendanceReducer)
     console.log(event)
+    console.log(events);
 
     useEffect(() => {
         if (event) {
@@ -51,9 +52,16 @@ function Attendance({ status, onLoading }) {
             }
             if (event.docs && event.docs.length > 0) {
                 event.docs.map((item) => {
+                    if(localStorage.getItem('type')==="student")
                     result.push({
                         title1: item.count !== 0 ? "Present" : "Absent",
                         count: item.count,
+                        start: item.date,
+                        end: item.date
+                    })
+                    else
+                    result.push({
+                        title1: item.status,
                         start: item.date,
                         end: item.date
                     })
@@ -83,7 +91,7 @@ function Attendance({ status, onLoading }) {
         return (
             <>
                 {
-                    event.count === 0 &&
+                    (( event.count === 0 && localStorage.getItem("type")==="student") || ( event.title1==="Absent" && localStorage.getItem("type")!=="student" )) &&
                     <div className="attendance-status-view" style={{ backgroundColor: "red" }}>{event.title1}</div>
                 }
                 {
@@ -91,7 +99,7 @@ function Attendance({ status, onLoading }) {
                     <div className="attendance-status-view" style={{ backgroundColor: "orange" }}>{event.title1}</div>
                 }
                 {
-                    event.count === 2 &&
+                    (( event.count === 2 && localStorage.getItem("type")==="student") || ( event.title1==="Present" && localStorage.getItem("type")!=="student" )) &&
                     <div className="attendance-status-view" style={{ backgroundColor: "green" }}>{event.title1}</div>
                 }
             </>
@@ -104,19 +112,19 @@ function Attendance({ status, onLoading }) {
                 <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                     <h2>Attendance</h2>
                     <hr style={{ border: "1px solid gray" }} />
-                    {/* <div className="">
-                        Total No of Working Days : {events ? events.length : 0}
-                        &emsp;
-                        No of Present Days : {events !== null ? events.filter((item) => item.count === 2).length : 0}
-                        &emsp;
-                        No of Half Day Present : {events !== null ? events.filter((item) => item.count === 1).length : 0}
-                        &emsp;
-                        No of Absent Days : {events !== null ? events.filter((item) => item.count === 0).length : 0}
-                    </div> */}
                     <div className="Attendance-Container">
                         {
                             events &&
-                            <Calendar components={{ event: CustomEvent }} localizer={localizer} events={events} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
+                            <Calendar 
+                                className="custom-calendar"
+                                components={{ event: CustomEvent }} 
+                                localizer={localizer} 
+                                events={events} 
+                                startAccessor="start" 
+                                endAccessor="end" 
+                                style={{ height: 500, margin: "50px" }} 
+                                views={["month"]}
+                            />
                         }
                     </div>
                 </div>

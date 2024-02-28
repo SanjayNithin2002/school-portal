@@ -117,9 +117,12 @@ function Assessments({ status, onLoading }) {
                     <div style={{ padding: "20px 40px" }} class="container1 container rounded bg-white">
                         <div className="btnmove" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <h2>Assessments</h2>
-                            <div className="btn-group">
-                                <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
-                            </div>
+                            {
+                                localStorage.getItem("type")==="teacher" &&
+                                <div className="btn-group">
+                                    <Link to='/PostAssessment' className='btn btn-primary'><FontAwesomeIcon icon={Solid.faPlus} />Add</Link>
+                                </div>
+                            }
                         </div>
                         <hr style={{ border: "1px solid gray" }} />
                         <div style={{ width: "100%" }} className="AddStudent-container">

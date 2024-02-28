@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as Solid from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { viewBonafide } from '../../actions/bonafide';
+import { viewFile } from '../../actions/bonafide';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAssessment, getAssessmentAnswers, updateAssessment, updateQuestionPaper } from '../../actions/assessments';
 import { Accordion, Table, Button, Modal } from 'react-bootstrap';
@@ -229,7 +229,7 @@ const Teacher = (props) => {
 
     const handleFile = (request) => {
         console.log(request);
-        dispatch(viewBonafide(request));
+        dispatch(viewFile(request));
     }
 
     const handleInputChange = (value, index, field) => {

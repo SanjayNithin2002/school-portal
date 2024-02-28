@@ -67,7 +67,6 @@
   .AdminBonafide-content-table tr th:nth-child(7n),
   .AdminBonafide-content-table tr td:nth-child(7n) {
     border-right: 1px solid #cadeef;
-    text-align: right;
   }
   .Bonafide-content-table tr th:first-child,
   .Bonafide-content-table tr td:first-child,
