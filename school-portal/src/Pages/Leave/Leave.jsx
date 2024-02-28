@@ -42,8 +42,10 @@ function Leave({status,onLoading}) {
         }
     },[currentUser,leave])
 
+    console.log(location.state);
     useEffect(()=>{
-        if (location.state && fetchStatus) {
+        if (location.state) {
+            console.log(location.state);
             if (location.state.status === 200) {
                 setReason("");
                 setType("")
@@ -72,9 +74,24 @@ function Leave({status,onLoading}) {
         }
     },[location.state,toaster,navigate])
 
+    const checkDate = (ExistStartDate,ExistEndDate,NewStartDate,NewEndDate) => {
+        let es = new Date(ExistStartDate);
+        let ed = new Date(ExistEndDate);
+        let ns = new Date(NewStartDate);
+        let nd = new Date(NewEndDate);
+        if(es.getTime()-ns.getTime()<0 && es.getTime()-nd.getTime()<0 && ed.getTime()-ns.getTime()<0 && ed.getTime()-nd.getTime()<0){
+            return false;
+        } 
+        else if(es.getTime()-ns.getTime()>0 && es.getTime()-nd.getTime()>0 && ed.getTime()-ns.getTime()>0 && ed.getTime()-nd.getTime()>0){
+            return false;
+        }
+        else  
+            return true;
+    }
+
     const handleSubmit = () => {
-        if(startDate && endDate && type && reason)
-        {
+        if(startDate && endDate && type && reason && leave.docs.filter((lev)=>checkDate(lev.startDate,lev.endDate,startDate,endDate)).length==0)
+        {         
             if (localStorage.getItem('type') === "teacher") {
                 onLoading(true);
                 console.log({
@@ -113,6 +130,14 @@ function Leave({status,onLoading}) {
                     reason
                 }))
             }
+        }
+        else if(leave.docs.filter((lev)=>checkDate(lev.startDate,lev.endDate,startDate,endDate)).length!=0){
+            const message = (
+                <Notification type="warning" header="Warning" closable>
+                    Already Leave Request is Exist in the Same Date.
+                </Notification>
+            );
+            toaster.push(message, {placement:'topCenter'})
         }
         else{
             const message = (

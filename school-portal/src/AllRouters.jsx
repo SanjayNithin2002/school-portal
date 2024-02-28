@@ -56,7 +56,7 @@ const AllRoutes = () => {
     }
 
     const updateExpireTime = () => {
-        const expireTime = Date.now() + 9000000;
+        const expireTime = Date.now() + 900000;
         localStorage.setItem("expireTime", expireTime);
     }
 
@@ -81,7 +81,7 @@ const AllRoutes = () => {
         return () => clearInterval(interval);
     }, [])
 
-    return (
+    return (    
         <BrowserRouter>
             <Navbar />
             <SideNavBar />

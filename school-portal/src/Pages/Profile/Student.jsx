@@ -70,7 +70,7 @@ function Student({ status, onLoading }) {
                     <div className='Profile-Container row'>
                         <div className='col-lg-3 col-md-4 Profile-Container-1'>
                             <Panel shaded bordered bodyFill style={{ display: 'inline-block', width: "100%", maxWidth: "240px" }}>
-                                <img alt="no img" src="https://via.placeholder.com/240x240" height="240" />
+                                <img alt="no img" src={currentUser.profile[0] ? currentUser.profile[0] : "https://via.placeholder.com/240x240"} height="240" />
                                 <table>
                                     <tr>
                                         <td align='left'>First Name</td>

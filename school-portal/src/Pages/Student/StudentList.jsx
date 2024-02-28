@@ -24,16 +24,18 @@ function StudentList({ status, onLoading }) {
     const students = useSelector((state) => state.allStudentsReducer)
 
     const standardList = [{ label: "I", value: 1 }, { label: "II", value: 2 }, { label: "III", value: 3 }, { label: "IV", value: 4 }, { label: "V", value: 5 }, { label: "VI", value: 6 }, { label: "VII", value: 7 }, { label: "VIII", value: 8 }, { label: "IX", value: 9 }, { label: "X", value: 10 }, { label: "XI", value: 11 }, { label: "XII", value: 12 }]
-
+    console.log(class1);
+    console.log(students);
     useEffect(() => {
         if (fetchStatus) {
             onLoading(true)
             dispatch(getClass("/StudentList", navigate, { type: localStorage.getItem('type'), id: localStorage.getItem('id') }))
         }
-    }, [dispatch, fetchStatus])
+    }, [fetchStatus])
 
     useEffect(() => {
         if (class1) {
+            console.log("test1");
             onLoading(false);
         }
     }, [class1])
@@ -41,12 +43,14 @@ function StudentList({ status, onLoading }) {
     useEffect(() => {
         if (classID && fetchStatus) {
             onLoading(true);
+            console.log(classID);
             dispatch(requestClassStudents("/StudentList", navigate, classID));
         }
     }, [classID, fetchStatus, dispatch])
 
     useEffect(() => {
         if (students) {
+            console.log("test2");
             onLoading(false);
         }
     }, [students])
